@@ -1,4 +1,4 @@
-# CantonPickup — website
+# Pickup — website
 
 English-language marketing site for a Guangzhou & Foshan airport transfer and
 private driver service. Built with **Vue 3 + Vue Router 4 + Vite 6**, fully
@@ -114,7 +114,7 @@ the page completely.
 
 The thumbnail for an external clip is a 16:9 image made with
 `scripts/make-video-poster.py`, which crops a photo to the card's aspect ratio
-and burns the CantonPickup badge into it — YouTube's own thumbnail for a Short
+and burns the Pickup badge into it — YouTube's own thumbnail for a Short
 carries the creator's burned-in captions, which do not belong on an English
 site:
 
