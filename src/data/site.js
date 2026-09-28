@@ -488,6 +488,44 @@ export const seoKeywords = [
   'paypal private driver china',
 ]
 
+/**
+ * The footer's "Popular searches" block — one keyword per destination.
+ *
+ * This used to be `seoKeywords.slice(0, 9)`, which is seven airport/railway
+ * terms plus two Foshan terms, and the footer sent *all nine* to
+ * `/airport-transfer`. Two problems came out of that:
+ *
+ *   1. `guangzhou to foshan private transfer` and `foshan private transfer
+ *      from guangzhou` have a page of their own (`/guangzhou-to-foshan`) — the
+ *      anchor text promised one page and delivered another.
+ *   2. Standing on `/airport-transfer` — the exact page the other seven point
+ *      at — every click in the block was a *redundant navigation*. vue-router
+ *      silently drops those, so all nine links looked dead and only a refresh
+ *      (or leaving the page first) changed anything.
+ *
+ * Listing each destination once keeps every anchor text on the client's own
+ * keyword list while giving the block nine working links, and spreads the
+ * internal link equity over nine pages instead of piling it onto one.
+ *
+ * Add a keyword here — never back into `seoKeywords.slice()` — and make sure
+ * `to` is a real route, because a footer link that goes nowhere is what this
+ * comment exists to prevent.
+ */
+export const footerKeywords = [
+  { label: 'guangzhou airport transfer', to: '/airport-transfer' },
+  // `#fares` is the "Popular Routes" table, which prices Guangzhou South
+  // Station by name — so this one lands on the station row instead of the top
+  // of the page. Same path, different hash: still a real navigation.
+  { label: 'guangzhou south station transfer', to: '/airport-transfer#fares' },
+  { label: 'guangzhou private driver', to: '/private-driver' },
+  { label: 'private driver for factory visits guangzhou', to: '/factory-visits' },
+  { label: 'canton fair 2026 transfer', to: '/canton-fair-transfer' },
+  { label: 'guangzhou to foshan private transfer', to: '/guangzhou-to-foshan' },
+  { label: 'private car from shenzhen to guangzhou', to: '/guangzhou-to-shenzhen' },
+  { label: 'china visa free transit guangzhou', to: '/blog/baiyun-airport-arrival-guide' },
+  { label: 'paypal private driver china', to: '/faqs' },
+]
+
 /** Options used by the quote form's "Service needed" select. */
 export const serviceOptions = [
   'Airport transfer — arrival',

@@ -2,13 +2,11 @@
 import { computed } from 'vue'
 import AppIcon from './AppIcon.vue'
 import PaymentIcons from './PaymentIcons.vue'
-import { site, nav, routeNav } from '@/data/site'
-import { seoKeywords } from '@/data/site'
+import { site, nav, routeNav, footerKeywords } from '@/data/site'
 
 const year = computed(() => new Date().getFullYear())
 
 const serviceLinks = nav[1].children
-const topKeywords = seoKeywords.slice(0, 9)
 </script>
 
 <template>
@@ -124,8 +122,10 @@ const topKeywords = seoKeywords.slice(0, 9)
       >
         <h4 style="margin-bottom: 12px">Popular searches</h4>
         <div class="footer__bottom-links">
-          <RouterLink v-for="k in topKeywords" :key="k" :to="'/airport-transfer'">
-            {{ k }}
+          <!-- One keyword per destination — see `footerKeywords` in site.js for
+               why this is not `seoKeywords.slice(0, 9)` any more. -->
+          <RouterLink v-for="k in footerKeywords" :key="k.label" :to="k.to">
+            {{ k.label }}
           </RouterLink>
         </div>
       </div>

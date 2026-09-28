@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-24T01:41:49.320Z",
+  "generated": "2026-09-28T00:50:59.590Z",
   "items": [
     {
       "id": "daniel-uk-airport-transfer",
@@ -140,6 +140,20 @@
       "date": "February 2026",
       "alt": "WhatsApp conversation screenshot — Priya from India, Multi-day charter with CantonPickup",
       "order": 10
+    },
+    {
+      "id": "luigi-private-driver",
+      "type": "image",
+      "image": "/images/reviews/luigi-private-driver.jpg",
+      "video": "",
+      "poster": "/images/reviews/luigi-private-driver.jpg",
+      "name": "Luigi",
+      "text": "Perfect thanks. Driver name, mobile number and a photo of the car all arrived the night before, and moving my pick-up an hour later was no trouble at all.",
+      "rating": 5,
+      "service": "Private driver",
+      "date": "September 2026",
+      "alt": "WhatsApp conversation screenshot — Luigi, private driver in Guangzhou with CantonPickup",
+      "order": 11
     }
   ]
 }

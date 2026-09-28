@@ -46,11 +46,17 @@ export function useSeo(page) {
   setMeta('name', 'twitter:title', page.title)
   setMeta('name', 'twitter:description', page.description)
 
-  const prevTitle = typeof document !== 'undefined' ? document.title : ''
-
-  onUnmounted(() => {
-    if (typeof document !== 'undefined') document.title = prevTitle
-  })
+  // Deliberately no "restore the previous document.title on unmount" hook.
+  //
+  // App.vue keys <RouterView> on `route.path`, so on every navigation the
+  // incoming view mounts *before* the outgoing one is torn down. A restore
+  // hook therefore fired last and wrote the title of the page you had just
+  // left back into the tab: URL, H1 and body all moved, and the <title> sat
+  // one page behind until a refresh. (It also captured `prevTitle` *after*
+  // overwriting it, so it never held the previous title in the first place.)
+  //
+  // Every route calls useSeo(), so there is nothing to fall back to — the
+  // page you are on owns the title outright.
 
   return { url }
 }

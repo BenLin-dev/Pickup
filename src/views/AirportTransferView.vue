@@ -106,7 +106,10 @@ useBreadcrumbs('airport-transfer', [
   </section>
 
   <!-- ---------------------------------------------------- popular routes -->
-  <section class="section section--soft">
+  <!-- `id="fares"` is a deep-link target: the footer sends the
+       "guangzhou south station transfer" keyword here because this table
+       prices Guangzhou South Station by name. -->
+  <section id="fares" class="section section--soft">
     <div class="container">
       <div class="section-head" v-reveal>
         <p class="eyebrow">Fixed prices</p>
