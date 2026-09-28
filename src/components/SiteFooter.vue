@@ -66,7 +66,7 @@ const serviceLinks = nav[1].children
             <RouterLink to="/about">About Us</RouterLink>
             <RouterLink to="/faqs">FAQs</RouterLink>
             <RouterLink to="/contact">Contact</RouterLink>
-            <RouterLink to="/contact">Get a Quote</RouterLink>
+            <RouterLink to="/contact#quote">Get a Quote</RouterLink>
             <RouterLink to="/privacy-policy">Privacy Policy</RouterLink>
             <RouterLink to="/terms">Terms &amp; Conditions</RouterLink>
           </div>

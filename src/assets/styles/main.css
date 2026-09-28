@@ -88,6 +88,15 @@ html {
   scroll-padding-top: calc(var(--header-h) + 16px);
 }
 
+/* Deep links such as /airport-transfer#fares or /contact#quote must clear the
+   sticky header. `scroll-padding-top` above only covers the browser's own
+   anchor jump; `scrollIntoView` — which is what vue-router's `{ el }` scroll
+   behaviour ends up calling — ignores the container's padding and looks at the
+   target's own `scroll-margin-top` instead. */
+section[id] {
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
 body {
   margin: 0;
   font-family: var(--font);

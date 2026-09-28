@@ -78,7 +78,11 @@ function isActive(item) {
           English
           <AppIcon name="chevron" :size="13" :stroke="2.4" />
         </span>
-        <RouterLink to="/contact" class="btn btn--sm">
+        <!-- `#quote` on purpose: the same button also exists in the footer and
+             the drawer, and a plain `/contact` made all three a silent no-op
+             once you were already on /contact. The fragment always lands on
+             the form. -->
+        <RouterLink to="/contact#quote" class="btn btn--sm">
           Get a Quote
           <AppIcon name="arrow" :size="16" :stroke="2.2" class="btn__arrow" />
         </RouterLink>
@@ -150,7 +154,7 @@ function isActive(item) {
           </RouterLink>
         </div>
 
-        <RouterLink to="/contact" class="btn btn--block btn--lg mt-24">
+        <RouterLink to="/contact#quote" class="btn btn--block btn--lg mt-24">
           Get a Quote
           <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
         </RouterLink>
