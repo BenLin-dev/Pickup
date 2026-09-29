@@ -22,8 +22,7 @@ public/videos/airport-pickup.jpg      <- the thumbnail
 {
   "title": "Clients pickup at Guangzhou Baiyun airport",
   "caption": "Meet & greet in the arrivals hall, then straight to the hotel",
-  "url": "https://youtube.com/shorts/DUJfKv6unPg",
-  "order": 1
+  "url": "https://youtube.com/shorts/DUJfKv6unPg"
 }
 ```
 
@@ -32,8 +31,11 @@ public/videos/airport-pickup.jpg      <- the thumbnail
 | `title`   | the bold line under the card. Defaults to the filename, prettified.              |
 | `caption` | the small grey line under the title. Optional.                                   |
 | `url`     | the page you copied out of the browser. `/watch?v=`, `youtu.be/`, `/shorts/`, `/embed/` and `/live/` links all work — the gallery rewrites them into a player URL by itself, and works out that it is YouTube or Vimeo on its own. |
-| `order`   | optional. Lower = earlier. Without it, clips are shown alphabetically by filename. |
 | `poster`  | optional. Point at a picture somewhere else under `public/`, e.g. `/images/hero/airport.jpg`. The sibling `.jpg` in this folder wins if there is one. |
+
+Clips show newest first (the most recent of the clip, its sidecar or its
+poster) and only the latest 10 appear — drop a new one in and it becomes the
+first card; older ones stay in the folder but fall off the grid.
 
 No `.jpg`? The card still shows up, play button on a dark panel.
 

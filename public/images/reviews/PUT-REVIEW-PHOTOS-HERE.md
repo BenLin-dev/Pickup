@@ -1,7 +1,11 @@
 # Review photos — drop them in this folder
 
-Any image you copy into this folder appears on the review wall automatically.
-Nothing in the code needs to change.
+Any image you copy into this folder appears on the review wall automatically —
+**at the front**, newest first. Nothing in the code needs to change.
+
+Ordering needs no work from you: reviews are sorted by the sidecar `date`
+(month-year is enough), newest first, with the file's last-modified time as the
+tie-break. Drop a new screenshot in and it takes the first slot.
 
 ## Just a photo
 

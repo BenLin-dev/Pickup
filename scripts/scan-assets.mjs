@@ -37,8 +37,8 @@
  *   from the filename — so nothing is ever silently dropped.
  *
  * REVIEWS — `public/images/reviews/`
- *   Copy in a guest photo (`IMG_1234.jpg`) and it appears in the review wall.
- *   Add a sidecar with the same basename to caption it:
+ *   Copy in a guest photo (`IMG_1234.jpg`) and it appears in the review wall,
+ *   at the FRONT. Add a sidecar with the same basename to caption it:
  *
  *     public/images/reviews/IMG_1234.jpg
  *     public/images/reviews/IMG_1234.json
@@ -49,18 +49,24 @@
  *   review text. Reviews without a photo (text only) go in
  *   `public/data/reviews.manual.json` as a plain array of the same objects.
  *
+ *   Ordering is automatic: newest first, by the sidecar `date` (month-year is
+ *   enough) with the file's mtime as the tie-break. Nothing to renumber —
+ *   drop the file in, re-run the scan, it is at the top.
+ *
  * GALLERY — `public/images/gallery/`
- *   The "See Us in Action" photo wall. Copy a photo in and it appears; there
- *   is nothing else to create. No sidecar, no caption, no alt text, no
- *   ordering file — deliberately. A wall that asks for a JSON file per photo
- *   is a wall that stays at six photos.
+ *   The "See Us in Action" photo wall. Copy a photo in and it appears at the
+ *   FRONT of the wall; there is nothing else to create. No sidecar, no
+ *   caption, no alt text, no ordering file — deliberately. A wall that asks
+ *   for a JSON file per photo is a wall that stays at six photos.
  *
  *     public/images/gallery/arrivals-hall.jpg
  *     public/images/gallery/boot-loaded.jpg
  *
- *   Order is filename order, so a numeric prefix pins it (`01-…`, `02-…`).
- *   Files starting with `_` are skipped, which is the agreed way to park a
- *   reference or work-in-progress image in a content folder.
+ *   Newest photo first (file mtime, descending), and only the latest 30 are
+ *   shown — older files stay in the folder but fall off the wall, so the
+ *   layout never outgrows its design. Re-saving a photo re-posts it at the
+ *   top. Files starting with `_` are skipped, which is the agreed way to park
+ *   a reference or work-in-progress image in a content folder.
  *
  * VIDEOS — `public/videos/`
  *   Everything about a clip lives here — the file *or* the link, its poster
@@ -84,8 +90,10 @@
  *   an `/embed/` link — the gallery rewrites all of them into an embeddable
  *   URL, and works out `provider` on its own. Give a `.json` with a `url` but
  *   no picture and the card still appears, without a poster. `poster` may
- *   also be set to any other path under `public/`. `order` (lower first)
- *   pins a clip's position; without it the files are shown alphabetically.
+ *   also be set to any other path under `public/`.
+ *
+ *   Newest clip first (most recent mtime among the clip, its sidecar and its
+ *   poster), capped at 10 — drop a new video in and it becomes the first card.
  *
  *   Nothing is hard-coded in the Vue component, and nothing needs to be
  *   registered twice.
@@ -273,6 +281,13 @@ async function scanVehicles() {
 
 /* ------------------------------------------------------------------- reviews */
 
+/** "March 2026" (or any parseable date) -> ms; unparseable/missing -> 0. */
+function dateMs(s) {
+  if (!s) return 0
+  const t = Date.parse(String(s).trim())
+  return Number.isNaN(t) ? 0 : t
+}
+
 async function scanReviews() {
   await ensureDir(REVIEW_DIR)
   const files = await listDir(REVIEW_DIR)
@@ -288,6 +303,10 @@ async function scanReviews() {
       if (!byBase.has(base)) byBase.set(base, {})
       if (IMAGE_EXT.has(ext)) byBase.get(base).image = file
       else byBase.get(base).video = file
+      // newest file wins, so re-saving a photo re-posts the review at the top
+      const s = await stat(join(REVIEW_DIR, file)).catch(() => null)
+      const entry = byBase.get(base)
+      entry.mtime = Math.max(entry.mtime || 0, s ? s.mtimeMs : 0)
       continue
     }
 
@@ -305,27 +324,35 @@ async function scanReviews() {
     }
   }
 
-  const items = []
-  let i = 0
-  for (const [base, entry] of [...byBase.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+  // Newest review first: the sidecar `date` (month-year is fine), then the
+  // file's mtime as the tie-break. Copy a new screenshot in and it takes the
+  // first slot on the wall without touching anything else.
+  const entries = []
+  for (const [base, entry] of byBase) {
     if (!entry.image && !entry.video) continue
     const meta = entry.meta || {}
-    items.push({
-      id: base,
-      type: entry.video ? 'video' : 'image',
-      image: entry.image ? `/images/reviews/${entry.image}` : '',
-      video: entry.video ? `/videos/${entry.video}` : '',
-      poster: entry.image ? `/images/reviews/${entry.image}` : '',
-      name: meta.name || '',
-      text: meta.text || '',
-      rating: typeof meta.rating === 'number' ? meta.rating : meta.rating ? Number(meta.rating) : 5,
-      service: meta.service || '',
-      date: meta.date || '',
-      alt: meta.alt || '',
-      order: meta.order ?? i++,
+    entries.push({
+      dateMs: dateMs(meta.date),
+      mtime: entry.mtime || 0,
+      item: {
+        id: base,
+        type: entry.video ? 'video' : 'image',
+        image: entry.image ? `/images/reviews/${entry.image}` : '',
+        video: entry.video ? `/videos/${entry.video}` : '',
+        poster: entry.image ? `/images/reviews/${entry.image}` : '',
+        name: meta.name || '',
+        text: meta.text || '',
+        rating: typeof meta.rating === 'number' ? meta.rating : meta.rating ? Number(meta.rating) : 5,
+        service: meta.service || '',
+        date: meta.date || '',
+        alt: meta.alt || '',
+      },
     })
   }
-  items.sort((a, b) => a.order - b.order)
+  entries.sort(
+    (a, b) => b.dateMs - a.dateMs || b.mtime - a.mtime || a.item.id.localeCompare(b.item.id),
+  )
+  const items = entries.map((e) => e.item)
 
   // text-only reviews (or ones pointing at photos hosted elsewhere) live in a
   // hand-authored file so they survive every scan
@@ -348,35 +375,58 @@ async function scanReviews() {
  * Anything that needs a sentence underneath it belongs in a review or an
  * article instead — those have somewhere to put the sentence.
  *
- * Order is the filename, compared numerically, so `10-x.jpg` follows `9-x.jpg`
- * rather than `1-x.jpg`. A `NN-` prefix is therefore enough to pin a position.
+ * Photos show newest first (file mtime, descending) and only the latest
+ * GALLERY_LIMIT are kept — older ones stay in the folder but drop off the
+ * wall, so the wall never grows past its design. Re-saving a photo (or just
+ * touching its file) re-posts it at the top.
  */
+const GALLERY_LIMIT = 30
+
 async function scanGallery() {
   await ensureDir(GALLERY_DIR)
   const files = await listDir(GALLERY_DIR)
 
-  const names = files
-    .filter((file) => IMAGE_EXT.has(extname(file).toLowerCase()))
-    .filter((file) => !basename(file).startsWith('_'))
-    .sort((a, b) => a.localeCompare(b, 'en', { numeric: true, sensitivity: 'base' }))
+  const candidates = files.filter(
+    (file) =>
+      IMAGE_EXT.has(extname(file).toLowerCase()) && !basename(file).startsWith('_'),
+  )
+
+  const withMtime = []
+  for (const file of candidates) {
+    const s = await stat(join(GALLERY_DIR, file)).catch(() => null)
+    withMtime.push({ file, mtime: s ? s.mtimeMs : 0 })
+  }
+  withMtime.sort(
+    (a, b) => b.mtime - a.mtime || a.file.localeCompare(b.file, 'en', { numeric: true, sensitivity: 'base' }),
+  )
 
   const items = []
-  for (const file of names) {
+  for (const { file } of withMtime.slice(0, GALLERY_LIMIT)) {
     const size = await jpegSize(join(GALLERY_DIR, file))
     items.push({
       image: `/images/gallery/${file}`,
       // pre-sizing only — see the note on `jpegSize`. Not a description.
       ...(size ? { width: size.width, height: size.height } : {}),
-      order: items.length,
     })
   }
 
   await writeJson(join(DATA_DIR, 'gallery.json'), { generated: new Date().toISOString(), items })
   const sized = items.filter((i) => i.width).length
-  note(`gallery.json   — ${items.length} photos, ${sized} pre-sized (filename order, no captions)`)
+  const skipped = withMtime.length - items.length
+  note(
+    `gallery.json   — ${items.length} photos, ${sized} pre-sized (newest first${skipped > 0 ? `, ${skipped} older than the ${GALLERY_LIMIT}-photo limit` : ''})`,
+  )
 }
 
 /* -------------------------------------------------------------------- videos */
+
+/**
+ * Videos — newest first (mtime of the clip, its sidecar or its poster,
+ * whichever is most recent), capped at VIDEO_LIMIT clips. Drop a new video in
+ * and it becomes the first card; older ones stay in the folder but fall off
+ * the grid once the cap is exceeded.
+ */
+const VIDEO_LIMIT = 10
 
 async function scanVideos() {
   await ensureDir(VIDEO_DIR)
@@ -388,21 +438,23 @@ async function scanVideos() {
     const base = basename(file, extname(file))
     if (base.startsWith('_')) continue
 
+    if (!byBase.has(base)) byBase.set(base, {})
+    const entry = byBase.get(base)
+    // any related file being touched counts as the clip being updated
+    const s = await stat(join(VIDEO_DIR, file)).catch(() => null)
+    entry.mtime = Math.max(entry.mtime || 0, s ? s.mtimeMs : 0)
+
     if (VIDEO_EXT.has(ext)) {
-      if (!byBase.has(base)) byBase.set(base, {})
-      byBase.get(base).video = file
+      entry.video = file
     } else if (IMAGE_EXT.has(ext)) {
-      if (!byBase.has(base)) byBase.set(base, {})
-      byBase.get(base).poster = file
+      entry.poster = file
     } else if (SIDECAR_EXT.has(ext)) {
-      if (!byBase.has(base)) byBase.set(base, {})
-      byBase.get(base).meta = (await readJson(join(VIDEO_DIR, file))) || {}
+      entry.meta = (await readJson(join(VIDEO_DIR, file))) || {}
     }
   }
 
-  const items = []
-  let seq = 0
-  for (const [base, entry] of [...byBase.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+  const entries = []
+  for (const [base, entry] of byBase) {
     const meta = entry.meta || {}
     const url = meta.url || ''
 
@@ -410,22 +462,29 @@ async function scanVideos() {
     // where to find it. A stray .jpg or .txt on its own is not a clip.
     if (!entry.video && !url) continue
 
-    items.push({
-      id: meta.id || base,
-      title: meta.title || titleize(base),
-      caption: meta.caption || '',
-      // `src` plays locally, `url` gets embedded — exactly one is ever set
-      src: entry.video ? `/videos/${entry.video}` : meta.src || '',
-      poster: meta.poster || (entry.poster ? `/videos/${entry.poster}` : ''),
-      url,
-      provider: meta.provider || guessProvider(url),
-      order: meta.order ?? seq++,
+    entries.push({
+      mtime: entry.mtime || 0,
+      base,
+      item: {
+        id: meta.id || base,
+        title: meta.title || titleize(base),
+        caption: meta.caption || '',
+        // `src` plays locally, `url` gets embedded — exactly one is ever set
+        src: entry.video ? `/videos/${entry.video}` : meta.src || '',
+        poster: meta.poster || (entry.poster ? `/videos/${entry.poster}` : ''),
+        url,
+        provider: meta.provider || guessProvider(url),
+      },
     })
   }
-  items.sort((a, b) => a.order - b.order)
+  entries.sort((a, b) => b.mtime - a.mtime || a.base.localeCompare(b.base))
+  const items = entries.slice(0, VIDEO_LIMIT).map((e) => e.item)
 
   await writeJson(join(DATA_DIR, 'videos.json'), { generated: new Date().toISOString(), items })
-  note(`videos.json    — ${items.length} videos (${items.filter((v) => v.url).length} external links)`)
+  const skipped = entries.length - items.length
+  note(
+    `videos.json    — ${items.length} videos, ${items.filter((v) => v.url).length} external links (newest first${skipped > 0 ? `, ${skipped} older than the ${VIDEO_LIMIT}-video limit` : ''})`,
+  )
 }
 
 /** Fill in `provider` so a sidecar only ever needs a url. */

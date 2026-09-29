@@ -52,10 +52,19 @@ function measure() {
   const el = track.value
   if (!el) return
 
-  const slide = el.querySelector('.carousel__slide')
-  const gap = parseFloat(getComputedStyle(el).columnGap) || 0
-  step = slide ? slide.getBoundingClientRect().width + gap : el.clientWidth
-  perView = step > 0 ? Math.max(1, Math.round((el.clientWidth + gap) / step)) : 1
+  // Measure the real distance between two adjacent slides (bounding boxes),
+  // so any margin the UA or CSS adds between them is included in the step.
+  const slides = el.querySelectorAll('.carousel__slide')
+  if (slides.length >= 2) {
+    const a = slides[0].getBoundingClientRect()
+    const b = slides[1].getBoundingClientRect()
+    step = Math.abs(b.left - a.left) || a.width
+  } else {
+    const slide = slides[0]
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0
+    step = slide ? slide.getBoundingClientRect().width + gap : el.clientWidth
+  }
+  perView = step > 0 ? Math.max(1, Math.floor(el.clientWidth / step + 0.01)) : 1
   pages.value = Math.max(1, Math.ceil(items.value.length / perView))
   readPosition()
 }
@@ -71,7 +80,10 @@ function goTo(index) {
   const el = track.value
   if (!el || !step) return
   const target = Math.max(0, Math.min(pages.value - 1, index))
-  el.scrollTo({ left: target * perView * step, behavior: 'smooth' })
+  // Clamp to the actual scrollable range: without this the last page can
+  // land past scrollWidth - clientWidth and never reveal the final card.
+  const maxLeft = el.scrollWidth - el.clientWidth
+  el.scrollTo({ left: Math.min(target * perView * step, maxLeft), behavior: 'smooth' })
 }
 
 function prev() {
@@ -374,6 +386,10 @@ onBeforeUnmount(() => {
 }
 
 .carousel__slide {
+  /* <figure> ships a UA margin (1em 40px) that would silently break the
+     "four slides plus three gaps" flex-basis arithmetic and clip the
+     right-most card — reset it here. */
+  margin: 0;
   flex: 0 0 calc((100% - 3 * var(--car-gap)) / 4);
   scroll-snap-align: start;
 }

@@ -1,41 +1,40 @@
 {
-  "generated": "2026-09-28T01:09:30.835Z",
+  "generated": "2026-09-29T00:49:35.405Z",
   "items": [
     {
-      "image": "/images/gallery/cabin-mpv.jpg",
-      "width": 1024,
-      "height": 640,
-      "order": 0
-    },
-    {
-      "image": "/images/gallery/curbside-wait.jpg",
-      "width": 1024,
-      "height": 640,
-      "order": 1
-    },
-    {
-      "image": "/images/gallery/luggage-cart.jpg",
-      "width": 1024,
-      "height": 1280,
-      "order": 2
-    },
-    {
-      "image": "/images/gallery/name-sign.jpg",
-      "width": 1024,
-      "height": 512,
-      "order": 3
+      "image": "/images/gallery/gabriella-name-sign.jpg",
+      "width": 1080,
+      "height": 1440
     },
     {
       "image": "/images/gallery/terminal-walk.jpg",
       "width": 1024,
-      "height": 512,
-      "order": 4
+      "height": 512
+    },
+    {
+      "image": "/images/gallery/name-sign.jpg",
+      "width": 1024,
+      "height": 512
+    },
+    {
+      "image": "/images/gallery/curbside-wait.jpg",
+      "width": 1024,
+      "height": 640
+    },
+    {
+      "image": "/images/gallery/cabin-mpv.jpg",
+      "width": 1024,
+      "height": 640
+    },
+    {
+      "image": "/images/gallery/luggage-cart.jpg",
+      "width": 1024,
+      "height": 1280
     },
     {
       "image": "/images/gallery/trunk-loading.jpg",
       "width": 1024,
-      "height": 1280,
-      "order": 5
+      "height": 1280
     }
   ]
 }

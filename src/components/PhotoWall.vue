@@ -4,12 +4,13 @@ import { onMounted, ref } from 'vue'
 /**
  * "See Us in Action" — the photo wall.
  *
- * Everything in `public/images/gallery/` appears here, in filename order, and
+ * Everything in `public/images/gallery/` appears here, newest first, and
  * nothing else is required: no sidecar, no caption, no alt text, no separate
  * order file. `scripts/scan-assets.mjs` turns that folder into
- * `/data/gallery.json` before every build and this component only reads it —
- * the same folder-driven contract as the review wall and the video grid, so
- * adding a photo is "copy the file in, rebuild".
+ * `/data/gallery.json` before every build (keeping only the latest 30 photos)
+ * and this component only reads it — the same folder-driven contract as the
+ * review wall and the video grid, so adding a photo is "copy the file in,
+ * rebuild" and it lands at the top of the wall.
  *
  * Layout is a CSS *multi-column* masonry, not a grid:
  *   - Columns let every photo keep its own shape. A portrait shot of a driver

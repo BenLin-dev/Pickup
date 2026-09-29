@@ -1,15 +1,14 @@
 {
-  "generated": "2026-09-28T01:09:30.837Z",
+  "generated": "2026-09-29T00:49:35.408Z",
   "items": [
     {
-      "id": "baiyun-airport-pickup",
-      "title": "Clients pickup at Guangzhou Baiyun airport",
-      "caption": "Meet & greet in the arrivals hall, then straight to the hotel",
+      "id": "private-car-service",
+      "title": "Private car service in Guangzhou",
+      "caption": "Fixed prices, English-speaking drivers, door to door",
       "src": "",
-      "poster": "/videos/baiyun-airport-pickup.jpg",
-      "url": "https://youtube.com/shorts/_Ra8hbWH9K8?si=unsgLCNjEsFUPXOG",
-      "provider": "youtube",
-      "order": 1
+      "poster": "/videos/private-car-service.jpg",
+      "url": "https://youtu.be/M4IHiMZCFt0?si=cd08Pg-U8b5je3EC",
+      "provider": "youtube"
     },
     {
       "id": "guangzhou-airport-transfer",
@@ -18,18 +17,16 @@
       "src": "",
       "poster": "/videos/guangzhou-airport-transfer.jpg",
       "url": "https://youtube.com/shorts/pG9-syXB2Xg",
-      "provider": "youtube",
-      "order": 2
+      "provider": "youtube"
     },
     {
-      "id": "private-car-service",
-      "title": "Private car service in Guangzhou",
-      "caption": "Fixed prices, English-speaking drivers, door to door",
+      "id": "baiyun-airport-pickup",
+      "title": "Clients pickup at Guangzhou Baiyun airport",
+      "caption": "Meet & greet in the arrivals hall, then straight to the hotel",
       "src": "",
-      "poster": "/videos/private-car-service.jpg",
-      "url": "https://youtu.be/M4IHiMZCFt0?si=cd08Pg-U8b5je3EC",
-      "provider": "youtube",
-      "order": 3
+      "poster": "/videos/baiyun-airport-pickup.jpg",
+      "url": "https://youtube.com/shorts/_Ra8hbWH9K8?si=unsgLCNjEsFUPXOG",
+      "provider": "youtube"
     }
   ]
 }
