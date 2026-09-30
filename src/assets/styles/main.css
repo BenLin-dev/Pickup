@@ -991,6 +991,11 @@ p:last-child {
   flex: none;
 }
 
+/* ------------------------------------------------------ language switcher */
+.lang-switch {
+  position: relative;
+}
+
 .lang {
   display: inline-flex;
   align-items: center;
@@ -999,8 +1004,85 @@ p:last-child {
   border-radius: var(--r-full);
   font-size: 0.85rem;
   font-weight: 600;
+  font-family: inherit;
+  white-space: nowrap;
   color: var(--c-muted);
   border: 1px solid var(--c-line);
+  background: #fff;
+  cursor: pointer;
+}
+
+.lang:hover {
+  color: var(--c-800);
+  border-color: var(--c-300);
+}
+
+.lang-switch__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 70;
+  min-width: 172px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-md);
+}
+
+.lang-switch__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--c-ink-2);
+  text-align: left;
+  cursor: pointer;
+}
+
+.lang-switch__item:hover {
+  background: var(--c-50);
+}
+
+.lang-switch__item.is-active {
+  color: var(--c-800);
+  font-weight: 700;
+}
+
+/* the same choice, as chips inside the mobile drawer */
+.lang-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 2px 0 0;
+}
+
+.lang-row__item {
+  padding: 8px 14px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-full);
+  background: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-muted);
+  cursor: pointer;
+}
+
+.lang-row__item.is-active {
+  color: #fff;
+  background: var(--c-700);
+  border-color: var(--c-700);
 }
 
 .burger {
@@ -1021,7 +1103,8 @@ p:last-child {
     padding: 9px 10px;
     font-size: 0.89rem;
   }
-  .lang {
+  /* the trigger goes away; the drawer carries the same five languages */
+  .lang-switch {
     display: none;
   }
 }
@@ -1709,17 +1792,32 @@ p:last-child {
 }
 
 /* ---------------------------------------------------------------- video */
-/* Portrait thumbnails in a fixed two-column grid.
-   Short clips are shot vertically, so a 9:16 tile shows the whole frame
-   rather than letterboxing it into a wide band. The manifest keeps the 10
-   newest clips, so the grid is 2 columns x 5 rows; the capped track keeps
-   the tiles a sensible size on wide screens. */
+/* Portrait thumbnails. Short clips are shot vertically, so a 9:16 tile shows
+   the whole frame rather than letterboxing it into a wide band.
+   The column count follows the clip count — `.reel--row` (<= 5 clips, one row)
+   vs `.reel--grid` (> 5 clips, two filled columns). A fixed two-column grid
+   strands the last tile alone on a second row, which is what `.reel--row`
+   exists to avoid. */
 .reel {
+  --reel-gap: clamp(14px, 1.8vw, 22px);
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(14px, 1.8vw, 22px);
-  max-width: 640px;
+  gap: var(--reel-gap);
   margin-inline: auto;
+}
+
+/* Up to five clips: as many columns as there are clips, so the row is always
+   full. `--reel-cols` is set inline by the component. The track caps itself at
+   ~232px per tile — wider than that and the poster starts to look like a
+   billboard — so a short row stays centred instead of stretching edge to edge. */
+.reel--row {
+  grid-template-columns: repeat(var(--reel-cols), minmax(0, 1fr));
+  max-width: min(100%, calc(var(--reel-cols) * 232px + (var(--reel-cols) - 1) * var(--reel-gap)));
+}
+
+/* Six or more clips: the two-column grid fills both columns. */
+.reel--grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 640px;
 }
 
 .reel__item {
@@ -1803,9 +1901,27 @@ p:last-child {
 }
 
 @media (max-width: 560px) {
-  .reel {
+  .reel--grid {
     grid-template-columns: repeat(auto-fit, minmax(0, 158px));
     gap: 12px;
+  }
+
+  /* A count-derived row would squeeze each 9:16 tile to ~110px on a phone —
+     too narrow for the caption. Stay on one row, but let it scroll sideways
+     with snap points so a tile keeps a readable width. */
+  .reel--row {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(62%, 210px);
+    max-width: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 4px;
+  }
+
+  .reel--row .reel__item {
+    scroll-snap-align: start;
   }
 
   .reel-card__play {

@@ -2,6 +2,7 @@
 import HeroSection from '@/components/HeroSection.vue'
 import LegalArticle from '@/components/LegalArticle.vue'
 import { useSeo } from '@/composables/useSeo'
+import { t } from '@/i18n'
 import { pages, termsSections, legalUpdated } from '@/data/content'
 
 const page = pages.terms
@@ -13,7 +14,7 @@ useSeo(page)
     variant="split"
     :title="page.h1"
     :lead="page.lead"
-    :crumbs="[{ label: 'Home', to: '/' }, { label: 'Terms & Conditions' }]"
+    :crumbs="[{ label: t('Home'), to: '/' }, { label: t('Terms & Conditions') }]"
   />
 
   <LegalArticle :sections="termsSections" :updated="legalUpdated" />

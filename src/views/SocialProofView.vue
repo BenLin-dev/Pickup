@@ -9,6 +9,7 @@ import { useSeo, useJsonLd, useBreadcrumbs } from '@/composables/useSeo'
 import { pages } from '@/data/content'
 import { proofStats, guestCountries, proofCredentials } from '@/data/socialProof'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 /**
  * Social proof page — the numbers, the photographs and the reviews in one
@@ -46,11 +47,11 @@ useBreadcrumbs('reviews', [
   <HeroSection
     variant="split"
     image="/images/hero/chauffeur.jpg"
-    image-alt="Chauffeur opening the car door for a guest in Guangzhou"
-    eyebrow="Track record"
-    title="Reviews, Photos & Track Record"
-    lead="We are a small local team, not a booking platform. Here is who we have driven, what the trips look like, and what every fare includes."
-    :badges="['Guest reviews', 'Real pickup photos', 'Fixed prices']"
+    :image-alt="t('Chauffeur opening the car door for a guest in Guangzhou')"
+    :eyebrow="t('Track record')"
+    :title="t('Reviews, Photos & Track Record')"
+    :lead="t('We are a small local team, not a booking platform. Here is who we have driven, what the trips look like, and what every fare includes.')"
+    :badges="[t('Guest reviews'), t('Real pickup photos'), t('Fixed prices')]"
     priority
   />
 
@@ -71,21 +72,18 @@ useBreadcrumbs('reviews', [
 
   <!-- ------------------------------------------------------- action gallery -->
   <PhotoWall
-    eyebrow="On the job"
-    title="See Us in Action"
-    lead="Airport pickups, factory runs and long days on the delta highways — the parts of the job you do not see when you book."
+    :eyebrow="t('On the job')"
+    :title="t('See Us in Action')"
+    :lead="t('Airport pickups, factory runs and long days on the delta highways — the parts of the job you do not see when you book.')"
   />
 
   <!-- ----------------------------------------------------------- reviews -->
   <section class="section section--mint">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Guest reviews</p>
-        <h2>What Our Guests Say</h2>
-        <p class="lead">
-          Real WhatsApp and WeChat conversations, shared with permission. Tap any screenshot
-          to read it in full.
-        </p>
+        <p class="eyebrow">{{ t('Guest reviews') }}</p>
+        <h2>{{ t('What Our Guests Say') }}</h2>
+        <p class="lead">{{ t('Real WhatsApp and WeChat conversations, shared with permission. Tap any screenshot to read it in full.') }}</p>
       </div>
 
       <TestimonialWall />
@@ -96,12 +94,9 @@ useBreadcrumbs('reviews', [
   <section class="section section--tight">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Who travels with us</p>
+        <p class="eyebrow">{{ t('Who travels with us') }}</p>
         <h2>Guests From {{ guestCountries.length }} Countries</h2>
-        <p class="lead">
-          Business travellers, buyers and families — most of them booking a driver in China
-          for the first time.
-        </p>
+        <p class="lead">{{ t('Business travellers, buyers and families — most of them booking a driver in China for the first time.') }}</p>
       </div>
 
       <ul class="country-row">
@@ -117,9 +112,9 @@ useBreadcrumbs('reviews', [
   <section class="section section--soft">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">What you are booking</p>
-        <h2>Standards We Hold Ourselves To</h2>
-        <p class="lead">The things worth checking before you hand over a deposit to any driver in China.</p>
+        <p class="eyebrow">{{ t('What you are booking') }}</p>
+        <h2>{{ t('Standards We Hold Ourselves To') }}</h2>
+        <p class="lead">{{ t('The things worth checking before you hand over a deposit to any driver in China.') }}</p>
       </div>
 
       <div class="grid grid--3">
@@ -143,8 +138,8 @@ useBreadcrumbs('reviews', [
   <section class="section">
     <div class="container">
       <InlineQuote
-        title="Book With Confidence"
-        lead="Tell us your trip. We will confirm a fixed price, the vehicle and your driver before you pay anything."
+        :title="t('Book With Confidence')"
+        :lead="t('Tell us your trip. We will confirm a fixed price, the vehicle and your driver before you pay anything.')"
       />
     </div>
   </section>
@@ -152,8 +147,8 @@ useBreadcrumbs('reviews', [
   <section class="section section--tight">
     <div class="container">
       <CtaBand
-        title="Questions Before You Book?"
-        text="Message us on WhatsApp and a real person will answer — usually within minutes."
+        :title="t('Questions Before You Book?')"
+        :text="t('Message us on WhatsApp and a real person will answer — usually within minutes.')"
         image="/images/hero/guangzhou-bluehour.jpg"
         secondary="See our prices"
         secondary-to="/vehicles-pricing"

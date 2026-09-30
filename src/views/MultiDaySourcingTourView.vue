@@ -16,6 +16,7 @@ import {
 } from '@/data/content'
 import { site, vehicleOptions } from '@/data/site'
 import { money } from '@/utils/price'
+import { t } from '@/i18n'
 
 const page = pages.multiDaySourcingTour
 useSeo(page)
@@ -57,12 +58,12 @@ useBreadcrumbs('multi-day-sourcing-tour', [
 ])
 
 const included = [
-  'The same English-speaking driver every day',
-  'Vehicle, fuel, highway tolls and city parking',
-  'Route re-planned overnight as suppliers confirm',
-  'Waiting time at every factory and showroom',
-  'Bottled water and phone charging on board',
-  'One invoice for the whole trip, in US dollars',
+  t('The same English-speaking driver every day'),
+  t('Vehicle, fuel, highway tolls and city parking'),
+  t('Route re-planned overnight as suppliers confirm'),
+  t('Waiting time at every factory and showroom'),
+  t('Bottled water and phone charging on board'),
+  t('One invoice for the whole trip, in US dollars'),
 ]
 </script>
 
@@ -70,23 +71,19 @@ const included = [
   <HeroSection
     variant="media"
     image="/images/hero/guangzhou-aerial.jpg"
-    image-alt="Aerial view of Guangzhou and the Pearl River Delta"
-    eyebrow="Multi-Day Sourcing Tour"
+    :image-alt="t('Aerial view of Guangzhou and the Pearl River Delta')"
+    :eyebrow="t('Multi-Day Sourcing Tour')"
     :title="page.h1"
     :lead="page.lead"
     :badges="heroBadges.multiDaySourcingTour"
     priority
-    :crumbs="[{ label: 'Home', to: '/' }, { label: 'Multi-Day Sourcing Tour' }]"
+    :crumbs="[{ label: t('Home'), to: '/' }, { label: t('Multi-Day Sourcing Tour') }]"
   >
     <template #actions>
-      <RouterLink to="/contact" class="btn btn--light btn--lg">
-        Get a Quote
-        <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+      <RouterLink to="/contact" class="btn btn--light btn--lg">{{ t('Get a Quote') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
       </RouterLink>
       <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--ghost-light btn--lg">
-        <AppIcon name="whatsapp" :size="18" :stroke="1.8" />
-        WhatsApp us
-      </a>
+        <AppIcon name="whatsapp" :size="18" :stroke="1.8" />{{ t('WhatsApp us') }}</a>
     </template>
   </HeroSection>
 
@@ -94,12 +91,9 @@ const included = [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Sourcing trips</p>
-        <h2>Why Buyers Keep the Same Driver</h2>
-        <p class="lead">
-          A sourcing week is a logistics problem before it is anything else.
-          Keeping one car and one driver removes most of it.
-        </p>
+        <p class="eyebrow">{{ t('Sourcing trips') }}</p>
+        <h2>{{ t('Why Buyers Keep the Same Driver') }}</h2>
+        <p class="lead">{{ t('A sourcing week is a logistics problem before it is anything else. Keeping one car and one driver removes most of it.') }}</p>
       </div>
 
       <div class="grid grid--4">
@@ -118,12 +112,9 @@ const included = [
   <section class="section section--soft">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">What it looks like</p>
-        <h2>A Sample Sourcing Week</h2>
-        <p class="lead">
-          An illustration, not a package — your own supplier list decides the
-          route. This is the shape most Foshan and Guangzhou trips take.
-        </p>
+        <p class="eyebrow">{{ t('What it looks like') }}</p>
+        <h2>{{ t('A Sample Sourcing Week') }}</h2>
+        <p class="lead">{{ t('An illustration, not a package — your own supplier list decides the route. This is the shape most Foshan and Guangzhou trips take.') }}</p>
       </div>
 
       <ol class="day-list">
@@ -136,10 +127,7 @@ const included = [
         </li>
       </ol>
 
-      <p class="table-note">
-        Longer trips are welcome — buyers working across Guangdong and
-        neighbouring provinces often book two weeks or more.
-      </p>
+      <p class="table-note">{{ t('Longer trips are welcome — buyers working across Guangdong and neighbouring provinces often book two weeks or more.') }}</p>
     </div>
   </section>
 
@@ -148,12 +136,9 @@ const included = [
     <div class="container">
       <div class="split">
         <div v-reveal>
-          <p class="eyebrow">All in</p>
-          <h2>What the Daily Rate Covers</h2>
-          <p class="lead">
-            One figure per day, agreed before you travel. Nothing is added at
-            the end of the week.
-          </p>
+          <p class="eyebrow">{{ t('All in') }}</p>
+          <h2>{{ t('What the Daily Rate Covers') }}</h2>
+          <p class="lead">{{ t('One figure per day, agreed before you travel. Nothing is added at the end of the week.') }}</p>
 
           <ul class="check-list mt-24" style="font-size: 1rem">
             <li v-for="n in included" :key="n">
@@ -163,9 +148,7 @@ const included = [
           </ul>
 
           <div class="btn-row mt-32">
-            <RouterLink to="/vehicles-pricing" class="btn btn--outline">
-              See full fleet &amp; prices
-              <AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
+            <RouterLink to="/vehicles-pricing" class="btn btn--outline">{{ t('See full fleet &amp; prices') }}<AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
             </RouterLink>
           </div>
         </div>
@@ -173,7 +156,7 @@ const included = [
         <div v-reveal="{ delay: 120 }">
           <img
             src="/images/hero/factory.jpg"
-            alt="Modern manufacturing plant visited on a sourcing trip"
+            :alt="t('Modern manufacturing plant visited on a sourcing trip')"
             loading="lazy"
             decoding="async"
             style="border-radius: var(--r-xl); box-shadow: var(--sh-lg); width: 100%"
@@ -187,18 +170,15 @@ const included = [
   <section class="section section--mint">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Comfort and space</p>
-        <h2>Vehicle Options</h2>
-        <p class="lead">
-          Space for samples matters on a sourcing trip. Both options have a boot
-          that takes cartons as well as suitcases.
-        </p>
+        <p class="eyebrow">{{ t('Comfort and space') }}</p>
+        <h2>{{ t('Vehicle Options') }}</h2>
+        <p class="lead">{{ t('Space for samples matters on a sourcing trip. Both options have a boot that takes cartons as well as suitcases.') }}</p>
       </div>
 
       <div class="grid grid--2" style="max-width: 860px; margin: 0 auto">
         <article v-for="(v, i) in vehicleOptions" :key="v.label" class="vehicle" v-reveal="{ delay: i * 80 }">
           <div class="vehicle__media">
-            <img :src="v.image" :alt="`${v.label} vehicle for a multi-day sourcing trip`" loading="lazy" decoding="async" />
+            <img :src="v.image" :alt="t('{label} vehicle for a multi-day sourcing trip', { label: v.label })" loading="lazy" decoding="async" />
           </div>
           <div class="vehicle__body">
             <h3 class="vehicle__name">{{ v.label }}</h3>
@@ -210,7 +190,7 @@ const included = [
             </div>
             <p class="vehicle__desc">{{ v.text }}</p>
             <p class="price" style="font-size: 1.2rem">
-              From {{ money(v.from) }} <small>per vehicle</small>
+              From {{ money(v.from) }} <small>{{ t('per vehicle') }}</small>
             </p>
           </div>
         </article>
@@ -222,9 +202,9 @@ const included = [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Step by step</p>
-        <h2>How a Trip Comes Together</h2>
-        <p class="lead">From first message to final drop-off at the airport.</p>
+        <p class="eyebrow">{{ t('Step by step') }}</p>
+        <h2>{{ t('How a Trip Comes Together') }}</h2>
+        <p class="lead">{{ t('From first message to final drop-off at the airport.') }}</p>
       </div>
 
       <ProcessSteps :steps="sourcingSteps" />
@@ -235,14 +215,14 @@ const included = [
   <section class="section section--soft">
     <div class="container container--narrow">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Good to know</p>
-        <h2>Multi-Day Hire FAQs</h2>
+        <p class="eyebrow">{{ t('Good to know') }}</p>
+        <h2>{{ t('Multi-Day Hire FAQs') }}</h2>
       </div>
 
       <FaqAccordion :items="faq.items" id-prefix="ms" :open-index="0" />
 
       <div class="btn-row mt-32" style="justify-content: center">
-        <RouterLink to="/faqs" class="btn btn--outline btn--sm">All frequently asked questions</RouterLink>
+        <RouterLink to="/faqs" class="btn btn--outline btn--sm">{{ t('All frequently asked questions') }}</RouterLink>
       </div>
     </div>
   </section>

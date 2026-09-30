@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
+import { tr } from '@/i18n'
 
 /**
  * Video gallery.
@@ -14,6 +15,13 @@ import AppIcon from './AppIcon.vue'
  * vertically, so a 9:16 card shows the whole frame instead of letterboxing it
  * into a wide band — and a small grid keeps the section from swallowing the
  * page the way a pair of full-width 16:9 players did.
+ *
+ * The column count follows the clip count. A fixed two-column grid is only
+ * right once there are enough tiles to fill both columns: with three or four
+ * clips the second row holds one lonely tile and the right half of the section
+ * reads as a hole. Up to five clips go in a single row instead (`--reel-cols`
+ * carries the count into the CSS); six or more fall back to the two-column
+ * grid, which fills up properly.
  *
  * Every clip is rendered; there is no scroll-batching here. Portraits are cheap
  * to lay out, and a gallery that hides half its content until you scroll reads
@@ -36,6 +44,13 @@ const playing = ref('')
 /** `limit` is a hard cap on how many clips appear. */
 const shown = computed(() => (props.limit ? items.value.slice(0, props.limit) : items.value))
 
+/** Above this, the two-column grid actually fills up. See the header note. */
+const ONE_ROW_MAX = 5
+
+const singleRow = computed(
+  () => shown.value.length > 0 && shown.value.length <= ONE_ROW_MAX,
+)
+
 function key(item) {
   return item.id || item.src || item.url
 }
@@ -47,7 +62,11 @@ onMounted(async () => {
     })
     const json = res.ok ? await res.json() : null
     const list = Array.isArray(json) ? json : (json?.items ?? [])
-    items.value = list.filter((v) => v.src || v.url)
+    // Titles and captions come from a manifest fetched at run time, so they
+    // arrive in English. `tr()` translates them through the same catalogue —
+    // and it leaves `src`, `poster` and `url` alone, because a translated file
+    // path is a 404.
+    items.value = tr(list).filter((v) => v.src || v.url)
   } catch {
     items.value = []
   }
@@ -84,11 +103,15 @@ function play(item) {
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
         <p v-if="eyebrow" class="eyebrow">{{ eyebrow }}</p>
-        <h2>{{ title }}</h2>
-        <p v-if="lead" class="lead">{{ lead }}</p>
+        <h2>{{ t(title) }}</h2>
+        <p v-if="lead" class="lead">{{ t(lead) }}</p>
       </div>
 
-      <div class="reel">
+      <div
+        class="reel"
+        :class="singleRow ? 'reel--row' : 'reel--grid'"
+        :style="singleRow ? { '--reel-cols': shown.length } : undefined"
+      >
         <figure
           v-for="(v, i) in shown"
           :key="key(v)"

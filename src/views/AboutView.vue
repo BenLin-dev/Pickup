@@ -5,6 +5,7 @@ import AppIcon from '@/components/AppIcon.vue'
 import { useSeo, useBreadcrumbs } from '@/composables/useSeo'
 import { pages, aboutAdvantages, aboutPrinciples, aboutStory, ctaBands } from '@/data/content'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 const page = pages.about
 useSeo(page)
@@ -15,10 +16,10 @@ useBreadcrumbs('about', [
 ])
 
 const facts = [
-  { label: 'Based in', value: 'Baiyun District, Guangzhou' },
-  { label: 'Working since', value: '2019' },
-  { label: 'Languages', value: 'English & Mandarin' },
-  { label: 'Availability', value: site.hours },
+  { label: t('Based in'), value: t('Baiyun District, Guangzhou') },
+  { label: t('Working since'), value: '2019' },
+  { label: t('Languages'), value: t('English & Mandarin') },
+  { label: t('Availability'), value: site.hours },
 ]
 </script>
 
@@ -26,21 +27,17 @@ const facts = [
   <HeroSection
     variant="media"
     image="/images/hero/guangzhou-aerial.jpg"
-    image-alt="Aerial view of Guangzhou and Foshan"
-    eyebrow="About Us"
+    :image-alt="t('Aerial view of Guangzhou and Foshan')"
+    :eyebrow="t('About Us')"
     :title="page.h1"
     :lead="page.lead"
     priority
-    :crumbs="[{ label: 'Home', to: '/' }, { label: 'About Us' }]"
+    :crumbs="[{ label: t('Home'), to: '/' }, { label: t('About Us') }]"
   >
     <template #actions>
-      <RouterLink to="/contact" class="btn btn--light btn--lg">
-        Get a Quote
-        <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+      <RouterLink to="/contact" class="btn btn--light btn--lg">{{ t('Get a Quote') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
       </RouterLink>
-      <RouterLink to="/vehicles-pricing" class="btn btn--ghost-light btn--lg">
-        Vehicles &amp; pricing
-      </RouterLink>
+      <RouterLink to="/vehicles-pricing" class="btn btn--ghost-light btn--lg">{{ t('Vehicles &amp; pricing') }}</RouterLink>
     </template>
   </HeroSection>
 
@@ -48,12 +45,9 @@ const facts = [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Why choose us</p>
-        <h2>What Makes Us Different</h2>
-        <p class="lead">
-          We are a small team, and we would like to keep it that way. It means
-          every booking gets a real person behind it.
-        </p>
+        <p class="eyebrow">{{ t('Why choose us') }}</p>
+        <h2>{{ t('What Makes Us Different') }}</h2>
+        <p class="lead">{{ t('We are a small team, and we would like to keep it that way. It means every booking gets a real person behind it.') }}</p>
       </div>
 
       <div class="grid grid--4">
@@ -73,8 +67,8 @@ const facts = [
     <div class="container">
       <div class="split">
         <div v-reveal>
-          <p class="eyebrow">Our story</p>
-          <h2>Why We Started</h2>
+          <p class="eyebrow">{{ t('Our story') }}</p>
+          <h2>{{ t('Why We Started') }}</h2>
 
           <div class="stack mt-24" style="--gap: 16px">
             <p v-for="p in aboutStory" :key="p" style="margin: 0; color: var(--c-muted); line-height: 1.75">
@@ -83,16 +77,14 @@ const facts = [
           </div>
 
           <div class="mt-32">
-            <p class="lead" style="font-style: italic; color: var(--c-600); font-weight: 600">
-              Simple. Reliable. Together.
-            </p>
+            <p class="lead" style="font-style: italic; color: var(--c-600); font-weight: 600">{{ t('Simple. Reliable. Together.') }}</p>
           </div>
         </div>
 
         <div v-reveal="{ delay: 120 }">
           <img
             src="/images/hero/guangzhou-night.jpg"
-            alt="Guangzhou skyline at night"
+            :alt="t('Guangzhou skyline at night')"
             loading="lazy"
             decoding="async"
             style="border-radius: var(--r-xl); box-shadow: var(--sh-lg); width: 100%"
@@ -106,9 +98,9 @@ const facts = [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">How we work</p>
-        <h2>Our Service Principles</h2>
-        <p class="lead">Four things we hold ourselves to on every single trip.</p>
+        <p class="eyebrow">{{ t('How we work') }}</p>
+        <h2>{{ t('Our Service Principles') }}</h2>
+        <p class="lead">{{ t('Four things we hold ourselves to on every single trip.') }}</p>
       </div>
 
       <div class="grid grid--2">
@@ -133,9 +125,7 @@ const facts = [
 
       <div class="btn-row mt-40" style="justify-content: center">
         <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn">
-          <AppIcon name="whatsapp" :size="18" :stroke="1.8" />
-          Say hello on WhatsApp
-        </a>
+          <AppIcon name="whatsapp" :size="18" :stroke="1.8" />{{ t('Say hello on WhatsApp') }}</a>
         <a :href="site.mailto" class="btn btn--outline">
           <AppIcon name="mail" :size="18" :stroke="1.8" />
           {{ site.email }}

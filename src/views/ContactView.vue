@@ -8,6 +8,7 @@ import PaymentIcons from '@/components/PaymentIcons.vue'
 import { useSeo, useJsonLd, useBreadcrumbs } from '@/composables/useSeo'
 import { pages, contactChannels, serviceBySlug } from '@/data/content'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 const page = pages.contact
 useSeo(page)
@@ -128,13 +129,13 @@ function onMapLoad(event) {
 }
 
 const goodToKnow = [
-  { icon: 'clock', title: 'Fast replies', text: site.responseTime },
-  { icon: 'calendar', title: 'Open every day', text: site.hours },
-  { icon: 'translate', title: 'English & Mandarin', text: 'We answer in the language you write in.' },
+  { icon: 'clock', title: t('Fast replies'), text: site.responseTime },
+  { icon: 'calendar', title: t('Open every day'), text: site.hours },
+  { icon: 'translate', title: t('English & Mandarin'), text: t('We answer in the language you write in.') },
   {
     icon: 'wallet',
-    title: 'Nothing to pay for a quote',
-    text: 'Get your fixed price first. A 20% deposit confirms the booking, and it is refunded in full if you cancel more than 48 hours before pickup.',
+    title: t('Nothing to pay for a quote'),
+    text: t('Get your fixed price first. A 20% deposit confirms the booking, and it is refunded in full if you cancel more than 48 hours before pickup.'),
   },
 ]
 </script>
@@ -143,24 +144,22 @@ const goodToKnow = [
   <HeroSection
     variant="split"
     image="/images/hero/guangzhou-night.jpg"
-    image-alt="Guangzhou skyline at night"
-    eyebrow="Contact"
+    :image-alt="t('Guangzhou skyline at night')"
+    :eyebrow="t('Contact')"
     :title="page.h1"
     :lead="page.lead"
     priority
     :media-on-mobile="false"
-    :crumbs="[{ label: 'Home', to: '/' }, { label: 'Contact' }]"
+    :crumbs="[{ label: t('Home'), to: '/' }, { label: t('Contact') }]"
     :meta="[
       { icon: 'clock', text: site.responseTime },
-      { icon: 'shield', text: 'No payment required to get a quote' },
+      { icon: 'shield', text: t('No payment required to get a quote') },
     ]"
   >
     <template #actions>
       <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--lg">
-        <AppIcon name="whatsapp" :size="19" :stroke="1.8" />
-        WhatsApp us
-      </a>
-      <a href="#quote" class="btn btn--outline btn--lg">Use the form</a>
+        <AppIcon name="whatsapp" :size="19" :stroke="1.8" />{{ t('WhatsApp us') }}</a>
+      <a href="#quote" class="btn btn--outline btn--lg">{{ t('Use the form') }}</a>
     </template>
   </HeroSection>
 
@@ -170,12 +169,9 @@ const goodToKnow = [
       <div class="split contact-split" style="align-items: flex-start">
         <!-- left: how to reach us -->
         <div class="contact-split__info" v-reveal>
-          <p class="eyebrow">Talk to a person</p>
-          <h2>Contact Information</h2>
-          <p class="lead">
-            Choose whichever is easiest for you. WhatsApp is usually the
-            fastest, email is best for detailed itineraries.
-          </p>
+          <p class="eyebrow">{{ t('Talk to a person') }}</p>
+          <h2>{{ t('Contact Information') }}</h2>
+          <p class="lead">{{ t('Choose whichever is easiest for you. WhatsApp is usually the fastest, email is best for detailed itineraries.') }}</p>
 
           <div class="stack mt-32" style="--gap: 12px">
             <template v-for="c in channels" :key="c.label">
@@ -214,28 +210,19 @@ const goodToKnow = [
         <!-- right: the quote form -->
         <div class="contact-split__form" v-reveal="{ delay: 100 }">
           <div class="card" style="padding: clamp(22px, 3vw, 34px)">
-            <p class="eyebrow">Get a quote</p>
-            <h2 style="font-size: 1.4rem; margin-bottom: 8px">Send Us a Message</h2>
-            <p style="margin: 0 0 22px; font-size: 0.92rem; color: var(--c-muted)">
-              The more detail you give us — flight number, addresses, group size —
-              the more accurate your price will be.
-            </p>
+            <p class="eyebrow">{{ t('Get a quote') }}</p>
+            <h2 style="font-size: 1.4rem; margin-bottom: 8px">{{ t('Send Us a Message') }}</h2>
+            <p style="margin: 0 0 22px; font-size: 0.92rem; color: var(--c-muted)">{{ t('The more detail you give us — flight number, addresses, group size — the more accurate your price will be.') }}</p>
 
             <QuoteForm :preselect="preselect" />
 
             <ul class="quote-assure">
               <li>
-                <AppIcon name="check" :size="16" :stroke="2.6" />
-                A 20% deposit confirms your booking — PayPal or card
-              </li>
+                <AppIcon name="check" :size="16" :stroke="2.6" />{{ t('A 20% deposit confirms your booking — PayPal or card') }}</li>
               <li>
-                <AppIcon name="check" :size="16" :stroke="2.6" />
-                Free cancellation up to 48 hours before pickup
-              </li>
+                <AppIcon name="check" :size="16" :stroke="2.6" />{{ t('Free cancellation up to 48 hours before pickup') }}</li>
               <li>
-                <AppIcon name="check" :size="16" :stroke="2.6" />
-                Pay the balance after your trip, in the way that suits you
-              </li>
+                <AppIcon name="check" :size="16" :stroke="2.6" />{{ t('Pay the balance after your trip, in the way that suits you') }}</li>
             </ul>
 
             <div class="quote-accept">
@@ -251,13 +238,9 @@ const goodToKnow = [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Where we are</p>
-        <h2>Our Location</h2>
-        <p class="lead">
-          We are based in Baiyun District, between downtown Guangzhou and Baiyun
-          International Airport — which is why airport pickups are the booking we
-          handle most.
-        </p>
+        <p class="eyebrow">{{ t('Where we are') }}</p>
+        <h2>{{ t('Our Location') }}</h2>
+        <p class="lead">{{ t('We are based in Baiyun District, between downtown Guangzhou and Baiyun International Airport — which is why airport pickups are the booking we handle most.') }}</p>
       </div>
 
       <div class="map-card" v-reveal>
@@ -277,7 +260,7 @@ const goodToKnow = [
 
           <iframe
             :src="mapEmbed"
-            title="Map of CantonPickup in Baiyun District, Guangzhou"
+            :title="t('Map of CantonPickup in Baiyun District, Guangzhou')"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
             allowfullscreen
@@ -291,7 +274,7 @@ const goodToKnow = [
               <AppIcon name="pin" :size="19" :stroke="1.9" />
             </span>
             <span>
-              <strong>Address</strong>
+              <strong>{{ t('Address') }}</strong>
               <span>{{ site.addressLine }}</span>
             </span>
           </div>
@@ -301,7 +284,7 @@ const goodToKnow = [
               <AppIcon name="clock" :size="19" :stroke="1.9" />
             </span>
             <span>
-              <strong>Opening hours</strong>
+              <strong>{{ t('Opening hours') }}</strong>
               <span>{{ site.hours }}</span>
             </span>
           </div>
@@ -311,7 +294,7 @@ const goodToKnow = [
               <AppIcon name="route" :size="19" :stroke="1.9" />
             </span>
             <span>
-              <strong>Service area</strong>
+              <strong>{{ t('Service area') }}</strong>
               <span>{{ site.areaServed }}</span>
             </span>
           </div>
@@ -323,9 +306,7 @@ const goodToKnow = [
             rel="noopener"
             style="margin-top: auto"
           >
-            <AppIcon name="pin" :size="17" :stroke="1.9" />
-            Open in Google Maps
-          </a>
+            <AppIcon name="pin" :size="17" :stroke="1.9" />{{ t('Open in Google Maps') }}</a>
         </div>
       </div>
     </div>
@@ -335,8 +316,8 @@ const goodToKnow = [
   <section class="section section--soft">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Before you write</p>
-        <h2>Good to Know</h2>
+        <p class="eyebrow">{{ t('Before you write') }}</p>
+        <h2>{{ t('Good to Know') }}</h2>
       </div>
 
       <div class="grid grid--4">

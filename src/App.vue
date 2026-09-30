@@ -2,10 +2,11 @@
 import SiteHeader from './components/SiteHeader.vue'
 import SiteFooter from './components/SiteFooter.vue'
 import FloatingContact from './components/FloatingContact.vue'
+import { t } from '@/i18n'
 </script>
 
 <template>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main">{{ t('Skip to content') }}</a>
 
   <SiteHeader />
 

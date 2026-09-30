@@ -3,7 +3,9 @@
  * Text follows the approved layout reference (`布局以及文案.png` / `页面布局.txt`).
  */
 
-export const pages = {
+import { tr } from '../i18n/index.js'
+
+export const pages = tr({
   home: {
     path: '/',
     title: 'Guangzhou Airport Transfer & Private Driver | CantonPickup',
@@ -180,7 +182,7 @@ export const pages = {
     lead:
       'These terms cover every booking we accept. We have kept them short and readable — if anything is unclear, ask us before you book and we will explain it.',
   },
-}
+})
 
 /**
  * Legal pages — written as heading/paragraph pairs so the content is easy to
@@ -342,7 +344,7 @@ export const termsSections = [
  * detail page it links to. Text here is deliberately our own wording —
  * `badge` and `label` are the two chips that sit on the photo.
  */
-export const serviceCards = [
+export const serviceCards = tr([
   {
     slug: 'airport-transfer',
     /** Pre-selected value on the quote form when the visitor taps Book Now. */
@@ -451,7 +453,7 @@ export const serviceCards = [
       'Itinerary reshaped as your week develops',
     ],
   },
-]
+])
 
 /** Slugs in the order they appear on the home page and in the nav dropdown. */
 export const serviceSlugs = serviceCards.map((s) => s.slug)
@@ -462,22 +464,22 @@ export function serviceBySlug(slug) {
 }
 
 /** Reusable trust strip. */
-export const trustStrip = [
+export const trustStrip = tr([
   { icon: 'shield', title: 'Safe & Reliable', text: 'Professional drivers' },
   { icon: 'wallet', title: 'Transparent Pricing', text: 'No hidden fees' },
   { icon: 'chat', title: '24/7 Support', text: 'WhatsApp, WeChat or email' },
-]
+])
 
 /** Home page process. */
-export const homeSteps = [
+export const homeSteps = tr([
   { n: 1, title: 'Tell us your plan', text: 'Share your details' },
   { n: 2, title: 'Get a quote', text: "We'll reply quickly" },
   { n: 3, title: 'Confirm & pay', text: 'Secure and easy' },
   { n: 4, title: 'Enjoy your trip', text: 'We handle the rest' },
-]
+])
 
 /** Airport transfer page — why choose us. */
-export const airportAdvantages = [
+export const airportAdvantages = tr([
   {
     icon: 'plane',
     title: 'Flight Monitoring',
@@ -498,18 +500,18 @@ export const airportAdvantages = [
     title: 'Fixed Price',
     text: 'The price we quote is the price you pay. Fuel, tolls and parking included.',
   },
-]
+])
 
 /** Airport transfer page — what happens after you land. */
-export const airportSteps = [
+export const airportSteps = tr([
   { n: 1, title: 'Book online', text: 'Send us your flight number and destination.' },
   { n: 2, title: 'We confirm', text: 'You receive your driver details and meeting point.' },
   { n: 3, title: 'Meet your driver', text: 'Your driver waits with a name sign in arrivals.' },
   { n: 4, title: 'Relax and ride', text: 'Sit back for a comfortable, direct journey.' },
-]
+])
 
 /** Private driver page — hire options. */
-export const driverOptions = [
+export const driverOptions = tr([
   {
     icon: 'clock',
     title: 'Half Day',
@@ -531,28 +533,28 @@ export const driverOptions = [
     from: null,
     text: 'Keep the same driver for your whole trip. Ideal for longer sourcing visits.',
   },
-]
+])
 
 /** Private driver page — what's included. */
-export const driverIncluded = [
+export const driverIncluded = tr([
   'Professional English-speaking driver',
   'Fuel, tolls and parking',
   'Clean and comfortable vehicles',
   'Flexible itinerary — change plans any time',
   'Bottled water on board',
   'Phone charging in every vehicle',
-]
+])
 
 /** Private driver page — common use cases. */
-export const driverUseCases = [
+export const driverUseCases = tr([
   { icon: 'briefcase', title: 'Business meetings', text: 'On time, every time.' },
   { icon: 'factory', title: 'Factory visits', text: 'Multiple stops in one day.' },
   { icon: 'map', title: 'Multi-stop days', text: 'Several addresses, one driver.' },
   { icon: 'building', title: 'Hotel transfers', text: 'Door-to-door, luggage handled.' },
-]
+])
 
 /** Factory visits page — how we support you. */
-export const factorySupport = [
+export const factorySupport = tr([
   {
     icon: 'map',
     title: 'Local Knowledge',
@@ -573,18 +575,18 @@ export const factorySupport = [
     title: 'Business Support',
     text: 'Translation, local phone calls and practical help to keep your trip moving.',
   },
-]
+])
 
 /** Factory visits page — visit flow. */
-export const factorySteps = [
+export const factorySteps = tr([
   { n: 1, title: 'Share your list', text: 'Send us the factories and dates you have in mind.' },
   { n: 2, title: 'We plan the route', text: 'We group visits to save you hours on the road.' },
   { n: 3, title: 'Visit day', text: 'Your driver waits at each stop and keeps you on schedule.' },
   { n: 4, title: 'Wrap up', text: 'Back to your hotel, the airport or your next meeting.' },
-]
+])
 
 /** Intercity transfer page — why book a fixed route with us. */
-export const intercityAdvantages = [
+export const intercityAdvantages = tr([
   {
     icon: 'route',
     title: 'One Price Per Vehicle',
@@ -605,18 +607,18 @@ export const intercityAdvantages = [
     title: 'Door to Door',
     text: 'We collect you at your hotel, airport or station and drop you at the address you give us — luggage handled at both ends.',
   },
-]
+])
 
 /** Intercity transfer page — booking flow. */
-export const intercitySteps = [
+export const intercitySteps = tr([
   { n: 1, title: 'Send both addresses', text: 'Tell us where you are starting and where you need to be.' },
   { n: 2, title: 'Get a flat quote', text: 'A fixed price per vehicle for the route, not for the traffic.' },
   { n: 3, title: 'Confirm your pickup', text: 'Driver name, phone number and vehicle details in advance.' },
   { n: 4, title: 'Travel door to door', text: 'Tolls and parking included — nothing to settle on the road.' },
-]
+])
 
 /** Canton Fair page — why book with us during show week. */
-export const cantonFairAdvantages = [
+export const cantonFairAdvantages = tr([
   {
     icon: 'calendar',
     title: 'Both Fair Sessions',
@@ -637,18 +639,18 @@ export const cantonFairAdvantages = [
     title: 'Room for Samples',
     text: 'A 7-seat MPV carries catalogues, samples and colleagues — the boot stays yours for the whole day.',
   },
-]
+])
 
 /** Canton Fair page — how a fair day works. */
-export const cantonFairSteps = [
+export const cantonFairSteps = tr([
   { n: 1, title: 'Tell us your dates', text: 'Send your hotel, the fair session and your party size.' },
   { n: 2, title: 'Choose your pattern', text: 'Daily return, one-way drop, or a driver on standby all day.' },
   { n: 3, title: 'Meet your driver', text: 'The same pickup point each morning — or a name sign if you prefer.' },
   { n: 4, title: 'Leave without queuing', text: 'Your driver waits away from the taxi rank at the end of the day.' },
-]
+])
 
 /** Multi-day sourcing tour page — why buyers keep the same driver. */
-export const sourcingAdvantages = [
+export const sourcingAdvantages = tr([
   {
     icon: 'briefcase',
     title: 'One Driver Throughout',
@@ -669,15 +671,15 @@ export const sourcingAdvantages = [
     title: 'A Base on Wheels',
     text: 'Samples, catalogues and laptops stay in the vehicle with you between stops rather than in a hotel room.',
   },
-]
+])
 
 /** Multi-day sourcing tour page — planning flow. */
-export const sourcingSteps = [
+export const sourcingSteps = tr([
   { n: 1, title: 'Share your outline', text: 'Cities, dates and roughly which suppliers you want to see.' },
   { n: 2, title: 'We plan the days', text: 'Visits grouped by district, sent back as a day-by-day draft.' },
   { n: 3, title: 'Adjust as you go', text: 'Confirmations and cancellations are normal — send changes overnight.' },
   { n: 4, title: 'Settle at the end', text: 'A deposit confirms the trip; the balance is paid afterwards.' },
-]
+])
 
 /**
  * Canton Fair page — the three ways visitors usually book.
@@ -686,7 +688,7 @@ export const sourcingSteps = [
  * (point-to-point, half day, full day), not a show-week surcharge: the price
  * we quote before the fair is the price charged during it.
  */
-export const cantonFairOptions = [
+export const cantonFairOptions = tr([
   {
     icon: 'route',
     title: 'One-way drop',
@@ -711,7 +713,7 @@ export const cantonFairOptions = [
     mpv: 247,
     text: 'Your driver stays with you all day, so you can leave the halls for a client meeting and come back.',
   },
-]
+])
 
 /**
  * Canton Fair page — the three ways visitors actually reach the Pazhou
@@ -720,7 +722,7 @@ export const cantonFairOptions = [
  * useful to a first-time visitor than pretending otherwise, and it is the
  * question "canton fair shuttle bus pazhou" is really asking.
  */
-export const cantonFairTransitOptions = [
+export const cantonFairTransitOptions = tr([
   {
     icon: 'route',
     title: 'Metro',
@@ -739,14 +741,14 @@ export const cantonFairTransitOptions = [
     cost: 'Fixed price per vehicle',
     text: 'Your own driver and your own times: early enough to reach the gates before the rush, waiting away from the taxi rank when the day ends, and the boot stays yours for catalogues and samples between halls.',
   },
-]
+])
 
 /**
  * Multi-day sourcing tour page — a sample week.
  * Deliberately illustrative: real routes are built around the buyer's own
  * supplier list, and the districts named are the ones we drive every week.
  */
-export const sourcingSampleDays = [
+export const sourcingSampleDays = tr([
   {
     day: 'Day 1',
     title: 'Arrival & orientation',
@@ -772,18 +774,18 @@ export const sourcingSampleDays = [
     title: 'Follow-ups & departure',
     text: 'Second meetings with the shortlist, a last look at samples, then the airport with everything checked in.',
   },
-]
+])
 
 /** About page — why choose us. */
-export const aboutAdvantages = [
+export const aboutAdvantages = tr([
   { icon: 'map', title: 'Local Expertise', text: 'Based in Baiyun District, Guangzhou, working across the region daily.' },
   { icon: 'shield', title: 'Reliable Service', text: 'On-time pickups and a driver who keeps in touch.' },
   { icon: 'wallet', title: 'Fair Transparent Pricing', text: 'Quoted up front, with no hidden extras.' },
   { icon: 'chat', title: 'Customer-First Support', text: 'Real people answering, 24 hours a day.' },
-]
+])
 
 /** About page — service principles. */
-export const aboutPrinciples = [
+export const aboutPrinciples = tr([
   {
     title: 'Clear communication',
     text: 'Everything confirmed in English before you travel, with your driver contact details sent in advance.',
@@ -800,10 +802,10 @@ export const aboutPrinciples = [
     title: 'Flexible when plans change',
     text: 'Flights are delayed and meetings run long. We build waiting time in and stay flexible.',
   },
-]
+])
 
 /** FAQ groups rendered on the FAQ page and inline on service pages. */
-export const faqGroups = [
+export const faqGroups = tr([
   {
     id: 'airport',
     title: 'Airport Transfer',
@@ -1058,14 +1060,14 @@ export const faqGroups = [
       },
     ],
   },
-]
+])
 
 /**
  * Vehicles & Pricing page — payment options.
  * Follows the same structure as the reference site so international guests
  * can see a payment route they already use before they ask.
  */
-export const paymentMethods = [
+export const paymentMethods = tr([
   {
     icon: 'wallet',
     label: 'PayPal',
@@ -1098,13 +1100,13 @@ export const paymentMethods = [
     label: 'Cash',
     hint: 'Pay the driver directly in cash when the trip ends.',
   },
-]
+])
 
 /**
  * Vehicles & Pricing page — how payment works.
  * 20% to confirm, the balance after the service.
  */
-export const paymentSteps = [
+export const paymentSteps = tr([
   {
     n: '1',
     title: 'Pay a 20% deposit',
@@ -1120,10 +1122,10 @@ export const paymentSteps = [
     title: 'Pay the balance after the trip',
     text: 'Settle the remaining 80% after the service — by card, PayPal, Alipay, WeChat Pay or cash. Multi-day bookings can be settled day by day.',
   },
-]
+])
 
 /** Vehicles & Pricing page — cancellation policy. */
-export const cancellationPolicy = [
+export const cancellationPolicy = tr([
   {
     icon: 'shield',
     label: 'More than 48 hours before pickup',
@@ -1142,10 +1144,10 @@ export const cancellationPolicy = [
     value: 'Full amount charged',
     tone: 'bad',
   },
-]
+])
 
 /** Vehicles & Pricing page — what the quoted price already covers. */
-export const pricingIncluded = [
+export const pricingIncluded = tr([
   'Professional English-speaking driver',
   'Fuel and highway tolls',
   'Parking inside the city area',
@@ -1154,26 +1156,26 @@ export const pricingIncluded = [
   'Phone charging cables',
   'Child seat on request',
   '24/7 support by WhatsApp, WeChat or email',
-]
+])
 
 /** Vehicles & Pricing page — the costs that sit outside the quoted price. */
-export const pricingExcluded = [
+export const pricingExcluded = tr([
   'Overtime beyond the included hours — $24/h sedan, $30/h MPV',
   'Extra distance — $1.50/km sedan and $2.00/km MPV on a half day; $0.70 and $0.85 on a full day',
   'Destinations beyond the intercity routes listed above (quoted on request)',
   'Airport parking beyond the free waiting time',
   'Interpreter or translation service',
-]
+])
 
 /** About page — the short story behind the business. */
-export const aboutStory = [
+export const aboutStory = tr([
   'We started CantonPickup to make travel easier for international visitors and business travellers arriving in the Pearl River Delta. Guangzhou and Foshan are two of the busiest manufacturing regions in the world, and every week thousands of buyers, engineers and families land at Baiyun Airport with a full schedule ahead of them.',
   'Public transport is not always practical when you are carrying samples, moving between factories in different districts, or arriving late at night. Our answer was simple: a small team of local drivers who speak English, know the industrial districts by heart, and quote one fixed price per vehicle.',
   'Today we drive guests from all over the world — sourcing agents visiting Foshan furniture and ceramics factories, engineers auditing suppliers, families on holiday, and business people who simply need to get to a meeting on time.',
-]
+])
 
 /** Contact page — the ways to reach us. */
-export const contactChannels = [
+export const contactChannels = tr([
   {
     icon: 'whatsapp',
     label: 'WhatsApp',
@@ -1203,7 +1205,7 @@ export const contactChannels = [
     hint: 'Available 24 hours, 7 days a week',
     href: 'tel:+8613202442074',
   },
-]
+])
 
 /**
  * Trust pills for the first screen of each service page.
@@ -1220,7 +1222,7 @@ export const contactChannels = [
  *
  * An entry is `{ icon, text }`; `icon` is a name from `AppIcon.vue`.
  */
-export const heroBadges = {
+export const heroBadges = tr({
   airportTransfer: [
     { icon: 'clock', text: '24/7 pickup & drop-off' },
     { icon: 'plane', text: 'Flight monitored' },
@@ -1277,10 +1279,10 @@ export const heroBadges = {
     { icon: 'shield', text: 'Fuel, tolls & parking included' },
     { icon: 'check', text: '20% deposit, balance after' },
   ],
-}
+})
 
 /** Service-page CTAs. */
-export const ctaBands = {
+export const ctaBands = tr({
   home: {
     title: 'Ready to Plan Your Trip?',
     text: 'Send us your dates and destinations and we will send you a fixed price the same day.',
@@ -1326,4 +1328,4 @@ export const ctaBands = {
     text: 'Simple. Reliable. Together. That is how we like to work.',
     button: 'Get a Quote',
   },
-}
+})

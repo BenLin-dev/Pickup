@@ -13,10 +13,13 @@
  * site already handles an unpriced leg. All fares are USD, per vehicle.
  */
 
-/** The three trust pills that sit under every route hero. */
-export const routeBadges = ['Fixed price', 'English-speaking driver', 'Door to door']
 
-export const routePages = [
+import { tr } from '../i18n/index.js'
+
+/** The three trust pills that sit under every route hero. */
+export const routeBadges = tr(['Fixed price', 'English-speaking driver', 'Door to door'])
+
+export const routePages = tr([
   {
     slug: 'guangzhou-to-foshan',
     city: 'Foshan',
@@ -502,7 +505,7 @@ export const routePages = [
     ],
     service: { to: '/intercity-transfer', label: 'All intercity routes & prices' },
   },
-]
+])
 
 export const routeSlugs = routePages.map((r) => r.slug)
 

@@ -1,5 +1,6 @@
 import { onUnmounted } from 'vue'
 import { site } from '@/data/site'
+import { currentLocale, locale } from '@/i18n'
 
 /**
  * Per-route document head management.
@@ -33,7 +34,11 @@ export function useSeo(page) {
 
   if (typeof document !== 'undefined') {
     document.title = page.title
-    document.documentElement.lang = 'en'
+    // The active locale, not a literal 'en'. This runs on every route, so a
+    // hard-coded value silently re-labelled a French or German page as English
+    // — wrong for screen readers (which pick a pronunciation from it) and for
+    // the translation tooling browsers offer.
+    document.documentElement.lang = locale
   }
 
   setMeta('name', 'description', page.description)
@@ -43,6 +48,7 @@ export function useSeo(page) {
   setMeta('property', 'og:title', page.title)
   setMeta('property', 'og:description', page.description)
   setMeta('property', 'og:url', url)
+  setMeta('property', 'og:locale', currentLocale.ogLocale)
   setMeta('name', 'twitter:title', page.title)
   setMeta('name', 'twitter:description', page.description)
 

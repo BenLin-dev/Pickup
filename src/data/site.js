@@ -12,6 +12,7 @@
 
 import { serviceCards } from './content.js'
 import { routePages } from './routePages.js'
+import { t, tr } from '../i18n/index.js'
 
 /**
  * WhatsApp click-to-chat, in three pieces.
@@ -104,10 +105,16 @@ function waMessageFor(path) {
  */
 const enc = (s) => encodeURIComponent(s).replace(/'/g, '%27')
 
-export const site = {
+/**
+ * Everything that is NOT display copy: identity, contact details, structured
+ * data, integration keys. None of it is translated — a phone number, an e-mail
+ * address and the `addressLine` that goes into JSON-LD must read the same in
+ * every language, and the pre-filled WhatsApp message stays English so the
+ * booking inbox keeps receiving something a human can triage at a glance.
+ */
+const siteBase = {
   name: 'CantonPickup',
   legalName: 'CantonPickup',
-  tagline: 'Guangzhou & Foshan Airport Transfers, Private Drivers & Factory Visits',
   domain: 'https://cantonpickup.com',
 
   // ---- contact ----------------------------------------------------------
@@ -140,16 +147,11 @@ export const site = {
   addressLine: 'Baiyun District, Guangzhou, Guangdong, China',
   /** Shown on the map link in the footer and on the contact page. */
   mapsLink: 'https://www.google.com/maps/search/?api=1&query=Baiyun+District%2C+Guangzhou%2C+China',
-  areaServed: 'Guangzhou · Foshan · Dongguan · Shenzhen · Huizhou · Qingyuan',
 
   // ---- integrations -----------------------------------------------------
   gtmId: 'GTM-KNZMJW4H',
   web3formsAccessKey: '02187a0a-00ea-48ee-8843-3dfdc845997a',
   web3formsEndpoint: 'https://api.web3forms.com/submit',
-
-  // ---- opening hours ----------------------------------------------------
-  hours: '24 / 7 — including public holidays',
-  responseTime: 'We usually reply within 30 minutes.',
 
   social: {
     // Bare profile URL — this object feeds `sameAs` style listings, not buttons.
@@ -158,6 +160,18 @@ export const site = {
     email: 'mailto:jack@cantonpickup.com',
   },
 }
+
+/** Display copy from the same object — everything here goes through `tr()`. */
+const siteCopy = {
+  tagline: 'Guangzhou & Foshan Airport Transfers, Private Drivers & Factory Visits',
+  areaServed: 'Guangzhou · Foshan · Dongguan · Shenzhen · Huizhou · Qingyuan',
+
+  // ---- opening hours ----------------------------------------------------
+  hours: '24 / 7 — including public holidays',
+  responseTime: 'We usually reply within 30 minutes.',
+}
+
+export const site = { ...siteBase, ...tr(siteCopy) }
 
 /**
  * One-line descriptions for the Services dropdown.
@@ -181,31 +195,40 @@ const serviceNavDesc = {
  *  navigation per the client. Visitors still reach the guides via the footer
  *  (`SiteFooter.vue` → "Guides" → /blog) and via cross-links inside service
  *  and home pages. The /blog page itself remains prerendered and listed in
- *  the sitemap so Google can still crawl it. */
+ *  the sitemap so Google can still crawl it.
+ *
+ *  Labels go through `t()` one at a time rather than `tr(nav)`: the service
+ *  children inherit `s.title`, which `content.js` has already translated, and
+ *  re-translating a translated string is a lookup that can only go wrong. */
 export const nav = [
-  { label: 'Home', to: '/' },
+  { label: t('Home'), to: '/' },
   {
-    label: 'Services',
+    label: t('Services'),
     to: '/airport-transfer',
     children: serviceCards.map((s) => ({
       label: s.title,
       to: s.to,
-      desc: serviceNavDesc[s.slug] || '',
+      desc: t(serviceNavDesc[s.slug] || ''),
     })),
   },
-  { label: 'Vehicles & Pricing', to: '/vehicles-pricing' },
-  { label: 'Reviews', to: '/reviews' },
-  { label: 'About Us', to: '/about' },
-  { label: 'FAQs', to: '/faqs' },
-  { label: 'Contact', to: '/contact' },
+  { label: t('Vehicles & Pricing'), to: '/vehicles-pricing' },
+  { label: t('Reviews'), to: '/reviews' },
+  { label: t('About Us'), to: '/about' },
+  { label: t('FAQs'), to: '/faqs' },
+  { label: t('Contact'), to: '/contact' },
 ]
 
 /**
  * Intercity route pages, grouped so the footer and the mobile drawer can offer
  * them without repeating the list in two places.
+ *
+ * The label is a pattern, not a concatenation: French wants "Trajet Canton –
+ * Foshan", German "Guangzhou nach Foshan", and neither is `'Guangzhou to ' +
+ * city`. City names stay romanised — they are also what the booking inbox and
+ * the map pins use.
  */
 export const routeNav = routePages.map((r) => ({
-  label: `Guangzhou to ${r.city}`,
+  label: t('Guangzhou to {city}', { city: r.city }),
   to: `/${r.slug}`,
 }))
 
@@ -220,7 +243,7 @@ export const routeNav = routePages.map((r) => ({
  * `image` is a path inside `public/`; `slug` links an entry to however many
  * photos are dropped into the folder.
  */
-export const fleet = [
+export const fleet = tr([
   {
     slug: 'hongqi',
     name: 'Hongqi E-QM5',
@@ -293,7 +316,7 @@ export const fleet = [
       'Our flagship vehicle. Leather interior, exceptional comfort and the presence you want for VIP guests and important clients.',
     features: ['Leather interior', 'Extra legroom', 'Panoramic roof', 'Meet & greet included'],
   },
-]
+])
 
 /**
  * The three vehicles shown straight away on the Vehicles & Pricing page.
@@ -308,8 +331,14 @@ export const featuredVehicles = ['hongqi', 'denza-d9', 'voyah-mpv']
  * Levels follow the reference rate card for these two vehicle tiers, with the
  * final digit of every figure set to 7 (e.g. $99 -> $97) so no number is a
  * straight copy of the reference. Keep that convention when editing.
+ *
+ * `pricingEn` is the English original and `pricing` is what the site renders.
+ * The split is not cosmetic: `airportFare()` below matches a row by its
+ * *English* service name (`'Baiyun Airport pickup / drop-off'`), so it has to
+ * read the untranslated table or the fleet cards would lose their price the
+ * moment the site ran in French.
  */
-export const pricing = {
+const pricingEn = {
   currency: 'USD',
   currencySymbol: '$',
   note: 'Prices are per vehicle, not per person, and already include fuel, tolls and parking inside the city area.',
@@ -347,16 +376,18 @@ export const pricing = {
   },
 }
 
+export const pricing = tr(pricingEn)
+
 /** Headline prices shown on cards and in the pricing overview. */
-export const priceHighlights = [
+export const priceHighlights = tr([
   { label: 'Airport pickup', from: 57, unit: 'per vehicle', to: '/airport-transfer' },
   { label: 'Half-day private driver', from: 97, unit: '5 hours / 120 km', to: '/private-driver' },
   { label: 'Full-day private driver', from: 187, unit: '10 hours / 250 km', to: '/private-driver' },
-]
+])
 
 /** The "Baiyun Airport pickup / drop-off" row of one of the two rate tables. */
 const airportFare = (tier) =>
-  pricing[tier].rows.find((r) => r.service.startsWith('Baiyun Airport')).price
+  pricingEn[tier].rows.find((r) => r.service.startsWith('Baiyun Airport')).price
 
 /**
  * Lowest published fare per vehicle, printed on the fleet cards as
@@ -383,7 +414,7 @@ export const priceFromBySlug = {
  * Popular fixed-price routes shown on the airport transfer page.
  * Order and destinations follow the approved layout reference.
  */
-export const popularRoutes = [
+export const popularRoutes = tr([
   {
     from: 'Baiyun Airport (CAN)',
     to: 'Foshan city centre',
@@ -410,14 +441,14 @@ export const popularRoutes = [
     duration: '2 – 2.5 h',
     note: 'Quoted on request',
   },
-]
+])
 
 /**
  * Vehicle tiers used by the "Vehicle Options" cards.
  * Sedan and MPV prices come from the table above. Larger vehicles
  * (12-seat and above, buses) are not offered, so they are not shown.
  */
-export const vehicleOptions = [
+export const vehicleOptions = tr([
   {
     slug: 'byd-han',
     label: 'Sedan',
@@ -434,7 +465,7 @@ export const vehicleOptions = [
     image: '/images/vehicles/gac-m8-white.jpg',
     text: 'The most popular choice for families and small groups.',
   },
-]
+])
 
 /**
  * Intercity fixed routes — one way, same price in both directions, tolls and
@@ -442,21 +473,26 @@ export const vehicleOptions = [
  * per-route price is easier to quote than a range the customer has to guess
  * their way into. Twelve-seat minibuses and larger are not offered.
  */
-export const intercityRoutes = [
+export const intercityRoutes = tr([
   { route: 'Guangzhou ↔ Foshan', sedan: 57, mpv: 77 },
   { route: 'Guangzhou ↔ Dongguan', sedan: 97, mpv: 127 },
   { route: 'Guangzhou ↔ Zhongshan', sedan: 127, mpv: 167 },
   { route: 'Guangzhou ↔ Shenzhen', sedan: 137, mpv: 177 },
   { route: 'Guangzhou ↔ Zhuhai', sedan: 147, mpv: 187 },
   { route: 'Guangzhou ↔ Huizhou', sedan: 157, mpv: 197 },
-]
+])
 
 /**
  * SEO keyword set. The first group is the client's original research file; the
  * second group was added on 2026-09-20 to cover show-week, visa and payment
  * questions that competitors already rank for.
+ *
+ * Translated like any other copy: it feeds the `keywords` meta tag, and Google
+ * reads that tag from the rendered page — a French visitor's page would
+ * otherwise declare English keywords. (`footerKeywords` below is different: it
+ * is rendered as link text and stays English on purpose.)
  */
-export const seoKeywords = [
+export const seoKeywords = tr([
   'guangzhou airport transfer',
   'guangzhou airport pickup',
   'guangzhou baiyun airport transfer',
@@ -486,7 +522,7 @@ export const seoKeywords = [
   'china visa free transit guangzhou',
   'private car from shenzhen to guangzhou',
   'paypal private driver china',
-]
+])
 
 /**
  * The footer's "Popular searches" block — one keyword per destination.
@@ -506,6 +542,12 @@ export const seoKeywords = [
  * Listing each destination once keeps every anchor text on the client's own
  * keyword list while giving the block nine working links, and spreads the
  * internal link equity over nine pages instead of piling it onto one.
+ *
+ * NOTE (i18n): these labels are the ONE visible piece of copy on the site that
+ * stays English. They are internal anchor text, and the anchor text of an
+ * internal link is one of the few signals that still tells Google what a page
+ * is about — the site's indexed language is English, so these nine phrases are
+ * left as written. Wrap the export in `tr()` if that trade is ever reversed.
  *
  * Add a keyword here — never back into `seoKeywords.slice()` — and make sure
  * `to` is a real route, because a footer link that goes nowhere is what this
@@ -527,7 +569,7 @@ export const footerKeywords = [
 ]
 
 /** Options used by the quote form's "Service needed" select. */
-export const serviceOptions = [
+export const serviceOptions = tr([
   'Airport transfer — arrival',
   'Airport transfer — departure',
   'Railway station transfer',
@@ -538,4 +580,4 @@ export const serviceOptions = [
   'Intercity transfer',
   'Canton Fair transfer',
   'Business support / other',
-]
+])

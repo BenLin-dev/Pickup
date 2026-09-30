@@ -7,6 +7,7 @@ import AppIcon from '@/components/AppIcon.vue'
 import { useSeo, useJsonLd, useBreadcrumbs } from '@/composables/useSeo'
 import { articleBySlug, relatedArticles } from '@/data/articles'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 /**
  * A single guide.
@@ -72,8 +73,8 @@ if (article) {
       :title="article.title"
       priority
       :crumbs="[
-        { label: 'Home', to: '/' },
-        { label: 'Guides', to: '/blog' },
+        { label: t('Home'), to: '/' },
+        { label: t('Guides'), to: '/blog' },
         { label: article.category },
       ]"
     >
@@ -112,11 +113,7 @@ if (article) {
         </div>
 
         <div class="article__foot">
-          <p>
-            Planning the trip? We drive the routes in this guide every week —
-            <RouterLink :to="article.related.to">{{ article.related.label.toLowerCase() }}</RouterLink>
-            is where most readers start.
-          </p>
+          <p>{{ t('Planning the trip? We drive the routes in this guide every week —') }}<RouterLink :to="article.related.to">{{ article.related.label.toLowerCase() }}</RouterLink>{{ t('is where most readers start.') }}</p>
         </div>
       </div>
     </section>
@@ -125,8 +122,8 @@ if (article) {
     <section class="section section--soft">
       <div class="container">
         <InlineQuote
-          title="Need a Driver for This Trip?"
-          lead="Send us your dates, your addresses and what you need to see. We will confirm a fixed price per vehicle."
+          :title="t('Need a Driver for This Trip?')"
+          :lead="t('Send us your dates, your addresses and what you need to see. We will confirm a fixed price per vehicle.')"
         />
       </div>
     </section>
@@ -135,8 +132,8 @@ if (article) {
     <section class="section">
       <div class="container">
         <div class="section-head section-head--center" v-reveal>
-          <p class="eyebrow">Keep reading</p>
-          <h2>More Guides</h2>
+          <p class="eyebrow">{{ t('Keep reading') }}</p>
+          <h2>{{ t('More Guides') }}</h2>
         </div>
 
         <div class="grid grid--3">
@@ -153,9 +150,7 @@ if (article) {
         </div>
 
         <div class="btn-row mt-32" style="justify-content: center">
-          <RouterLink to="/blog" class="btn btn--outline">
-            All guides
-            <AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
+          <RouterLink to="/blog" class="btn btn--outline">{{ t('All guides') }}<AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
           </RouterLink>
         </div>
       </div>
@@ -164,8 +159,8 @@ if (article) {
     <section class="section section--tight">
       <div class="container">
         <CtaBand
-          title="Ready to Book Your Driver?"
-          text="Fixed prices per vehicle, an English-speaking driver and free cancellation up to 48 hours before."
+          :title="t('Ready to Book Your Driver?')"
+          :text="t('Fixed prices per vehicle, an English-speaking driver and free cancellation up to 48 hours before.')"
           image="/images/hero/highway-dusk.jpg"
         />
       </div>
@@ -174,10 +169,10 @@ if (article) {
 
   <section v-else class="section">
     <div class="container container--narrow" style="text-align: center">
-      <h1>Guide not found</h1>
-      <p class="lead">That guide does not exist — it may have been renamed. Everything we have written is listed on the guides page.</p>
+      <h1>{{ t('Guide not found') }}</h1>
+      <p class="lead">{{ t('That guide does not exist — it may have been renamed. Everything we have written is listed on the guides page.') }}</p>
       <div class="btn-row" style="justify-content: center">
-        <RouterLink to="/blog" class="btn">All guides</RouterLink>
+        <RouterLink to="/blog" class="btn">{{ t('All guides') }}</RouterLink>
       </div>
     </div>
   </section>

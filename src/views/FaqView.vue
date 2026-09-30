@@ -7,6 +7,7 @@ import AppIcon from '@/components/AppIcon.vue'
 import { useSeo, useJsonLd, useBreadcrumbs } from '@/composables/useSeo'
 import { pages, faqGroups } from '@/data/content'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 const page = pages.faqs
 useSeo(page)
@@ -47,40 +48,36 @@ useBreadcrumbs('faqs', [
   <HeroSection
     variant="media"
     image="/images/hero/chauffeur.jpg"
-    image-alt="Private driver opening a car door in Guangzhou"
-    eyebrow="FAQs"
+    :image-alt="t('Private driver opening a car door in Guangzhou')"
+    :eyebrow="t('FAQs')"
     :title="page.h1"
     :lead="page.lead"
     priority
-    :crumbs="[{ label: 'Home', to: '/' }, { label: 'FAQs' }]"
+    :crumbs="[{ label: t('Home'), to: '/' }, { label: t('FAQs') }]"
   >
     <template #actions>
-      <RouterLink to="/contact" class="btn btn--light btn--lg">
-        Get a Quote
-        <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+      <RouterLink to="/contact" class="btn btn--light btn--lg">{{ t('Get a Quote') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
       </RouterLink>
       <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--ghost-light btn--lg">
-        <AppIcon name="whatsapp" :size="18" :stroke="1.8" />
-        Ask us directly
-      </a>
+        <AppIcon name="whatsapp" :size="18" :stroke="1.8" />{{ t('Ask us directly') }}</a>
     </template>
   </HeroSection>
 
   <section class="section">
     <div class="container container--narrow">
       <!-- category filter -->
-      <div class="faq-tabs" role="tablist" aria-label="Question categories" v-reveal>
+      <div class="faq-tabs" role="tablist" :aria-label="t('Question categories')" v-reveal>
         <button
-          v-for="t in tabs"
-          :key="t.id"
+          v-for="tab in tabs"
+          :key="tab.id"
           type="button"
           class="faq-tab"
-          :class="{ 'is-active': active === t.id }"
+          :class="{ 'is-active': active === tab.id }"
           role="tab"
-          :aria-selected="active === t.id"
-          @click="active = t.id"
+          :aria-selected="active === tab.id"
+          @click="active = tab.id"
         >
-          {{ t.title }}
+          {{ tab.title }}
         </button>
       </div>
 
@@ -101,11 +98,8 @@ useBreadcrumbs('faqs', [
   <!-- still stuck? -->
   <section class="section section--soft">
     <div class="container container--narrow text-center">
-      <h2 v-reveal>Still Have Questions?</h2>
-      <p class="lead" style="margin-inline: auto" v-reveal>
-        If your question is not answered here, message us directly. We answer
-        every message ourselves, usually within half an hour.
-      </p>
+      <h2 v-reveal>{{ t('Still Have Questions?') }}</h2>
+      <p class="lead" style="margin-inline: auto" v-reveal>{{ t('If your question is not answered here, message us directly. We answer every message ourselves, usually within half an hour.') }}</p>
 
       <div class="btn-row mt-32" style="justify-content: center">
         <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--lg">
@@ -113,13 +107,11 @@ useBreadcrumbs('faqs', [
           WhatsApp {{ site.whatsapp }}
         </a>
         <a :href="site.mailto" class="btn btn--outline btn--lg">
-          <AppIcon name="mail" :size="19" :stroke="1.8" />
-          Email us
-        </a>
+          <AppIcon name="mail" :size="19" :stroke="1.8" />{{ t('Email us') }}</a>
       </div>
 
       <div class="contact-row mt-40" style="text-align: left; max-width: 460px; margin-inline: auto">
-        <span class="contact-row__label">Opening hours</span>
+        <span class="contact-row__label">{{ t('Opening hours') }}</span>
         <span class="contact-row__value">{{ site.hours }}</span>
       </div>
     </div>
@@ -128,9 +120,9 @@ useBreadcrumbs('faqs', [
   <section class="section section--tight">
     <div class="container">
       <CtaBand
-        title="Ready when you are"
-        text="Send us your dates and destinations and we will send a fixed price the same day."
-        button="Get a Quote"
+        :title="t('Ready when you are')"
+        :text="t('Send us your dates and destinations and we will send a fixed price the same day.')"
+        :button="t('Get a Quote')"
         image="/images/hero/guangzhou-night.jpg"
       />
     </div>

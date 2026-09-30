@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
 import { site } from '@/data/site'
+import { t, tr } from '@/i18n'
 
 /**
  * Review carousel.
@@ -9,6 +10,11 @@ import { site } from '@/data/site'
  * Nothing here is hard-coded: the component reads `/data/reviews.json`, which
  * `scripts/scan-assets.mjs` regenerates from whatever images sit in
  * `public/images/reviews/`.
+ *
+ * The manifest arrives in English because it is fetched after the app boots, so
+ * `tr()` runs over it here — quote, service label and date get translated,
+ * while `image`, `poster` and `id` pass through untouched. The extractor reads
+ * the same manifest, so its copy is part of `en.json`.
  *
  * The track is a native scroll container with CSS scroll-snap, so how many
  * cards fit on a screen is decided by CSS (4 on desktop, 2 on tablet, 1 on a
@@ -141,7 +147,7 @@ onMounted(async () => {
     })
     const json = res.ok ? await res.json() : null
     const list = Array.isArray(json) ? json : (json?.items ?? [])
-    items.value = list
+    items.value = tr(list)
   } catch {
     items.value = []
   } finally {
@@ -182,7 +188,7 @@ onBeforeUnmount(() => {
         class="carousel__track"
         role="group"
         aria-roledescription="carousel"
-        aria-label="Guest reviews"
+        :aria-label="t('Guest reviews')"
         tabindex="0"
         @scroll.passive="onScroll"
         @keydown="onTrackKey"
@@ -239,7 +245,7 @@ onBeforeUnmount(() => {
           class="carousel__arrow carousel__arrow--prev"
           type="button"
           :disabled="page === 0"
-          aria-label="Previous reviews"
+          :aria-label="t('Previous reviews')"
           @click="prev"
         >
           <AppIcon name="chevron" :size="20" :stroke="2.4" />
@@ -262,7 +268,7 @@ onBeforeUnmount(() => {
           class="carousel__arrow carousel__arrow--next"
           type="button"
           :disabled="page >= pages - 1"
-          aria-label="Next reviews"
+          :aria-label="t('Next reviews')"
           @click="next"
         >
           <AppIcon name="chevron" :size="20" :stroke="2.4" />
@@ -271,7 +277,7 @@ onBeforeUnmount(() => {
 
       <p class="table-note" style="text-align: center">
         {{ items.length }} reviews from guests we have driven.
-        <a :href="site.waLink($route.path)" target="_blank" rel="noopener">Travelled with us? Send us yours.</a>
+        <a :href="site.waLink($route.path)" target="_blank" rel="noopener">{{ t('Travelled with us? Send us yours.') }}</a>
       </p>
     </div>
 
@@ -296,8 +302,8 @@ onBeforeUnmount(() => {
               <AppIcon name="user" :size="17" />
             </span>
             <span>
-              <span class="review__name">Awaiting your review</span>
-              <span class="review__meta">Guangzhou / Foshan</span>
+              <span class="review__name">{{ t('Awaiting your review') }}</span>
+              <span class="review__meta">{{ t('Guangzhou / Foshan') }}</span>
             </span>
           </div>
         </div>
@@ -313,7 +319,7 @@ onBeforeUnmount(() => {
       :aria-label="`Review photo from ${lightbox.name || 'a guest'}`"
       @click.self="closeLightbox"
     >
-      <button class="lightbox__close" type="button" aria-label="Close" @click="closeLightbox">
+      <button class="lightbox__close" type="button" :aria-label="t('Close')" @click="closeLightbox">
         <AppIcon name="close" :size="20" :stroke="2.4" />
       </button>
       <figure style="margin: 0; text-align: center">

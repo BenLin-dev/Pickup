@@ -2,6 +2,7 @@
 import AppIcon from '@/components/AppIcon.vue'
 import { useSeo } from '@/composables/useSeo'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 useSeo({
   path: '/404',
@@ -11,29 +12,24 @@ useSeo({
 })
 
 const links = [
-  { to: '/airport-transfer', label: 'Airport Transfer', icon: 'plane' },
-  { to: '/private-driver', label: 'Private Driver', icon: 'user' },
-  { to: '/factory-visits', label: 'Factory Visits', icon: 'factory' },
-  { to: '/vehicles-pricing', label: 'Vehicles & Pricing', icon: 'car' },
+  { to: '/airport-transfer', label: t('Airport Transfer'), icon: 'plane' },
+  { to: '/private-driver', label: t('Private Driver'), icon: 'user' },
+  { to: '/factory-visits', label: t('Factory Visits'), icon: 'factory' },
+  { to: '/vehicles-pricing', label: t('Vehicles & Pricing'), icon: 'car' },
 ]
 </script>
 
 <template>
   <section class="section" style="padding-top: calc(var(--header-h) + 60px)">
     <div class="container container--narrow text-center">
-      <p class="eyebrow" style="justify-content: center">Error 404</p>
-      <h1>This Page Took a Wrong Turn</h1>
-      <p class="lead" style="margin-inline: auto">
-        The page you were looking for is not here. It may have been moved, or the
-        link may have been mistyped.
-      </p>
+      <p class="eyebrow" style="justify-content: center">{{ t('Error 404') }}</p>
+      <h1>{{ t('This Page Took a Wrong Turn') }}</h1>
+      <p class="lead" style="margin-inline: auto">{{ t('The page you were looking for is not here. It may have been moved, or the link may have been mistyped.') }}</p>
 
       <div class="btn-row mt-32" style="justify-content: center">
-        <RouterLink to="/" class="btn btn--lg">
-          Back to home
-          <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+        <RouterLink to="/" class="btn btn--lg">{{ t('Back to home') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
         </RouterLink>
-        <RouterLink to="/contact" class="btn btn--outline btn--lg">Get a quote</RouterLink>
+        <RouterLink to="/contact" class="btn btn--outline btn--lg">{{ t('Get a quote') }}</RouterLink>
       </div>
 
       <div class="grid grid--4 mt-40">
@@ -51,11 +47,7 @@ const links = [
         </RouterLink>
       </div>
 
-      <p class="table-note mt-32">
-        Or reach us directly on
-        <a :href="site.waLink($route.path)" target="_blank" rel="noopener">WhatsApp {{ site.whatsapp }}</a>
-        or by
-        <a :href="site.mailto">email</a>.
+      <p class="table-note mt-32">{{ t('Or reach us directly on') }}<a :href="site.waLink($route.path)" target="_blank" rel="noopener">WhatsApp {{ site.whatsapp }}</a>{{ t('or by') }}<a :href="site.mailto">email</a>.
       </p>
     </div>
   </section>

@@ -7,6 +7,7 @@ import { useSeo, useJsonLd, useBreadcrumbs } from '@/composables/useSeo'
 import { pages } from '@/data/content'
 import { articlesByDate, articleCategories } from '@/data/articles'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 /**
  * Guides index.
@@ -59,11 +60,11 @@ useBreadcrumbs('blog', [
   <HeroSection
     variant="split"
     image="/images/hero/guangzhou-aerial.jpg"
-    image-alt="Aerial view of Guangzhou and the Pearl River"
-    eyebrow="Guides"
-    title="Guangzhou Travel & Sourcing Guides"
-    lead="Practical advice for buyers and business travellers visiting Guangzhou and the Pearl River Delta — written by the people who drive these routes every week."
-    :badges="['Wholesale markets', 'Factory clusters', 'Canton Fair', 'Where to eat']"
+    :image-alt="t('Aerial view of Guangzhou and the Pearl River')"
+    :eyebrow="t('Guides')"
+    :title="t('Guangzhou Travel & Sourcing Guides')"
+    :lead="t('Practical advice for buyers and business travellers visiting Guangzhou and the Pearl River Delta — written by the people who drive these routes every week.')"
+    :badges="[t('Wholesale markets'), t('Factory clusters'), t('Canton Fair'), t('Where to eat')]"
     priority
   />
 
@@ -115,9 +116,7 @@ useBreadcrumbs('blog', [
 
             <p class="post__excerpt">{{ a.excerpt }}</p>
 
-            <RouterLink :to="`/blog/${a.slug}`" class="post__more">
-              Read the guide
-              <AppIcon name="arrow" :size="15" :stroke="2.2" class="btn__arrow" />
+            <RouterLink :to="`/blog/${a.slug}`" class="post__more">{{ t('Read the guide') }}<AppIcon name="arrow" :size="15" :stroke="2.2" class="btn__arrow" />
             </RouterLink>
           </div>
         </article>
@@ -129,8 +128,8 @@ useBreadcrumbs('blog', [
   <section class="section section--soft">
     <div class="container">
       <InlineQuote
-        title="Planning a Trip to Guangzhou?"
-        lead="Tell us your dates and what you need to see, and we will work out the driving so you do not have to."
+        :title="t('Planning a Trip to Guangzhou?')"
+        :lead="t('Tell us your dates and what you need to see, and we will work out the driving so you do not have to.')"
       />
     </div>
   </section>

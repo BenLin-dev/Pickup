@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
 import { site, serviceOptions } from '@/data/site'
+import { t } from '@/i18n'
 
 /**
  * Quote request form.
@@ -217,20 +218,20 @@ function reset() {
     <template v-if="state !== 'ok'">
       <div class="form-grid">
         <div class="field">
-          <label for="q-name">Full name <span class="req">*</span></label>
+          <label for="q-name">{{ t('Full name') }}<span class="req">*</span></label>
           <input
             id="q-name"
             v-model.trim="form.name"
             name="name"
             type="text"
             autocomplete="name"
-            placeholder="e.g. James Wilson"
+            :placeholder="t('e.g. James Wilson')"
             required
           />
         </div>
 
         <div class="field">
-          <label for="q-email">Email address <span class="req">*</span></label>
+          <label for="q-email">{{ t('Email address') }}<span class="req">*</span></label>
           <input
             id="q-email"
             v-model.trim="form.email"
@@ -243,7 +244,7 @@ function reset() {
         </div>
 
         <div class="field">
-          <label for="q-phone">Phone / WhatsApp</label>
+          <label for="q-phone">{{ t('Phone / WhatsApp') }}</label>
           <input
             id="q-phone"
             v-model.trim="form.phone"
@@ -255,23 +256,22 @@ function reset() {
         </div>
 
         <div class="field">
-          <label for="q-service">Service needed</label>
+          <label for="q-service">{{ t('Service needed') }}</label>
           <select id="q-service" v-model="form.service" name="service">
-            <option value="">Please choose…</option>
+            <option value="">{{ t('Please choose…') }}</option>
             <option v-for="s in serviceOptions" :key="s" :value="s">{{ s }}</option>
           </select>
         </div>
 
         <div class="field field--full">
-          <label for="q-message">
-            Trip details <span class="req">*</span>
+          <label for="q-message">{{ t('Trip details') }}<span class="req">*</span>
           </label>
           <textarea
             id="q-message"
             v-model.trim="form.message"
             name="message"
             required
-            placeholder="Pickup and drop-off, travel date, flight number, number of passengers, luggage, child seats — anything that helps us quote accurately."
+            :placeholder="t('Pickup and drop-off, travel date, flight number, number of passengers, luggage, child seats — anything that helps us quote accurately.')"
           />
         </div>
       </div>
@@ -300,14 +300,10 @@ function reset() {
             <span class="spinner" style="width: 18px; height: 18px; border-width: 2px" />
             Sending…
           </template>
-          <template v-else>
-            Send my request
-            <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+          <template v-else>{{ t('Send my request') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
           </template>
         </button>
-        <span style="font-size: 0.84rem; color: var(--c-muted)">
-          No payment now — we reply with a fixed price.
-        </span>
+        <span style="font-size: 0.84rem; color: var(--c-muted)">{{ t('No payment now — we reply with a fixed price.') }}</span>
       </div>
     </template>
 
@@ -315,17 +311,11 @@ function reset() {
     <div v-else class="form-status form-status--ok" role="status">
       <AppIcon name="check" :size="20" :stroke="2.6" />
       <div>
-        <strong style="display: block; margin-bottom: 4px">
-          Thank you — your request has been sent.
-        </strong>
-        <span>
-          We usually reply within 30 minutes. If it is urgent, message us on
-          <a :href="site.waLink($route.path)" target="_blank" rel="noopener">WhatsApp {{ site.whatsapp }}</a>.
+        <strong style="display: block; margin-bottom: 4px">{{ t('Thank you — your request has been sent.') }}</strong>
+        <span>{{ t('We usually reply within 30 minutes. If it is urgent, message us on') }}<a :href="site.waLink($route.path)" target="_blank" rel="noopener">WhatsApp {{ site.whatsapp }}</a>.
         </span>
         <div style="margin-top: 14px">
-          <button class="btn btn--outline btn--sm" type="button" @click="reset">
-            Send another request
-          </button>
+          <button class="btn btn--outline btn--sm" type="button" @click="reset">{{ t('Send another request') }}</button>
         </div>
       </div>
     </div>

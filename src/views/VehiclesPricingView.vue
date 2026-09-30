@@ -20,6 +20,7 @@ import {
 } from '@/data/content'
 import { site, pricing, priceHighlights, intercityRoutes, popularRoutes, featuredVehicles } from '@/data/site'
 import { money, moneyOr } from '@/utils/price'
+import { t } from '@/i18n'
 
 const page = pages.vehiclesPricing
 useSeo(page)
@@ -72,20 +73,18 @@ function trackCta(label, destination) {
   <HeroSection
     variant="media"
     image="/images/hero/fleet.jpg"
-    image-alt="Fleet of private hire vehicles in Guangzhou"
-    eyebrow="Vehicles &amp; Pricing"
+    :image-alt="t('Fleet of private hire vehicles in Guangzhou')"
+    :eyebrow="t('Vehicles &amp; Pricing')"
     :title="page.h1"
     :lead="page.lead"
     :badges="heroBadges.vehiclesPricing"
     priority
-    :crumbs="[{ label: 'Home', to: '/' }, { label: 'Vehicles & Pricing' }]"
+    :crumbs="[{ label: t('Home'), to: '/' }, { label: t('Vehicles & Pricing') }]"
   >
     <template #actions>
-      <RouterLink to="/contact" class="btn btn--light btn--lg" @click="trackCta('Get a Quote', '/contact')">
-        Get a Quote
-        <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+      <RouterLink to="/contact" class="btn btn--light btn--lg" @click="trackCta('Get a Quote', '/contact')">{{ t('Get a Quote') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
       </RouterLink>
-      <a href="#pricing-overview" class="btn btn--ghost-light btn--lg">See prices</a>
+      <a href="#pricing-overview" class="btn btn--ghost-light btn--lg">{{ t('See prices') }}</a>
     </template>
   </HeroSection>
 
@@ -93,12 +92,9 @@ function trackCta(label, destination) {
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Our fleet</p>
-        <h2>Sedans and 7-Seat MPVs</h2>
-        <p class="lead">
-          Every vehicle is air-conditioned, cleaned before each trip and comes
-          with an English-speaking driver.
-        </p>
+        <p class="eyebrow">{{ t('Our fleet') }}</p>
+        <h2>{{ t('Sedans and 7-Seat MPVs') }}</h2>
+        <p class="lead">{{ t('Every vehicle is air-conditioned, cleaned before each trip and comes with an English-speaking driver.') }}</p>
       </div>
 
       <!-- the three headline vehicles always come first -->
@@ -107,11 +103,8 @@ function trackCta(label, destination) {
       <!-- everything else follows below, in the same list -->
       <div id="all-vehicles" class="mt-56">
         <div class="fleet-more-head" v-reveal>
-          <h3>More vehicles in our fleet</h3>
-          <p>
-            Same English-speaking driver, same fixed price — pick whichever
-            suits your group and luggage.
-          </p>
+          <h3>{{ t('More vehicles in our fleet') }}</h3>
+          <p>{{ t('Same English-speaking driver, same fixed price — pick whichever suits your group and luggage.') }}</p>
         </div>
 
         <VehicleFleet :exclude="featuredVehicles" />
@@ -123,13 +116,9 @@ function trackCta(label, destination) {
   <section class="section section--soft" id="pricing-overview">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Transparent pricing</p>
-        <h2>Pricing Overview</h2>
-        <p class="lead">
-          All prices are per vehicle, not per person, and already include fuel,
-          tolls and parking inside the city area. Everything is quoted in US
-          dollars — the price you see is the price you pay.
-        </p>
+        <p class="eyebrow">{{ t('Transparent pricing') }}</p>
+        <h2>{{ t('Pricing Overview') }}</h2>
+        <p class="lead">{{ t('All prices are per vehicle, not per person, and already include fuel, tolls and parking inside the city area. Everything is quoted in US dollars — the price you see is the price you pay.') }}</p>
       </div>
 
       <div class="grid grid--3">
@@ -137,9 +126,7 @@ function trackCta(label, destination) {
           <p class="eyebrow" style="margin-bottom: 0">{{ h.unit }}</p>
           <h3 class="card__title" style="font-size: 1.05rem">{{ h.label }}</h3>
           <p class="price-card__amount">From {{ money(h.from) }}</p>
-          <RouterLink :to="h.to" class="btn btn--outline btn--sm">
-            View details
-            <AppIcon name="arrow" :size="16" :stroke="2.2" class="btn__arrow" />
+          <RouterLink :to="h.to" class="btn btn--outline btn--sm">{{ t('View details') }}<AppIcon name="arrow" :size="16" :stroke="2.2" class="btn__arrow" />
           </RouterLink>
         </div>
       </div>
@@ -150,20 +137,17 @@ function trackCta(label, destination) {
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Full price list</p>
-        <h2>Airport, Station and Private Hire Rates</h2>
-        <p class="lead">
-          All prices in US dollars. The price we confirm is the price you pay —
-          the only extras are listed underneath each table.
-        </p>
+        <p class="eyebrow">{{ t('Full price list') }}</p>
+        <h2>{{ t('Airport, Station and Private Hire Rates') }}</h2>
+        <p class="lead">{{ t('All prices in US dollars. The price we confirm is the price you pay — the only extras are listed underneath each table.') }}</p>
       </div>
 
       <div class="grid grid--2">
-        <div v-for="t in tables" :key="t.key" v-reveal>
+        <div v-for="tier in tables" :key="tier.key" v-reveal>
           <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px">
             <img
-              :src="t.image"
-              :alt="`${t.label} — private hire vehicle`"
+              :src="tier.image"
+              :alt="t('{label} — private hire vehicle', { label: tier.label })"
               width="72"
               height="54"
               loading="lazy"
@@ -171,8 +155,8 @@ function trackCta(label, destination) {
               style="border-radius: var(--r-sm); object-fit: cover; flex: none"
             />
             <div>
-              <h3 style="margin: 0; font-size: 1.15rem">{{ t.label }}</h3>
-              <p style="margin: 2px 0 0; font-size: 0.86rem; color: var(--c-muted)">{{ t.seats }}</p>
+              <h3 style="margin: 0; font-size: 1.15rem">{{ tier.label }}</h3>
+              <p style="margin: 2px 0 0; font-size: 0.86rem; color: var(--c-muted)">{{ tier.seats }}</p>
             </div>
           </div>
 
@@ -180,13 +164,13 @@ function trackCta(label, destination) {
             <table class="price-table">
               <thead>
                 <tr>
-                  <th scope="col">Service</th>
-                  <th scope="col">Included</th>
-                  <th scope="col">Price</th>
+                  <th scope="col">{{ t('Service') }}</th>
+                  <th scope="col">{{ t('Included') }}</th>
+                  <th scope="col">{{ t('Price') }}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="r in t.rows" :key="r.service">
+                <tr v-for="r in tier.rows" :key="r.service">
                   <td data-label="Service">{{ r.service }}</td>
                   <td data-label="Included" style="color: var(--c-muted)">{{ r.scope }}</td>
                   <td data-label="Price">
@@ -198,7 +182,7 @@ function trackCta(label, destination) {
           </div>
 
           <ul class="stack mt-24" style="--gap: 10px">
-            <li v-for="e in t.extras" :key="e.label" class="review__meta" style="display: flex; gap: 8px">
+            <li v-for="e in tier.extras" :key="e.label" class="review__meta" style="display: flex; gap: 8px">
               <AppIcon name="spark" :size="15" :stroke="2" />
               <span><strong>{{ e.label }}:</strong> {{ e.value }}</span>
             </li>
@@ -212,20 +196,20 @@ function trackCta(label, destination) {
   <section class="section section--mint">
     <div class="container">
       <div class="section-head" v-reveal>
-        <p class="eyebrow">Most booked</p>
-        <h2>Popular Fixed-Price Routes</h2>
-        <p class="lead">The journeys we are asked for most often, priced up front.</p>
+        <p class="eyebrow">{{ t('Most booked') }}</p>
+        <h2>{{ t('Popular Fixed-Price Routes') }}</h2>
+        <p class="lead">{{ t('The journeys we are asked for most often, priced up front.') }}</p>
       </div>
 
       <div class="price-table-wrap">
         <table class="price-table">
           <thead>
             <tr>
-              <th scope="col">From</th>
+              <th scope="col">{{ t('From') }}</th>
               <th scope="col">To</th>
-              <th scope="col">Journey time</th>
-              <th scope="col">Sedan</th>
-              <th scope="col">MPV</th>
+              <th scope="col">{{ t('Journey time') }}</th>
+              <th scope="col">{{ t('Sedan') }}</th>
+              <th scope="col">{{ t('MPV') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -254,7 +238,7 @@ function trackCta(label, destination) {
           <span class="icon-badge">
             <AppIcon name="check" :size="24" :stroke="2.2" />
           </span>
-          <h2 style="font-size: 1.3rem">What's Included</h2>
+          <h2 style="font-size: 1.3rem">{{ t('What\'s Included') }}</h2>
           <ul class="check-list mt-24" style="font-size: 1rem">
             <li v-for="i in pricingIncluded" :key="i">
               <AppIcon name="check" :size="17" :stroke="2.6" />
@@ -267,7 +251,7 @@ function trackCta(label, destination) {
           <span class="icon-badge" style="background: #fff">
             <AppIcon name="wallet" :size="24" :stroke="1.9" />
           </span>
-          <h2 style="font-size: 1.3rem">Charged Separately</h2>
+          <h2 style="font-size: 1.3rem">{{ t('Charged Separately') }}</h2>
           <ul class="stack mt-24" style="--gap: 12px">
             <li v-for="e in pricingExcluded" :key="e" style="display: flex; gap: 10px; font-size: 0.95rem">
               <AppIcon name="spark" :size="16" :stroke="2" style="flex: none; margin-top: 3px; color: var(--c-600)" />
@@ -279,14 +263,14 @@ function trackCta(label, destination) {
 
       <!-- intercity fixed routes -->
       <div class="mt-40" v-reveal>
-        <h3 style="font-size: 1.15rem; margin-bottom: 14px">Intercity Fixed Routes</h3>
+        <h3 style="font-size: 1.15rem; margin-bottom: 14px">{{ t('Intercity Fixed Routes') }}</h3>
         <div class="price-table-wrap">
           <table class="price-table">
             <thead>
               <tr>
-                <th scope="col">Route (one way)</th>
-                <th scope="col">Sedan</th>
-                <th scope="col">MPV</th>
+                <th scope="col">{{ t('Route (one way)') }}</th>
+                <th scope="col">{{ t('Sedan') }}</th>
+                <th scope="col">{{ t('MPV') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -298,11 +282,7 @@ function trackCta(label, destination) {
             </tbody>
           </table>
         </div>
-        <p class="table-note">
-          Same price in both directions, tolls and parking included. Heading
-          somewhere else in the Pearl River Delta? Send us the address — we will
-          confirm the total before you book.
-        </p>
+        <p class="table-note">{{ t('Same price in both directions, tolls and parking included. Heading somewhere else in the Pearl River Delta? Send us the address — we will confirm the total before you book.') }}</p>
       </div>
     </div>
   </section>
@@ -311,13 +291,9 @@ function trackCta(label, destination) {
   <section class="section section--soft" id="payment">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Flexible &amp; safe payment</p>
-        <h2>How Payment Works</h2>
-        <p class="lead">
-          Only a 20% deposit is needed to confirm your booking, and you can pay
-          it with a card or PayPal before you fly — no Chinese payment app
-          required for overseas guests.
-        </p>
+        <p class="eyebrow">{{ t('Flexible &amp; safe payment') }}</p>
+        <h2>{{ t('How Payment Works') }}</h2>
+        <p class="lead">{{ t('Only a 20% deposit is needed to confirm your booking, and you can pay it with a card or PayPal before you fly — no Chinese payment app required for overseas guests.') }}</p>
       </div>
 
       <ProcessSteps :steps="paymentSteps" />
@@ -325,10 +301,7 @@ function trackCta(label, destination) {
       <!-- payment badges, styled after the reference site -->
       <div class="pay-accept mt-40" v-reveal>
         <PaymentIcons />
-        <p class="pay-accept__note">
-          Only the 20% deposit is paid up front — settle the balance after your
-          trip, however you prefer.
-        </p>
+        <p class="pay-accept__note">{{ t('Only the 20% deposit is paid up front — settle the balance after your trip, however you prefer.') }}</p>
       </div>
 
       <div class="pay-grid mt-24">
@@ -358,12 +331,9 @@ function trackCta(label, destination) {
     <div class="container">
       <div class="grid grid--2" style="align-items: start">
         <div v-reveal>
-          <p class="eyebrow">Plans change</p>
-          <h2>Cancellation Policy</h2>
-          <p class="lead">
-            Tell us as early as you can and we will always try to help. Our
-            standard terms are simple and shown here in full — no small print.
-          </p>
+          <p class="eyebrow">{{ t('Plans change') }}</p>
+          <h2>{{ t('Cancellation Policy') }}</h2>
+          <p class="lead">{{ t('Tell us as early as you can and we will always try to help. Our standard terms are simple and shown here in full — no small print.') }}</p>
 
           <ul class="policy-list mt-24">
             <li v-for="c in cancellationPolicy" :key="c.label" :class="`policy-row policy-row--${c.tone}`">
@@ -382,11 +352,9 @@ function trackCta(label, destination) {
               to="/contact"
               class="btn btn--sm"
               @click="trackCta('Book with a 20% deposit', '/contact')"
-            >Book with a 20% deposit</RouterLink>
+            >{{ t('Book with a 20% deposit') }}</RouterLink>
             <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--outline btn--sm">
-              <AppIcon name="whatsapp" :size="17" :stroke="1.8" />
-              Ask a question
-            </a>
+              <AppIcon name="whatsapp" :size="17" :stroke="1.8" />{{ t('Ask a question') }}</a>
           </div>
         </div>
 
@@ -394,28 +362,18 @@ function trackCta(label, destination) {
           <span class="icon-badge" style="background: #fff">
             <AppIcon name="shield" :size="24" :stroke="1.9" />
           </span>
-          <h2 style="font-size: 1.25rem">Book With Confidence</h2>
+          <h2 style="font-size: 1.25rem">{{ t('Book With Confidence') }}</h2>
           <ul class="check-list mt-24" style="font-size: 0.97rem">
             <li>
-              <AppIcon name="check" :size="17" :stroke="2.6" />
-              Deposit refunded in full when you cancel more than 48 hours ahead
-            </li>
+              <AppIcon name="check" :size="17" :stroke="2.6" />{{ t('Deposit refunded in full when you cancel more than 48 hours ahead') }}</li>
             <li>
-              <AppIcon name="check" :size="17" :stroke="2.6" />
-              Pay the balance only after the service has been delivered
-            </li>
+              <AppIcon name="check" :size="17" :stroke="2.6" />{{ t('Pay the balance only after the service has been delivered') }}</li>
             <li>
-              <AppIcon name="check" :size="17" :stroke="2.6" />
-              Card and PayPal payments handled over an encrypted connection
-            </li>
+              <AppIcon name="check" :size="17" :stroke="2.6" />{{ t('Card and PayPal payments handled over an encrypted connection') }}</li>
             <li>
-              <AppIcon name="check" :size="17" :stroke="2.6" />
-              One fixed price confirmed in writing before you pay anything
-            </li>
+              <AppIcon name="check" :size="17" :stroke="2.6" />{{ t('One fixed price confirmed in writing before you pay anything') }}</li>
             <li>
-              <AppIcon name="check" :size="17" :stroke="2.6" />
-              Flight monitored, so a delay never costs you the driver
-            </li>
+              <AppIcon name="check" :size="17" :stroke="2.6" />{{ t('Flight monitored, so a delay never costs you the driver') }}</li>
           </ul>
         </div>
       </div>
@@ -426,14 +384,14 @@ function trackCta(label, destination) {
   <section class="section section--soft">
     <div class="container container--narrow">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Good to know</p>
-        <h2>Pricing &amp; Payment FAQs</h2>
+        <p class="eyebrow">{{ t('Good to know') }}</p>
+        <h2>{{ t('Pricing &amp; Payment FAQs') }}</h2>
       </div>
 
       <FaqAccordion :items="pricingFaq.items" id-prefix="prc" :open-index="0" />
 
       <div class="btn-row mt-32" style="justify-content: center">
-        <RouterLink to="/faqs" class="btn btn--outline btn--sm">All frequently asked questions</RouterLink>
+        <RouterLink to="/faqs" class="btn btn--outline btn--sm">{{ t('All frequently asked questions') }}</RouterLink>
       </div>
     </div>
   </section>

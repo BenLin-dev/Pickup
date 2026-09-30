@@ -12,6 +12,7 @@ import { intercityAdvantages, intercitySteps, ctaBands } from '@/data/content'
 import { site, vehicleOptions } from '@/data/site'
 import { routePageBySlug, routeBadges } from '@/data/routePages'
 import { money } from '@/utils/price'
+import { t } from '@/i18n'
 
 /**
  * One view for all six `Guangzhou to <City>` landing pages.
@@ -100,20 +101,16 @@ function cell(value) {
       :badges="routeBadges"
       priority
       :crumbs="[
-        { label: 'Home', to: '/' },
-        { label: 'Intercity Transfer', to: '/intercity-transfer' },
+        { label: t('Home'), to: '/' },
+        { label: t('Intercity Transfer'), to: '/intercity-transfer' },
         { label: page.city },
       ]"
     >
       <template #actions>
-        <a href="#quote" class="btn btn--light btn--lg">
-          Get a Quote
-          <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+        <a href="#quote" class="btn btn--light btn--lg">{{ t('Get a Quote') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
         </a>
         <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--ghost-light btn--lg">
-          <AppIcon name="whatsapp" :size="18" :stroke="1.8" />
-          WhatsApp us
-        </a>
+          <AppIcon name="whatsapp" :size="18" :stroke="1.8" />{{ t('WhatsApp us') }}</a>
       </template>
     </HeroSection>
 
@@ -122,8 +119,8 @@ function cell(value) {
       <div class="container">
         <InlineQuote
           service="Intercity transfer"
-          :title="`Get a Fixed Price to ${page.city}`"
-          :lead="`Send us both addresses and we will confirm the fare for your ${page.city} trip.`"
+          :title="t('Get a Fixed Price to {city}', { city: page.city })"
+          :lead="t('Send us both addresses and we will confirm the fare for your {city} trip.', { city: page.city })"
         />
       </div>
     </section>
@@ -132,12 +129,9 @@ function cell(value) {
     <section class="section">
       <div class="container">
         <div class="section-head section-head--center" v-reveal>
-          <p class="eyebrow">What you get</p>
-          <h2>Why Book a Fixed Route</h2>
-          <p class="lead">
-            Long-distance driving in Guangdong is easy to underestimate. We price it up
-            front and give you a realistic arrival window.
-          </p>
+          <p class="eyebrow">{{ t('What you get') }}</p>
+          <h2>{{ t('Why Book a Fixed Route') }}</h2>
+          <p class="lead">{{ t('Long-distance driving in Guangdong is easy to underestimate. We price it up front and give you a realistic arrival window.') }}</p>
         </div>
 
         <div class="grid grid--4">
@@ -161,24 +155,21 @@ function cell(value) {
     <section class="section section--soft">
       <div class="container">
         <div class="section-head" v-reveal>
-          <p class="eyebrow">Fixed prices</p>
+          <p class="eyebrow">{{ t('Fixed prices') }}</p>
           <h2>Guangzhou to {{ page.city }} Transfer Prices</h2>
-          <p class="lead">
-            Fixed prices per vehicle, not per person. Tolls, parking and fuel are inside the
-            figure, and the fare is the same in either direction.
-          </p>
+          <p class="lead">{{ t('Fixed prices per vehicle, not per person. Tolls, parking and fuel are inside the figure, and the fare is the same in either direction.') }}</p>
         </div>
 
         <div class="price-table-wrap">
           <table class="price-table">
             <thead>
               <tr>
-                <th scope="col">From</th>
+                <th scope="col">{{ t('From') }}</th>
                 <th scope="col">To</th>
-                <th scope="col">Distance</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Sedan (1–3)</th>
-                <th scope="col">7-seat MPV (1–6)</th>
+                <th scope="col">{{ t('Distance') }}</th>
+                <th scope="col">{{ t('Duration') }}</th>
+                <th scope="col">{{ t('Sedan (1–3)') }}</th>
+                <th scope="col">{{ t('7-seat MPV (1–6)') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -207,10 +198,7 @@ function cell(value) {
           </li>
         </ul>
 
-        <p class="table-note">
-          Airport pickups are quoted on your flight details — send us the flight number and we
-          will confirm the figure. Prices shown are in US dollars.
-        </p>
+        <p class="table-note">{{ t('Airport pickups are quoted on your flight details — send us the flight number and we will confirm the figure. Prices shown are in US dollars.') }}</p>
       </div>
     </section>
 
@@ -219,7 +207,7 @@ function cell(value) {
       <div class="container">
         <div class="split">
           <div v-reveal>
-            <p class="eyebrow">For buyers and business travellers</p>
+            <p class="eyebrow">{{ t('For buyers and business travellers') }}</p>
             <h2>{{ page.buyer.title }}</h2>
             <p class="lead">{{ page.buyer.text }}</p>
 
@@ -231,9 +219,7 @@ function cell(value) {
             </ul>
 
             <div class="btn-row mt-32">
-              <RouterLink to="/multi-day-sourcing-tour" class="btn btn--outline">
-                Multi-day sourcing tours
-                <AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
+              <RouterLink to="/multi-day-sourcing-tour" class="btn btn--outline">{{ t('Multi-day sourcing tours') }}<AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
               </RouterLink>
             </div>
           </div>
@@ -241,7 +227,7 @@ function cell(value) {
           <div v-reveal="{ delay: 120 }">
             <img
               src="/images/hero/factory.jpg"
-              alt="Factory and warehouse district in Guangdong"
+              :alt="t('Factory and warehouse district in Guangdong')"
               loading="lazy"
               decoding="async"
               style="border-radius: var(--r-xl); box-shadow: var(--sh-lg); width: 100%"
@@ -270,9 +256,9 @@ function cell(value) {
     <section class="section section--mint">
       <div class="container">
         <div class="section-head section-head--center" v-reveal>
-          <p class="eyebrow">Step by step</p>
-          <h2>How It Works</h2>
-          <p class="lead">Four steps, and no meter to watch on the day.</p>
+          <p class="eyebrow">{{ t('Step by step') }}</p>
+          <h2>{{ t('How It Works') }}</h2>
+          <p class="lead">{{ t('Four steps, and no meter to watch on the day.') }}</p>
         </div>
 
         <ProcessSteps :steps="intercitySteps" />
@@ -283,9 +269,9 @@ function cell(value) {
     <section class="section">
       <div class="container">
         <div class="section-head section-head--center" v-reveal>
-          <p class="eyebrow">Comfort and space</p>
-          <h2>Choose Your Vehicle</h2>
-          <p class="lead">All vehicles are clean, smoke-free and fully insured.</p>
+          <p class="eyebrow">{{ t('Comfort and space') }}</p>
+          <h2>{{ t('Choose Your Vehicle') }}</h2>
+          <p class="lead">{{ t('All vehicles are clean, smoke-free and fully insured.') }}</p>
         </div>
 
         <div class="grid grid--2" style="max-width: 860px; margin: 0 auto">
@@ -298,7 +284,7 @@ function cell(value) {
             <div class="vehicle__media">
               <img
                 :src="v.image"
-                :alt="`${v.label} — Guangzhou to ${page.city} transfer vehicle`"
+                :alt="t('{label} — Guangzhou to {city} transfer vehicle', { label: v.label, city: page.city })"
                 loading="lazy"
                 decoding="async"
               />
@@ -313,16 +299,14 @@ function cell(value) {
               </div>
               <p class="vehicle__desc">{{ v.text }}</p>
               <p class="price" style="font-size: 1.2rem">
-                From {{ money(v.from) }} <small>per vehicle</small>
+                From {{ money(v.from) }} <small>{{ t('per vehicle') }}</small>
               </p>
             </div>
           </article>
         </div>
 
         <div class="btn-row mt-32" style="justify-content: center">
-          <RouterLink to="/vehicles-pricing" class="btn btn--outline">
-            See full fleet &amp; prices
-            <AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
+          <RouterLink to="/vehicles-pricing" class="btn btn--outline">{{ t('See full fleet &amp; prices') }}<AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
           </RouterLink>
         </div>
       </div>
@@ -332,9 +316,9 @@ function cell(value) {
     <section class="section section--mint">
       <div class="container">
         <div class="section-head section-head--center" v-reveal>
-          <p class="eyebrow">Guest reviews</p>
-          <h2>What Our Guests Say</h2>
-          <p class="lead">Real messages from travellers we have driven in Guangzhou and beyond.</p>
+          <p class="eyebrow">{{ t('Guest reviews') }}</p>
+          <h2>{{ t('What Our Guests Say') }}</h2>
+          <p class="lead">{{ t('Real messages from travellers we have driven in Guangzhou and beyond.') }}</p>
         </div>
 
         <TestimonialWall />
@@ -345,7 +329,7 @@ function cell(value) {
     <section class="section">
       <div class="container container--narrow">
         <div class="section-head section-head--center" v-reveal>
-          <p class="eyebrow">Good to know</p>
+          <p class="eyebrow">{{ t('Good to know') }}</p>
           <h2>Guangzhou–{{ page.city }} Transfer FAQ</h2>
         </div>
 
@@ -363,7 +347,7 @@ function cell(value) {
       <div class="container">
         <CtaBand
           v-bind="ctaBands.intercity"
-          :title="`Ready to Book Your ${page.city} Transfer?`"
+          :title="t('Ready to Book Your {city} Transfer?', { city: page.city })"
           :image="page.hero"
         />
       </div>
@@ -373,14 +357,11 @@ function cell(value) {
   <!-- unknown city in the URL — a real 404 beats a half-rendered page -->
   <section v-else class="section">
     <div class="container container--narrow" style="text-align: center">
-      <h1>Route not found</h1>
-      <p class="lead">
-        We could not find that route. Have a look at every intercity fare we publish, or send us
-        both addresses and we will quote it.
-      </p>
+      <h1>{{ t('Route not found') }}</h1>
+      <p class="lead">{{ t('We could not find that route. Have a look at every intercity fare we publish, or send us both addresses and we will quote it.') }}</p>
       <div class="btn-row" style="justify-content: center">
-        <RouterLink to="/intercity-transfer" class="btn">All intercity routes</RouterLink>
-        <RouterLink to="/contact" class="btn btn--outline">Get a quote</RouterLink>
+        <RouterLink to="/intercity-transfer" class="btn">{{ t('All intercity routes') }}</RouterLink>
+        <RouterLink to="/contact" class="btn btn--outline">{{ t('Get a quote') }}</RouterLink>
       </div>
     </div>
   </section>

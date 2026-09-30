@@ -1,6 +1,7 @@
 <script setup>
 import AppIcon from './AppIcon.vue'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 /**
  * Long-form legal copy (privacy policy, terms) rendered from an array of
@@ -34,16 +35,11 @@ defineProps({
         <span class="icon-badge">
           <AppIcon name="chat" :size="24" :stroke="1.9" />
         </span>
-        <h2 style="font-size: 1.2rem">Questions about this page?</h2>
-        <p class="card__text">
-          Message us and a real person will answer — usually within 30 minutes
-          during the day.
-        </p>
+        <h2 style="font-size: 1.2rem">{{ t('Questions about this page?') }}</h2>
+        <p class="card__text">{{ t('Message us and a real person will answer — usually within 30 minutes during the day.') }}</p>
         <div class="btn-row mt-24">
           <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--sm">
-            <AppIcon name="whatsapp" :size="17" :stroke="1.8" />
-            WhatsApp
-          </a>
+            <AppIcon name="whatsapp" :size="17" :stroke="1.8" />{{ t('WhatsApp') }}</a>
           <a :href="site.mailto" class="btn btn--outline btn--sm">
             <AppIcon name="mail" :size="17" :stroke="1.8" />
             {{ site.email }}

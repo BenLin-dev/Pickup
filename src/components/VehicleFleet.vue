@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import VehicleCard from './VehicleCard.vue'
 import { fleet as fallbackFleet } from '@/data/site'
+import { tr } from '@/i18n'
 
 /**
  * Renders the fleet from `/data/vehicles.json`.
@@ -11,6 +12,12 @@ import { fleet as fallbackFleet } from '@/data/site'
  * picked up automatically. If the manifest is missing or a photo has not been
  * described yet, we fall back to the curated list in `src/data/site.js` so the
  * page is never empty.
+ *
+ * The manifest is fetched at run time, which means it arrives in English —
+ * nothing has translated it, because it did not exist when the data modules
+ * were evaluated. `tr()` runs over whatever comes back, using the same
+ * catalogue the rest of the site uses; `scripts/extract-i18n.mjs` reads the
+ * manifest too, so its copy is a first-class part of `en.json`.
  */
 const props = defineProps({
   limit: { type: Number, default: 0 },
@@ -31,7 +38,7 @@ onMounted(async () => {
     if (res.ok) {
       const json = await res.json()
       const list = Array.isArray(json) ? json : (json?.items ?? [])
-      if (list.length) vehicles.value = list
+      if (list.length) vehicles.value = tr(list)
     }
   } catch {
     /* keep the fallback list */

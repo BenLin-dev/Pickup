@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
+import { tr } from '@/i18n'
 
 /**
  * "See Us in Action" — the photo wall.
@@ -38,7 +39,10 @@ onMounted(async () => {
       cache: 'no-cache',
     })
     const json = res.ok ? await res.json() : null
-    items.value = Array.isArray(json) ? json : (json?.items ?? [])
+    // The gallery manifest carries only paths and sizes today, but a caption or
+    // alt text added later would arrive in English too — `tr()` costs nothing
+    // here and keeps the section from becoming the one that is silently English.
+    items.value = tr(Array.isArray(json) ? json : (json?.items ?? []))
   } catch {
     items.value = []
   }
@@ -51,8 +55,8 @@ onMounted(async () => {
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
         <p v-if="eyebrow" class="eyebrow">{{ eyebrow }}</p>
-        <h2>{{ title }}</h2>
-        <p v-if="lead" class="lead">{{ lead }}</p>
+        <h2>{{ t(title) }}</h2>
+        <p v-if="lead" class="lead">{{ t(lead) }}</p>
       </div>
 
       <div class="photo-wall" v-reveal>

@@ -1,4 +1,5 @@
 <script setup>
+import { t } from '@/i18n'
 /**
  * "We accept" payment badge row.
  *
@@ -22,11 +23,11 @@ defineProps({
 
 <template>
   <div class="payicons" :class="`payicons--${tone}`">
-    <span v-if="label" class="payicons__caption">{{ caption }}</span>
+    <span v-if="label" class="payicons__caption">{{ t(caption) }}</span>
 
     <ul class="payicons__list">
       <li>
-        <svg class="payicon" viewBox="0 0 44 28" role="img" aria-label="Visa">
+        <svg class="payicon" viewBox="0 0 44 28" role="img" :aria-label="t('Visa')">
           <rect class="pi-plate" width="44" height="28" rx="5" />
           <text
             class="pi-mark"
@@ -38,14 +39,12 @@ defineProps({
             font-weight="700"
             font-style="italic"
             letter-spacing="0.3"
-          >
-            VISA
-          </text>
+          >{{ t('VISA') }}</text>
         </svg>
       </li>
 
       <li>
-        <svg class="payicon" viewBox="0 0 44 28" role="img" aria-label="Mastercard">
+        <svg class="payicon" viewBox="0 0 44 28" role="img" :aria-label="t('Mastercard')">
           <rect class="pi-plate" width="44" height="28" rx="5" />
           <circle class="pi-mark" cx="17.4" cy="11.6" r="6.4" opacity="0.7" />
           <circle class="pi-mark" cx="26.6" cy="11.6" r="6.4" opacity="0.7" />
@@ -65,7 +64,7 @@ defineProps({
       </li>
 
       <li>
-        <svg class="payicon" viewBox="0 0 44 28" role="img" aria-label="PayPal">
+        <svg class="payicon" viewBox="0 0 44 28" role="img" :aria-label="t('PayPal')">
           <rect class="pi-plate" width="44" height="28" rx="5" />
           <text
             class="pi-mark"
@@ -76,14 +75,12 @@ defineProps({
             font-size="9.8"
             font-weight="700"
             font-style="italic"
-          >
-            PayPal
-          </text>
+          >{{ t('PayPal') }}</text>
         </svg>
       </li>
 
       <li>
-        <svg class="payicon" viewBox="0 0 44 28" role="img" aria-label="Alipay">
+        <svg class="payicon" viewBox="0 0 44 28" role="img" :aria-label="t('Alipay')">
           <rect class="pi-plate" width="44" height="28" rx="5" />
           <text
             class="pi-mark"
@@ -93,14 +90,12 @@ defineProps({
             font-family="Arial, Helvetica, sans-serif"
             font-size="9.8"
             font-weight="700"
-          >
-            Alipay
-          </text>
+          >{{ t('Alipay') }}</text>
         </svg>
       </li>
 
       <li>
-        <svg class="payicon" viewBox="0 0 44 28" role="img" aria-label="WeChat Pay">
+        <svg class="payicon" viewBox="0 0 44 28" role="img" :aria-label="t('WeChat Pay')">
           <rect class="pi-plate" width="44" height="28" rx="5" />
           <g class="pi-mark">
             <ellipse cx="18.2" cy="11.9" rx="7.4" ry="6.1" opacity="0.72" />

@@ -11,8 +11,10 @@
  * Nothing else needs to change: the page reads whatever is here.
  */
 
+
+import { tr } from '../i18n/index.js'
 /** Headline numbers, shown as a stat bar under the hero. */
-export const proofStats = [
+export const proofStats = tr([
   // PLACEHOLDER — replace with the real cumulative passenger count
   { value: '12,400+', label: 'Travellers driven', sub: 'since we started' },
   // PLACEHOLDER — replace with the real number of guest nationalities
@@ -21,13 +23,13 @@ export const proofStats = [
   { value: '99.2%', label: 'On-time pickups', sub: 'measured at the curb' },
   // PLACEHOLDER — replace with your real first year of trading
   { value: '2018', label: 'On the road since', sub: 'same local team' },
-]
+])
 
 /**
  * Where our guests come from. These are the nationalities that appear in the
  * review screenshots on this page, so the strip and the wall tell one story.
  */
-export const guestCountries = [
+export const guestCountries = tr([
   { name: 'United States', code: 'US' },
   { name: 'United Kingdom', code: 'GB' },
   { name: 'Australia', code: 'AU' },
@@ -38,7 +40,7 @@ export const guestCountries = [
   { name: 'Brazil', code: 'BR' },
   { name: 'Spain', code: 'ES' },
   { name: 'Italy', code: 'IT' },
-]
+])
 
 /**
  * "See Us in Action" is deliberately NOT here.
@@ -52,7 +54,7 @@ export const guestCountries = [
  */
 
 /** What every fare includes — stated once, here, so the page can be specific. */
-export const proofCredentials = [
+export const proofCredentials = tr([
   {
     icon: 'shield',
     title: 'Vehicles insured for passenger transport',
@@ -83,4 +85,4 @@ export const proofCredentials = [
     title: 'Free cancellation up to 48 hours',
     text: 'Plans change. Cancel more than 48 hours before pickup and your deposit comes back in full.',
   },
-]
+])

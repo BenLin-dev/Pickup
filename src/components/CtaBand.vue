@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import AppIcon from './AppIcon.vue'
+import { t } from '@/i18n'
 
 /**
  * Alt text per band photo.
@@ -71,7 +72,7 @@ function trackCta(label, destination) {
 
     <div class="btn-row">
       <RouterLink :to="to" class="btn btn--light btn--lg" @click="trackCta(button, to)">
-        {{ button }}
+        {{ t(button) }}
         <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
       </RouterLink>
       <RouterLink

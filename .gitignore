@@ -36,3 +36,10 @@ Thumbs.db
 # stay local. `_tmp_*` is scratch and must never be committed.
 _src/
 _tmp_*/
+/bing-webmaster-onboarding.md
+/cantonride-comparison-report.md
+/conversion-audit-report.md
+/geo-ai-visibility-report.md
+/google-ads-onboarding.md
+/google-search-onboarding.md
+/tripadvisor-onboarding.md

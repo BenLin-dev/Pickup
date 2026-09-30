@@ -6,8 +6,9 @@
   "description": "CantonPickup — Guangzhou & Foshan airport transfers, private drivers and factory visit transport.",
   "scripts": {
     "assets": "node scripts/scan-assets.mjs",
+    "i18n": "node scripts/extract-i18n.mjs",
     "dev": "node scripts/scan-assets.mjs && vite",
-    "build": "node scripts/scan-assets.mjs && vite build && node scripts/prerender.mjs",
+    "build": "node scripts/extract-i18n.mjs && node scripts/scan-assets.mjs && vite build && node scripts/prerender.mjs",
     "build:spa": "node scripts/scan-assets.mjs && vite build",
     "preview": "vite preview --port 4173"
   },

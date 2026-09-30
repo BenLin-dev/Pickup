@@ -2,6 +2,7 @@
 import AppIcon from './AppIcon.vue'
 import QuoteForm from './QuoteForm.vue'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 /**
  * Inline quote panel for landing pages.
@@ -19,6 +20,11 @@ import { site } from '@/data/site'
 defineProps({
   /** Service option to pre-select — must match a value in `serviceOptions`. */
   service: { type: String, default: '' },
+  /**
+   * These three defaults are display copy, not code, so they go through `t()`
+   * like every other string on the site — a page that renders the panel
+   * without passing a title was otherwise the one place left in English.
+   */
   title: { type: String, default: 'Get Your Free Quote' },
   lead: {
     type: String,
@@ -35,37 +41,33 @@ defineProps({
 <template>
   <div class="inline-quote">
     <div class="inline-quote__aside">
-      <p class="eyebrow">Free quote</p>
-      <h2 class="inline-quote__title">{{ title }}</h2>
-      <p class="inline-quote__lead">{{ lead }}</p>
+      <p class="eyebrow">{{ t('Free quote') }}</p>
+      <h2 class="inline-quote__title">{{ t(title) }}</h2>
+      <p class="inline-quote__lead">{{ t(lead) }}</p>
 
       <ul class="inline-quote__points">
         <li>
           <AppIcon name="clock" :size="18" :stroke="2.1" />
-          <span><strong>Reply within 60 minutes</strong> during business hours</span>
+          <span><strong>{{ t('Reply within 60 minutes') }}</strong>{{ t('during business hours') }}</span>
         </li>
         <li>
           <AppIcon name="wallet" :size="18" :stroke="2.1" />
-          <span><strong>Fixed price per vehicle</strong> — tolls and parking included</span>
+          <span><strong>{{ t('Fixed price per vehicle') }}</strong>{{ t('— tolls and parking included') }}</span>
         </li>
         <li>
           <AppIcon name="shield" :size="18" :stroke="2.1" />
-          <span><strong>20% deposit</strong>, and free cancellation up to 48 hours before</span>
+          <span><strong>{{ t('20% deposit') }}</strong>{{ t(', and free cancellation up to 48 hours before') }}</span>
         </li>
       </ul>
 
-      <p class="inline-quote__alt">
-        Prefer to chat? Message us on
-        <a :href="site.waLink($route.path)" target="_blank" rel="noopener">
+      <p class="inline-quote__alt">{{ t('Prefer to chat? Message us on') }}<a :href="site.waLink($route.path)" target="_blank" rel="noopener">
           WhatsApp {{ site.whatsapp }}
-        </a>
-        — we usually answer within minutes.
-      </p>
+        </a>{{ t('— we usually answer within minutes.') }}</p>
     </div>
 
     <div class="inline-quote__form">
       <QuoteForm :preselect="service" />
-      <p v-if="reassurance" class="inline-quote__fineprint">{{ reassurance }}</p>
+      <p v-if="reassurance" class="inline-quote__fineprint">{{ t(reassurance) }}</p>
     </div>
   </div>
 </template>

@@ -8,6 +8,7 @@ import { useSeo, useJsonLd, useBreadcrumbs } from '@/composables/useSeo'
 import { pages, driverOptions, driverIncluded, driverUseCases, faqGroups, ctaBands, heroBadges } from '@/data/content'
 import { site } from '@/data/site'
 import { money } from '@/utils/price'
+import { t } from '@/i18n'
 
 const page = pages.privateDriver
 useSeo(page)
@@ -53,22 +54,18 @@ useBreadcrumbs('private-driver', [
   <HeroSection
     variant="media"
     image="/images/hero/private-driver.jpg"
-    image-alt="Executive MPV with a private driver in Guangzhou"
-    eyebrow="Private Driver"
+    :image-alt="t('Executive MPV with a private driver in Guangzhou')"
+    :eyebrow="t('Private Driver')"
     :title="page.h1"
     :lead="page.lead"
     :badges="heroBadges.privateDriver"
     priority
-    :crumbs="[{ label: 'Home', to: '/' }, { label: 'Private Driver' }]"
+    :crumbs="[{ label: t('Home'), to: '/' }, { label: t('Private Driver') }]"
   >
     <template #actions>
-      <RouterLink to="/contact" class="btn btn--light btn--lg">
-        Get a Quote
-        <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+      <RouterLink to="/contact" class="btn btn--light btn--lg">{{ t('Get a Quote') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
       </RouterLink>
-      <RouterLink to="/vehicles-pricing" class="btn btn--ghost-light btn--lg">
-        See prices
-      </RouterLink>
+      <RouterLink to="/vehicles-pricing" class="btn btn--ghost-light btn--lg">{{ t('See prices') }}</RouterLink>
     </template>
   </HeroSection>
 
@@ -76,12 +73,9 @@ useBreadcrumbs('private-driver', [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Choose your hire</p>
-        <h2>Service Options</h2>
-        <p class="lead">
-          Book by the half day, the full day, or keep the same driver for your
-          whole trip. Every option is per vehicle.
-        </p>
+        <p class="eyebrow">{{ t('Choose your hire') }}</p>
+        <h2>{{ t('Service Options') }}</h2>
+        <p class="lead">{{ t('Book by the half day, the full day, or keep the same driver for your whole trip. Every option is per vehicle.') }}</p>
       </div>
 
       <div class="grid grid--3">
@@ -99,18 +93,15 @@ useBreadcrumbs('private-driver', [
           <p class="pill" style="align-self: flex-start">{{ o.hours }}</p>
           <p class="price" style="font-size: 1.3rem">
             <template v-if="o.from">
-              From {{ money(o.from) }} <small>per vehicle</small>
+              From {{ money(o.from) }} <small>{{ t('per vehicle') }}</small>
             </template>
-            <template v-else>On request</template>
+            <template v-else>{{ t('On request') }}</template>
           </p>
           <p class="card__text">{{ o.text }}</p>
         </article>
       </div>
 
-      <p class="table-note">
-        Both hire options include the vehicle, the driver, fuel, tolls and
-        parking inside the city area.
-      </p>
+      <p class="table-note">{{ t('Both hire options include the vehicle, the driver, fuel, tolls and parking inside the city area.') }}</p>
     </div>
   </section>
 
@@ -119,12 +110,9 @@ useBreadcrumbs('private-driver', [
     <div class="container">
       <div class="split">
         <div v-reveal>
-          <p class="eyebrow">No surprises</p>
-          <h2>What's Included</h2>
-          <p class="lead">
-            One clear price per vehicle. Everything below is already covered —
-            you will not be asked to pay extra at the end of the day.
-          </p>
+          <p class="eyebrow">{{ t('No surprises') }}</p>
+          <h2>{{ t('What\'s Included') }}</h2>
+          <p class="lead">{{ t('One clear price per vehicle. Everything below is already covered — you will not be asked to pay extra at the end of the day.') }}</p>
 
           <ul class="check-list mt-24" style="font-size: 1rem">
             <li v-for="f in driverIncluded" :key="f">
@@ -134,21 +122,17 @@ useBreadcrumbs('private-driver', [
           </ul>
 
           <div class="btn-row mt-32">
-            <RouterLink to="/contact" class="btn">
-              Get a Quote
-              <AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
+            <RouterLink to="/contact" class="btn">{{ t('Get a Quote') }}<AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
             </RouterLink>
             <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--outline">
-              <AppIcon name="whatsapp" :size="17" :stroke="1.8" />
-              Ask a question
-            </a>
+              <AppIcon name="whatsapp" :size="17" :stroke="1.8" />{{ t('Ask a question') }}</a>
           </div>
         </div>
 
         <div v-reveal="{ delay: 120 }">
           <img
             src="/images/hero/chauffeur.jpg"
-            alt="English-speaking chauffeur in Guangzhou"
+            :alt="t('English-speaking chauffeur in Guangzhou')"
             loading="lazy"
             decoding="async"
             style="border-radius: var(--r-xl); box-shadow: var(--sh-lg); width: 100%"
@@ -162,17 +146,15 @@ useBreadcrumbs('private-driver', [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Our fleet</p>
-        <h2>Pick Your Vehicle</h2>
-        <p class="lead">Sedans for city trips, seven-seat MPVs for groups and luggage.</p>
+        <p class="eyebrow">{{ t('Our fleet') }}</p>
+        <h2>{{ t('Pick Your Vehicle') }}</h2>
+        <p class="lead">{{ t('Sedans for city trips, seven-seat MPVs for groups and luggage.') }}</p>
       </div>
 
       <VehicleFleet />
 
       <div class="btn-row mt-32" style="justify-content: center">
-        <RouterLink to="/vehicles-pricing" class="btn btn--outline">
-          Compare all vehicles &amp; prices
-          <AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
+        <RouterLink to="/vehicles-pricing" class="btn btn--outline">{{ t('Compare all vehicles &amp; prices') }}<AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
         </RouterLink>
       </div>
     </div>
@@ -182,9 +164,9 @@ useBreadcrumbs('private-driver', [
   <section class="section section--mint">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">When to book</p>
-        <h2>Common Use Cases</h2>
-        <p class="lead">A driver on standby turns a tight schedule into a comfortable one.</p>
+        <p class="eyebrow">{{ t('When to book') }}</p>
+        <h2>{{ t('Common Use Cases') }}</h2>
+        <p class="lead">{{ t('A driver on standby turns a tight schedule into a comfortable one.') }}</p>
       </div>
 
       <div class="grid grid--4">
@@ -203,14 +185,14 @@ useBreadcrumbs('private-driver', [
   <section class="section">
     <div class="container container--narrow">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Good to know</p>
-        <h2>Private Driver FAQs</h2>
+        <p class="eyebrow">{{ t('Good to know') }}</p>
+        <h2>{{ t('Private Driver FAQs') }}</h2>
       </div>
 
       <FaqAccordion :items="driverFaq.items" id-prefix="drv" :open-index="0" />
 
       <div class="btn-row mt-32" style="justify-content: center">
-        <RouterLink to="/faqs" class="btn btn--outline btn--sm">All frequently asked questions</RouterLink>
+        <RouterLink to="/faqs" class="btn btn--outline btn--sm">{{ t('All frequently asked questions') }}</RouterLink>
       </div>
     </div>
   </section>

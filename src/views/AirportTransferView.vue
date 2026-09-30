@@ -8,6 +8,7 @@ import { useSeo, useJsonLd, useBreadcrumbs } from '@/composables/useSeo'
 import { pages, airportAdvantages, airportSteps, faqGroups, ctaBands, heroBadges } from '@/data/content'
 import { site, popularRoutes, vehicleOptions } from '@/data/site'
 import { money } from '@/utils/price'
+import { t } from '@/i18n'
 
 const page = pages.airportTransfer
 useSeo(page)
@@ -61,23 +62,19 @@ useBreadcrumbs('airport-transfer', [
   <HeroSection
     variant="media"
     image="/images/hero/airport.jpg"
-    image-alt="Terminal at Guangzhou Baiyun International Airport"
-    eyebrow="Airport Transfer"
+    :image-alt="t('Terminal at Guangzhou Baiyun International Airport')"
+    :eyebrow="t('Airport Transfer')"
     :title="page.h1"
     :lead="page.lead"
     :badges="heroBadges.airportTransfer"
     priority
-    :crumbs="[{ label: 'Home', to: '/' }, { label: 'Airport Transfer' }]"
+    :crumbs="[{ label: t('Home'), to: '/' }, { label: t('Airport Transfer') }]"
   >
     <template #actions>
-      <RouterLink to="/contact" class="btn btn--light btn--lg">
-        Get a Quote
-        <AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
+      <RouterLink to="/contact" class="btn btn--light btn--lg">{{ t('Get a Quote') }}<AppIcon name="arrow" :size="18" :stroke="2.2" class="btn__arrow" />
       </RouterLink>
       <a :href="site.waLink($route.path)" target="_blank" rel="noopener" class="btn btn--ghost-light btn--lg">
-        <AppIcon name="whatsapp" :size="18" :stroke="1.8" />
-        WhatsApp us
-      </a>
+        <AppIcon name="whatsapp" :size="18" :stroke="1.8" />{{ t('WhatsApp us') }}</a>
     </template>
   </HeroSection>
 
@@ -85,12 +82,9 @@ useBreadcrumbs('airport-transfer', [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">What you get</p>
-        <h2>Why Choose Us</h2>
-        <p class="lead">
-          Airport pickups are the part of the trip where things go wrong most
-          easily. We plan around that.
-        </p>
+        <p class="eyebrow">{{ t('What you get') }}</p>
+        <h2>{{ t('Why Choose Us') }}</h2>
+        <p class="lead">{{ t('Airport pickups are the part of the trip where things go wrong most easily. We plan around that.') }}</p>
       </div>
 
       <div class="grid grid--4">
@@ -112,12 +106,9 @@ useBreadcrumbs('airport-transfer', [
   <section id="fares" class="section section--soft">
     <div class="container">
       <div class="section-head" v-reveal>
-        <p class="eyebrow">Fixed prices</p>
-        <h2>Popular Routes</h2>
-        <p class="lead">
-          One price per vehicle — not per person. Tolls and airport parking are
-          already included.
-        </p>
+        <p class="eyebrow">{{ t('Fixed prices') }}</p>
+        <h2>{{ t('Popular Routes') }}</h2>
+        <p class="lead">{{ t('One price per vehicle — not per person. Tolls and airport parking are already included.') }}</p>
       </div>
 
       <div class="grid grid--3">
@@ -144,22 +135,17 @@ useBreadcrumbs('airport-transfer', [
                 {{ money(r.mpv) }} for a 7-seat MPV — per vehicle
               </p>
             </template>
-            <p v-else class="price" style="font-size: 1.3rem">On request</p>
+            <p v-else class="price" style="font-size: 1.3rem">{{ t('On request') }}</p>
           </div>
 
           <p v-if="r.note" class="pill pill--accent" style="align-self: flex-start">{{ r.note }}</p>
 
-          <RouterLink to="/contact" class="btn btn--outline btn--sm">
-            Book this route
-            <AppIcon name="arrow" :size="16" :stroke="2.2" class="btn__arrow" />
+          <RouterLink to="/contact" class="btn btn--outline btn--sm">{{ t('Book this route') }}<AppIcon name="arrow" :size="16" :stroke="2.2" class="btn__arrow" />
           </RouterLink>
         </article>
       </div>
 
-      <p class="table-note">
-        Need a different destination? Send us your address and we will quote a
-        fixed price — usually the same day.
-      </p>
+      <p class="table-note">{{ t('Need a different destination? Send us your address and we will quote a fixed price — usually the same day.') }}</p>
     </div>
   </section>
 
@@ -167,15 +153,15 @@ useBreadcrumbs('airport-transfer', [
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Comfort and space</p>
-        <h2>Vehicle Options</h2>
-        <p class="lead">Choose the size that matches your group and luggage.</p>
+        <p class="eyebrow">{{ t('Comfort and space') }}</p>
+        <h2>{{ t('Vehicle Options') }}</h2>
+        <p class="lead">{{ t('Choose the size that matches your group and luggage.') }}</p>
       </div>
 
       <div class="grid grid--2" style="max-width: 860px; margin: 0 auto">
         <article v-for="(v, i) in vehicleOptions" :key="v.label" class="vehicle" v-reveal="{ delay: i * 80 }">
           <div class="vehicle__media">
-            <img :src="v.image" :alt="`${v.label} airport transfer vehicle`" loading="lazy" decoding="async" />
+            <img :src="v.image" :alt="t('{label} airport transfer vehicle', { label: v.label })" loading="lazy" decoding="async" />
           </div>
           <div class="vehicle__body">
             <h3 class="vehicle__name">{{ v.label }}</h3>
@@ -187,17 +173,15 @@ useBreadcrumbs('airport-transfer', [
             </div>
             <p class="vehicle__desc">{{ v.text }}</p>
             <p v-if="v.from" class="price" style="font-size: 1.2rem">
-              From {{ money(v.from) }} <small>per vehicle</small>
+              From {{ money(v.from) }} <small>{{ t('per vehicle') }}</small>
             </p>
-            <p v-else class="price" style="font-size: 1.1rem">On request</p>
+            <p v-else class="price" style="font-size: 1.1rem">{{ t('On request') }}</p>
           </div>
         </article>
       </div>
 
       <div class="btn-row mt-32" style="justify-content: center">
-        <RouterLink to="/vehicles-pricing" class="btn btn--outline">
-          See full fleet &amp; prices
-          <AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
+        <RouterLink to="/vehicles-pricing" class="btn btn--outline">{{ t('See full fleet &amp; prices') }}<AppIcon name="arrow" :size="17" :stroke="2.2" class="btn__arrow" />
         </RouterLink>
       </div>
     </div>
@@ -207,9 +191,9 @@ useBreadcrumbs('airport-transfer', [
   <section class="section section--mint">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Step by step</p>
-        <h2>How to Book</h2>
-        <p class="lead">From landing to leaving the terminal, we keep it simple.</p>
+        <p class="eyebrow">{{ t('Step by step') }}</p>
+        <h2>{{ t('How to Book') }}</h2>
+        <p class="lead">{{ t('From landing to leaving the terminal, we keep it simple.') }}</p>
       </div>
 
       <ProcessSteps :steps="airportSteps" />
@@ -220,14 +204,14 @@ useBreadcrumbs('airport-transfer', [
   <section class="section">
     <div class="container container--narrow">
       <div class="section-head section-head--center" v-reveal>
-        <p class="eyebrow">Good to know</p>
-        <h2>Airport Transfer FAQs</h2>
+        <p class="eyebrow">{{ t('Good to know') }}</p>
+        <h2>{{ t('Airport Transfer FAQs') }}</h2>
       </div>
 
       <FaqAccordion :items="airportFaq.items" id-prefix="ap" :open-index="0" />
 
       <div class="btn-row mt-32" style="justify-content: center">
-        <RouterLink to="/faqs" class="btn btn--outline btn--sm">All frequently asked questions</RouterLink>
+        <RouterLink to="/faqs" class="btn btn--outline btn--sm">{{ t('All frequently asked questions') }}</RouterLink>
       </div>
     </div>
   </section>

@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import AppIcon from './AppIcon.vue'
+import { t } from '@/i18n'
 
 /**
  * Page hero.
@@ -64,7 +65,7 @@ const pillList = computed(() =>
     </template>
 
     <div class="container hero__inner">
-      <nav v-if="crumbs.length" class="crumbs" aria-label="Breadcrumb">
+      <nav v-if="crumbs.length" class="crumbs" :aria-label="t('Breadcrumb')">
         <template v-for="(c, i) in crumbs" :key="c.to || c.label">
           <RouterLink v-if="c.to" :to="c.to">{{ c.label }}</RouterLink>
           <span v-else>{{ c.label }}</span>

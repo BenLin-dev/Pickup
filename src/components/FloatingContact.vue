@@ -1,6 +1,7 @@
 <script setup>
 import AppIcon from './AppIcon.vue'
 import { site } from '@/data/site'
+import { t } from '@/i18n'
 
 /**
  * Floating contact stack — permanently pinned to the bottom-right corner.
@@ -46,13 +47,13 @@ function track(channel) {
       :aria-label="`Chat with us on WhatsApp — ${site.whatsapp}`"
     >
       <AppIcon name="whatsapp" :size="22" :stroke="1.7" />
-      <span>WhatsApp</span>
+      <span>{{ t('WhatsApp') }}</span>
     </a>
 
     <a
       class="fab fab--icon fab--desktop"
       :href="site.mailto"
-      aria-label="Email us"
+      :aria-label="t('Email us')"
       @click="track('email')"
     >
       <AppIcon name="mail" :size="21" :stroke="1.9" />
@@ -61,7 +62,7 @@ function track(channel) {
     <a
       class="fab fab--icon fab--desktop"
       :href="`tel:${site.phoneRaw}`"
-      aria-label="Call us"
+      :aria-label="t('Call us')"
       @click="track('phone')"
     >
       <AppIcon name="phone" :size="20" :stroke="1.9" />

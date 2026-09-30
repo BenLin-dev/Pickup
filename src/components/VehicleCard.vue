@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
 import { priceFromBySlug } from '@/data/site'
 import { money } from '@/utils/price'
+import { t } from '@/i18n'
 
 const props = defineProps({
   vehicle: { type: Object, required: true },
@@ -67,7 +68,7 @@ function trackSelectVehicle() {
       <img
         v-if="current"
         :src="current"
-        :alt="`${vehicle.name} — private driver vehicle in Guangzhou and Foshan`"
+        :alt="t('{name} — private driver vehicle in Guangzhou and Foshan', { name: vehicle.name })"
         loading="lazy"
         decoding="async"
       />
@@ -93,7 +94,7 @@ function trackSelectVehicle() {
 
       <p v-if="from" class="vehicle__price">
         <strong>From {{ money(from) }}</strong>
-        <small>airport pickup · per vehicle</small>
+        <small>{{ t('airport pickup · per vehicle') }}</small>
       </p>
 
       <p v-if="vehicle.description" class="vehicle__desc">{{ vehicle.description }}</p>
@@ -119,9 +120,7 @@ function trackSelectVehicle() {
         </button>
       </div>
 
-      <RouterLink to="/contact" class="btn btn--outline btn--sm" @click="trackSelectVehicle">
-        Get a quote
-        <AppIcon name="arrow" :size="16" :stroke="2.2" class="btn__arrow" />
+      <RouterLink to="/contact" class="btn btn--outline btn--sm" @click="trackSelectVehicle">{{ t('Get a quote') }}<AppIcon name="arrow" :size="16" :stroke="2.2" class="btn__arrow" />
       </RouterLink>
     </div>
   </article>
