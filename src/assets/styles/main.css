@@ -999,17 +999,26 @@ p:last-child {
 .lang {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  gap: 5px;
+  padding: 8px 10px;
   border-radius: var(--r-full);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   font-family: inherit;
   white-space: nowrap;
   color: var(--c-muted);
   border: 1px solid var(--c-line);
   background: #fff;
   cursor: pointer;
+}
+
+/* Two letters in every language, so the pill never changes width and never
+   nudges the nav as you switch. */
+.lang__code {
+  display: inline-block;
+  min-width: 1.5em;
+  text-align: center;
 }
 
 .lang:hover {
@@ -1085,6 +1094,31 @@ p:last-child {
   border-color: var(--c-700);
 }
 
+/* The footer sits on the dark brand colour, where the light chips are
+   unreadable — same buttons, inverted. */
+.footer__lang {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.lang-row--dark .lang-row__item {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.lang-row--dark .lang-row__item:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #fff;
+}
+
+.lang-row--dark .lang-row__item.is-active {
+  background: #fff;
+  border-color: #fff;
+  color: var(--c-800);
+}
+
 .burger {
   display: none;
   width: 44px;
@@ -1098,14 +1132,65 @@ p:last-child {
   color: var(--c-800);
 }
 
-@media (max-width: 1080px) {
-  .nav__link {
-    padding: 9px 10px;
-    font-size: 0.89rem;
-  }
-  /* the trigger goes away; the drawer carries the same five languages */
+/* ---------------------------------------------------- header, by language --
+   The row is logo · nav · [language] · [CTA] · [burger], and it was tuned to
+   English. Measured at the 1200px the container settles on, English needed
+   1165px — 35px of slack — and the switcher alone is 84px plus its gap. So
+   every breakpoint below is arithmetic, not taste:
+
+   | locale | needed | note                                        |
+   | en     | 1165   | 35px of slack, the tightest of the five     |
+   | fr     | 1187   |                                             |
+   | it     | 1208   | already 8px over before this work           |
+   | de     | 1290   | 90px over — "Startseite"/"Bewertungen"      |
+   | es     | 1399   | 199px over — "Preguntas frecuentes" is 183px
+   |        |        | against 65px for "FAQs"                     |
+
+   Two consequences. The switcher can only live where the row has ~1200px, so
+   it hides below 1200 and the drawer carries the languages instead. And every
+   language except English gets a tighter nav and folds into the burger at
+   1100 rather than 940 — English keeps its original metrics because it is the
+   version Google indexes and the paid-search pages land on. */
+
+/* The drawer carries the same five languages below this. 1160 is where the
+   pill's own 84px stops fitting: with it, the widest row needs 1152px. */
+@media (max-width: 1160px) {
   .lang-switch {
     display: none;
+  }
+}
+
+/* English only needs the pre-existing compaction, minus a pixel: at 941px the
+   row wanted 945px. */
+@media (max-width: 1080px) {
+  .nav__link {
+    padding: 9px 9px;
+    font-size: 0.89rem;
+  }
+}
+
+/* Longer labels need the room back out of the padding and the type size. */
+html:not([lang='en']) .nav__link {
+  padding: 9px 10px;
+  font-size: 0.88rem;
+}
+
+html:not([lang='en']) .nav {
+  gap: 2px;
+}
+
+@media (max-width: 1100px) {
+  html:not([lang='en']) .nav,
+  html:not([lang='en']) .header__actions .btn {
+    display: none;
+  }
+  /* the nav carried the auto margin; with it gone the actions would hug the
+     logo and the burger would sit mid-bar — same reason as the 940 rule */
+  html:not([lang='en']) .header__actions {
+    margin-left: auto;
+  }
+  html:not([lang='en']) .burger {
+    display: inline-flex;
   }
 }
 

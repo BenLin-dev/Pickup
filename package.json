@@ -7,9 +7,10 @@
   "scripts": {
     "assets": "node scripts/scan-assets.mjs",
     "i18n": "node scripts/extract-i18n.mjs",
+    "check:bindings": "node scripts/check-template-bindings.mjs",
     "dev": "node scripts/scan-assets.mjs && vite",
-    "build": "node scripts/extract-i18n.mjs && node scripts/scan-assets.mjs && vite build && node scripts/prerender.mjs",
-    "build:spa": "node scripts/scan-assets.mjs && vite build",
+    "build": "node scripts/extract-i18n.mjs && node scripts/check-template-bindings.mjs && node scripts/scan-assets.mjs && vite build && node scripts/prerender.mjs",
+    "build:spa": "node scripts/check-template-bindings.mjs && node scripts/scan-assets.mjs && vite build",
     "preview": "vite preview --port 4173"
   },
   "dependencies": {

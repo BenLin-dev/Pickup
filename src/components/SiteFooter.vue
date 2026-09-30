@@ -3,9 +3,14 @@ import { computed } from 'vue'
 import AppIcon from './AppIcon.vue'
 import PaymentIcons from './PaymentIcons.vue'
 import { site, nav, routeNav, footerKeywords } from '@/data/site'
-import { t } from '@/i18n'
+import { LOCALES, locale, setLocale, t } from '@/i18n'
 
 const year = computed(() => new Date().getFullYear())
+
+/** Same reload-based switch as the header — see `src/i18n/README.md`. */
+function pick(code) {
+  if (code !== locale) setLocale(code)
+}
 
 const serviceLinks = nav[1].children
 </script>
@@ -121,6 +126,28 @@ const serviceLinks = nav[1].children
           <RouterLink v-for="k in footerKeywords" :key="k.label" :to="k.to">
             {{ k.label }}
           </RouterLink>
+        </div>
+      </div>
+
+      <!-- The one route to another language that exists at every width.
+           The header trigger needs ~1160px before it fits next to seven
+           translated nav labels, and the burger only appears once the nav has
+           collapsed — so between those two points the header alone would leave
+           English visitors with no way to switch. This row always does. -->
+      <div class="footer__lang">
+        <div class="lang-row lang-row--dark" role="group" :aria-label="t('Choose language')">
+          <button
+            v-for="l in LOCALES"
+            :key="l.code"
+            type="button"
+            class="lang-row__item"
+            :class="{ 'is-active': l.code === locale }"
+            :lang="l.code"
+            :aria-current="l.code === locale ? 'true' : undefined"
+            @click="pick(l.code)"
+          >
+            {{ l.label }}
+          </button>
         </div>
       </div>
 

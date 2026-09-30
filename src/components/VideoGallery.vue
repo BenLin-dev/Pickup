@@ -1,7 +1,10 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
-import { tr } from '@/i18n'
+// `t` as well as `tr`: the section head below translates its own props. Without
+// the import the template compiles `t(title)` to `_ctx.t(title)`, which is
+// undefined — Vue catches the throw and print a blank <h2>.
+import { tr, t } from '@/i18n'
 
 /**
  * Video gallery.
@@ -102,7 +105,7 @@ function play(item) {
   <section v-if="shown.length" class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p v-if="eyebrow" class="eyebrow">{{ eyebrow }}</p>
+        <p v-if="eyebrow" class="eyebrow">{{ t(eyebrow) }}</p>
         <h2>{{ t(title) }}</h2>
         <p v-if="lead" class="lead">{{ t(lead) }}</p>
       </div>

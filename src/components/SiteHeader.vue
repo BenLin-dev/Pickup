@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { nav, site } from '@/data/site'
 import AppIcon from './AppIcon.vue'
@@ -10,6 +10,9 @@ const stuck = ref(false)
 const open = ref(false)
 const langOpen = ref(false)
 const langWrap = ref(null)
+
+/** The pill shows "ES"; a screen reader gets the language's own name. */
+const langAria = computed(() => `${t('Choose language')}: ${currentLocale.label}`)
 
 /**
  * Language menu.
@@ -107,11 +110,15 @@ function isActive(item) {
             type="button"
             :aria-expanded="langOpen"
             aria-haspopup="true"
-            :aria-label="t('Choose language')"
+            :aria-label="langAria"
             @click="langOpen = !langOpen"
           >
             <AppIcon name="globe" :size="15" :stroke="2" />
-            {{ currentLocale.label }}
+            <!-- Two letters, not the endonym. The header row holds seven nav
+                 labels that grow in translation, and "Español" costs 60px of a
+                 bar with 35px to spare. The full name is in the menu and in the
+                 aria-label, so nothing is lost for a screen reader. -->
+            <span class="lang__code">{{ currentLocale.short }}</span>
             <AppIcon name="chevron" :size="13" :stroke="2.4" />
           </button>
           <ul v-if="langOpen" class="lang-switch__menu" role="menu">

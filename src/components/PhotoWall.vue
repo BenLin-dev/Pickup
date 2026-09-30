@@ -1,6 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { tr } from '@/i18n'
+// `t` as well as `tr`: the section head below translates its own props. Import
+// both, or Vue compiles `t(title)` to `_ctx.t(title)` — which is undefined, so
+// the render throws, Vue swallows it, and the <h2> silently renders blank.
+import { tr, t } from '@/i18n'
 
 /**
  * "See Us in Action" — the photo wall.
@@ -54,7 +57,7 @@ onMounted(async () => {
   <section v-if="items.length" class="section">
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
-        <p v-if="eyebrow" class="eyebrow">{{ eyebrow }}</p>
+        <p v-if="eyebrow" class="eyebrow">{{ t(eyebrow) }}</p>
         <h2>{{ t(title) }}</h2>
         <p v-if="lead" class="lead">{{ t(lead) }}</p>
       </div>
