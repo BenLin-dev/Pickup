@@ -153,7 +153,13 @@ function play(item) {
               <span class="reel-card__play">
                 <AppIcon name="play" :size="20" :stroke="2.2" />
               </span>
-              <span v-if="v.title" class="reel-card__caption">{{ v.title }}</span>
+              <!-- 标题 + 说明两行。`PUT-VIDEOS-HERE.md` 一直把 caption 写成
+                   「标题下面那行小灰字」，但模板以前只渲染 title —— 说明文案进了
+                   清单却从没显示过（`reel-card__caption` 这个名字其实是标题）。 -->
+              <span v-if="v.title || v.caption" class="reel-card__caption">
+                <span v-if="v.title" class="reel-card__title">{{ v.title }}</span>
+                <span v-if="v.caption" class="reel-card__sub">{{ v.caption }}</span>
+              </span>
             </button>
           </div>
         </figure>
