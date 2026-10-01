@@ -19,7 +19,7 @@ CantonPickup is a private car service (car + driver, never self-drive) in Guangz
 - 7-seat MPV (1-6 passengers): airport pickup or drop-off in the Guangzhou city area (1-50 km) $77; half day (5 hours / 120 km) $127; full day (10 hours / 250 km) $247.
 - Overtime: $24 per hour (sedan), $30 per hour (MPV). Extra distance: $1.50 per km half day / $0.70 per km full day (sedan), $2.00 per km half day / $0.85 per km full day (MPV).
 - Popular fixed route: Baiyun Airport (CAN) to Foshan city centre, $87 sedan / $117 MPV, 70-90 minutes.
-- Popular fixed route: Guangzhou South Station to Foshan city centre, $57 sedan / $77 MPV, 40-60 minutes.
+- Popular fixed route: Guangzhou South Station to Foshan city centre, $57 sedan / $77 MPV, 40-90 minutes.
 - Intercity fixed prices, one way, same price in both directions, tolls and parking included: Guangzhou to Foshan $57 sedan / $77 MPV; Dongguan $97 / $127; Zhongshan $127 / $167; Shenzhen $137 / $177; Zhuhai $147 / $187; Huizhou $157 / $197.
 - Canton Fair: the China Import and Export Fair runs twice a year in April and October at the Pazhou Complex, Guangzhou. We provide airport transfers, hotel shuttles and multi-day driver hire for the fair.
 

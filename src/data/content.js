@@ -22,7 +22,7 @@ export const pages = tr({
     path: '/airport-transfer',
     title: 'Guangzhou Baiyun Airport Transfer & Pickup | CantonPickup',
     description:
-      'Guangzhou Baiyun Airport (CAN) pickup by English-speaking driver. Flight monitoring, meet & greet with a name sign, 60 minutes free waiting.',
+      'Guangzhou Baiyun Airport (CAN) pickup by English-speaking driver. Flight monitoring, meet & greet with a name sign, 90 minutes free waiting.',
     keywords:
       'guangzhou airport transfer, guangzhou airport pickup, guangzhou baiyun airport transfer, baiyun airport transfer, CAN airport transfer, guangzhou arrival transfer, guangzhou south station pickup, china visa free transit guangzhou, 240-hour visa free transit guangzhou, guangzhou airport to canton fair',
     h1: 'Guangzhou Baiyun Airport Pickup (CAN) — Meet & Greet',
@@ -287,7 +287,7 @@ export const termsSections = [
   {
     title: '4. Waiting time and flight delays',
     body: [
-      'For airport pickups we monitor your flight. If it lands late, your driver waits and the pickup time moves with it — there is no extra charge. Standard free waiting time at the airport is 60 minutes from landing.',
+      'For airport pickups we monitor your flight. If it lands late, your driver waits and the pickup time moves with it — there is no extra charge. Standard free waiting time at the airport is 90 minutes from landing.',
       'For other pickups, 15 minutes of waiting time is included. Additional waiting time is charged at the hourly overtime rate shown on our pricing page, in 30-minute blocks.',
     ],
   },
@@ -359,7 +359,7 @@ export const serviceCards = tr([
     text: 'Land, clear immigration, and find your driver waiting in the arrivals hall with a sign. We follow your flight, so a late landing never costs you anything extra.',
     points: [
       'Flight monitored in real time — no charge if you land late',
-      '60 minutes of free waiting time after your flight lands',
+      '90 minutes of free waiting time after your flight lands',
       'Meet & greet with a name sign inside the terminal',
     ],
   },
@@ -820,7 +820,7 @@ export const faqGroups = tr([
       },
       {
         q: 'How much waiting time is included?',
-        a: 'For airport arrivals we include 60 minutes of free waiting time from the moment your flight lands, and 30 minutes for departures and railway station pickups. If you are held up in immigration or baggage claim, just let us know.',
+        a: 'For airport arrivals we include 90 minutes of free waiting time from the moment your flight lands, and 30 minutes for departures and railway station pickups. If you are held up in immigration or baggage claim, just let us know.',
       },
       {
         q: 'Which airports and stations do you cover?',
@@ -1228,7 +1228,7 @@ export const heroBadges = tr({
     { icon: 'plane', text: 'Flight monitored' },
     { icon: 'user', text: 'Meet & Greet with name sign' },
     { icon: 'luggage', text: 'Luggage handled' },
-    { icon: 'shield', text: '60 minutes free waiting' },
+    { icon: 'shield', text: '90 minutes free waiting' },
     { icon: 'wallet', text: 'Airport pickup from $57' },
   ],
   privateDriver: [

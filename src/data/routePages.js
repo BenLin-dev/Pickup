@@ -96,7 +96,7 @@ export const routePages = tr([
     faq: [
       {
         q: 'How long does the drive from Guangzhou to Foshan take?',
-        a: 'Between 40 and 60 minutes from central Guangzhou, and 70 to 90 minutes from Baiyun Airport. Traffic around the Foshan ring road is heaviest between 08:00 and 09:30, so allow a little more if you have a meeting to reach.',
+        a: 'Between 40 and 90 minutes from central Guangzhou, and 70 to 90 minutes from Baiyun Airport. Traffic around the Foshan ring road is heaviest between 08:00 and 09:30, so allow a little more if you have a meeting to reach.',
       },
       {
         q: 'Is the price per person or per vehicle?',

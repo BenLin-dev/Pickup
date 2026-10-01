@@ -302,7 +302,7 @@ export const articles = [
         heading: 'Getting into the city',
         body: [
           'The metro is cheap and reliable, and the airport express bus covers the main hotel districts. Both involve managing your own luggage.',
-          'A private car is the simplest option if you are arriving after a long flight, carrying samples, or heading somewhere that is not next to a metro station. The drive to central Guangzhou is around 45 to 60 minutes; to Foshan, 70 to 90 minutes.',
+          'A private car is the simplest option if you are arriving after a long flight, carrying samples, or heading somewhere that is not next to a metro station. The drive to central Guangzhou is around 45 to 90 minutes; to Foshan, 70 to 90 minutes.',
         ],
       },
     ],
