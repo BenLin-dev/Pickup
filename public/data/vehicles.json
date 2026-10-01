@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-30T03:13:42.181Z",
+  "generated": "2026-10-01T03:23:26.518Z",
   "items": [
     {
       "slug": "hongqi",
@@ -113,6 +113,25 @@
         "Extra legroom",
         "Panoramic roof",
         "Meet & greet included"
+      ]
+    },
+    {
+      "slug": "ford-transit",
+      "name": "Ford Transit 9-Seat",
+      "models": "Ford Transit or similar",
+      "image": "/images/vehicles/ford-transit.jpg",
+      "images": [
+        "/images/vehicles/ford-transit.jpg"
+      ],
+      "passengers": "1–8 passengers",
+      "luggage": "6–8 suitcases",
+      "tag": "Largest",
+      "description": "Nine seats and the deepest boot in the fleet — built for a whole buying team, or a factory run where the samples come back with you.",
+      "features": [
+        "9 seats",
+        "Large luggage space",
+        "Air conditioning",
+        "Child seat on request"
       ]
     }
   ]

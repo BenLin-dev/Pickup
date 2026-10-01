@@ -316,6 +316,18 @@ export const fleet = tr([
       'Our flagship vehicle. Leather interior, exceptional comfort and the presence you want for VIP guests and important clients.',
     features: ['Leather interior', 'Extra legroom', 'Panoramic roof', 'Meet & greet included'],
   },
+  {
+    slug: 'ford-transit',
+    name: 'Ford Transit 9-Seat',
+    models: 'Ford Transit or similar',
+    image: '/images/vehicles/ford-transit.jpg',
+    passengers: '1–8 passengers',
+    luggage: '6–8 suitcases',
+    tag: 'Largest',
+    description:
+      'Nine seats and the deepest boot in the fleet — built for a whole buying team, or a factory run where the samples come back with you.',
+    features: ['9 seats', 'Large luggage space', 'Air conditioning', 'Child seat on request'],
+  },
 ])
 
 /**
@@ -374,6 +386,36 @@ const pricingEn = {
       { label: 'Extra distance, full day', value: '$0.85 per km' },
     ],
   },
+  // ---------------------------------------------------------------- 豪华车
+  // 「奔驰就是豪华车」：Mercedes-Benz V-Class 单独成档，不再并入 7 座 MPV。
+  // 半日 / 全日包车价这次**没有给新的数字**（客户在表里注明「包车价格没有修改过」），
+  // 所以这两行留 null —— 页面会显示 "On request"。别自作主张推算：本项目的规矩是
+  // 价格只能来自客户确认过的数字。
+  luxury: {
+    label: 'Luxury — Mercedes-Benz',
+    seats: '1–6 passengers',
+    rows: [
+      { service: 'Baiyun Airport pickup / drop-off', scope: 'Guangzhou city area, 1–50 km', price: 87 },
+      { service: 'Point-to-point transfer', scope: 'Guangzhou city area, 1–50 km', price: 87 },
+      { service: 'Guangzhou South Railway Station', scope: 'Guangzhou city area, 1–50 km', price: 87 },
+      { service: 'Half day hire', scope: '5 hours / 120 km', price: null },
+      { service: 'Full day hire', scope: '10 hours / 250 km', price: null },
+    ],
+    extras: [],
+  },
+  // ---------------------------------------------------------------- 九座车
+  van9: {
+    label: '9-Seat Van',
+    seats: '1–8 passengers',
+    rows: [
+      { service: 'Baiyun Airport pickup / drop-off', scope: 'Guangzhou city area, 1–50 km', price: 127 },
+      { service: 'Point-to-point transfer', scope: 'Guangzhou city area, 1–50 km', price: 127 },
+      { service: 'Guangzhou South Railway Station', scope: 'Guangzhou city area, 1–50 km', price: 127 },
+      { service: 'Half day hire', scope: '5 hours / 120 km', price: null },
+      { service: 'Full day hire', scope: '10 hours / 250 km', price: null },
+    ],
+    extras: [],
+  },
 }
 
 export const pricing = tr(pricingEn)
@@ -385,7 +427,7 @@ export const priceHighlights = tr([
   { label: 'Full-day private driver', from: 187, unit: '10 hours / 250 km', to: '/private-driver' },
 ])
 
-/** The "Baiyun Airport pickup / drop-off" row of one of the two rate tables. */
+/** The "Baiyun Airport pickup / drop-off" row of one of the four rate tables. */
 const airportFare = (tier) =>
   pricingEn[tier].rows.find((r) => r.service.startsWith('Baiyun Airport')).price
 
@@ -398,8 +440,13 @@ const airportFare = (tier) =>
  * live list is served from the generated `public/data/vehicles.json` manifest,
  * which knows about photos and seats but nothing about money. The figures are
  * read from `pricing` above rather than typed in: a card can then never quote a
- * price the tables below it contradict. Every vehicle we list is one of the two
- * published tiers (sedan / 7-seat MPV), so there are only two numbers.
+ * price the tables below it contradict. Every vehicle we list is one of the four
+ * published tiers (sedan / 7-seat MPV / luxury / 9-seat), so there are only four
+ * numbers.
+ *
+ * ★ 「奔驰就是豪华车」：Mercedes-Benz V-Class 走 `luxury` 档，不是 `mpv`。
+ * 它本来被归在 MPV 里，于是车队的顶配车和一辆普通 7 座同价 —— 客户这次明确
+ * 把它单独拎出来成一档。改档位只要动这一行，卡片价格会自己跟着走。
  */
 export const priceFromBySlug = {
   hongqi: airportFare('sedan'),
@@ -407,53 +454,227 @@ export const priceFromBySlug = {
   'denza-d9': airportFare('mpv'),
   'voyah-mpv': airportFare('mpv'),
   'gac-m8-white': airportFare('mpv'),
-  'mercedes-vclass': airportFare('mpv'),
+  'mercedes-vclass': airportFare('luxury'),
+  'ford-transit': airportFare('van9'),
 }
 
 /**
- * Popular fixed-price routes shown on the airport transfer page.
- * Order and destinations follow the approved layout reference.
+ * ★ 固定路线价目表 —— 全站唯一来源（2026-10-01 按客户《路线修改和新增第二次修改》
+ * 整表替换）。
+ *
+ * 四档车型：sedan 小车 / mpv 七座商务车 / luxury 豪华车（奔驰）/ van9 九座车。
+ * 之前只有两档，所有路线都只有「小车 + 商务车」两个数字；客户这次把价目表扩成
+ * 四列，奔驰单列为豪华车，并新增九座车。
+ *
+ * `group` 决定这条路线出现在哪：
+ *   airport  —— 从白云机场出发（12 条）→ 机场页的热门路线卡
+ *   其它     —— 南站出发 / 市区出发（11 条）
+ * 城际页和价格页显示**全部 23 条**，`hot: true` 的那几条带「热门」角标。
+ *
+ * ⚠️ 价格只能来自客户确认过的数字 —— 这张表是转录，不要推算、不要「取整补 7」。
+ * 旧的「参考站价格尾数改 7」的规矩只适用于本次未涉及的旧价，新表以原表为准
+ * （表里已经是 7 结尾，是巧合不是规则）。
  */
-export const popularRoutes = tr([
+const fixedRoutesEn = [
+  // ------------------------------------------------ 白云机场出发（12 条）
   {
+    group: 'airport',
     from: 'Baiyun Airport (CAN)',
-    to: 'Foshan city centre',
-    // Airport-to-Foshan tier, last digit set to 7.
-    sedan: 87,
-    mpv: 117,
-    duration: '70–90 min',
-    note: 'Most booked route',
+    to: 'Guangzhou city centre — Tianhe, Yuexiu, Baiyun, Liwan, Haizhu, Huadu',
+    sedan: 57, mpv: 77, luxury: 87, van9: 127,
+    duration: '40–60 min',
+    hot: true,
   },
   {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Guangzhou — Huangpu, Panyu',
+    sedan: 87, mpv: 117, luxury: 127, van9: 167,
+    duration: '60–90 min',
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Guangzhou — Nansha, Zengcheng, Conghua',
+    sedan: 107, mpv: 147, luxury: 167, van9: 207,
+    duration: '80–120 min',
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Foshan city centre — Chancheng, Nanhai (Guicheng)',
+    sedan: 87, mpv: 117, luxury: 127, van9: 167,
+    duration: '70–90 min',
+    hot: true,
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Foshan — Shunde, Sanshui, Gaoming, Nanhai (Jiujiang)',
+    sedan: 107, mpv: 147, luxury: 167, van9: 207,
+    duration: '90–130 min',
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Zhongshan — Guzhen lighting market',
+    sedan: 177, mpv: 237, luxury: 267, van9: 327,
+    duration: '110–150 min',
+    hot: true,
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Dongguan',
+    sedan: 177, mpv: 237, luxury: 267, van9: 327,
+    duration: '100–140 min',
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Huizhou',
+    sedan: 177, mpv: 237, luxury: 267, van9: 327,
+    duration: '140–180 min',
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Qingyuan city centre — Gulongxia',
+    sedan: 117, mpv: 147, luxury: 167, van9: 207,
+    duration: '70–110 min',
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Zhaoqing',
+    sedan: 157, mpv: 217, luxury: 247, van9: 307,
+    duration: '100–140 min',
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Shenzhen',
+    sedan: 177, mpv: 237, luxury: 267, van9: 327,
+    duration: '140–180 min',
+    hot: true,
+  },
+  {
+    group: 'airport',
+    from: 'Baiyun Airport (CAN)',
+    to: 'Zhuhai',
+    sedan: 177, mpv: 237, luxury: 267, van9: 327,
+    duration: '150–190 min',
+  },
+  // ------------------------------------------------ 南站 / 市区出发（11 条）
+  {
+    group: 'station',
+    from: 'Guangzhou South Station',
+    to: 'Guangzhou city centre',
+    sedan: 57, mpv: 77, luxury: 87, van9: 127,
+    duration: '30–50 min',
+  },
+  {
+    group: 'station',
     from: 'Guangzhou South Station',
     to: 'Foshan city centre',
-    // City-centre-to-city-centre tier (Guangzhou <-> Foshan), not the airport
-    // tier: the station sits much closer to Foshan.
-    sedan: 57,
-    mpv: 77,
+    sedan: 57, mpv: 77, luxury: 87, van9: 127,
     duration: '40–60 min',
   },
   {
-    from: "Shenzhen Bao'an Airport",
-    to: 'Foshan city centre',
-    sedan: null,
-    mpv: null,
-    duration: '2 – 2.5 h',
-    note: 'Quoted on request',
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Guangzhou city centre',
+    sedan: 57, mpv: 77, luxury: 87, van9: 127,
+    duration: '30–60 min',
+    hot: true,
   },
-])
+  {
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Foshan city centre',
+    sedan: 57, mpv: 77, luxury: 87, van9: 127,
+    duration: '40–60 min',
+    hot: true,
+  },
+  {
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Dongguan',
+    sedan: 147, mpv: 187, luxury: 207, van9: 247,
+    duration: '80–120 min',
+  },
+  {
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Zhongshan',
+    sedan: 147, mpv: 187, luxury: 207, van9: 247,
+    duration: '90–130 min',
+  },
+  {
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Shenzhen',
+    sedan: 177, mpv: 237, luxury: 267, van9: 327,
+    duration: '110–150 min',
+    hot: true,
+  },
+  {
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Zhuhai',
+    sedan: 147, mpv: 187, luxury: 207, van9: 247,
+    duration: '130–170 min',
+  },
+  {
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Huizhou',
+    sedan: 177, mpv: 237, luxury: 267, van9: 327,
+    duration: '120–160 min',
+  },
+  {
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Qingyuan',
+    sedan: 177, mpv: 237, luxury: 267, van9: 327,
+    duration: '80–120 min',
+  },
+  {
+    group: 'city',
+    from: 'Guangzhou city centre',
+    to: 'Zhaoqing',
+    sedan: 157, mpv: 217, luxury: 247, van9: 307,
+    duration: '90–130 min',
+  },
+]
+
+/** All 23 fixed-price routes — the intercity page and the pricing page. */
+export const fixedRoutes = tr(fixedRoutesEn)
+
+/**
+ * Popular fixed-price routes shown on the airport transfer page: the twelve
+ * that start at Baiyun Airport. Same objects as `fixedRoutes`, just filtered —
+ * one source, so the two pages can never disagree on a fare.
+ */
+export const popularRoutes = tr(fixedRoutesEn.filter((r) => r.group === 'airport'))
 
 /**
  * Vehicle tiers used by the "Vehicle Options" cards.
- * Sedan and MPV prices come from the table above. Larger vehicles
- * (12-seat and above, buses) are not offered, so they are not shown.
+ *
+ * `from` is derived from `pricing` with `airportFare()`, never typed in —
+ * these four cards sit next to route tables that carry the same numbers, and a
+ * hand-written figure is how a page ends up quoting two different prices.
+ *
+ * Four tiers after the 2026-10-01 rate card: sedan / 7-seat MPV / luxury
+ * (Mercedes-Benz) / 9-seat van. Larger vehicles (12-seat and above, buses)
+ * are not offered, so they are not shown.
  */
 export const vehicleOptions = tr([
   {
     slug: 'byd-han',
     label: 'Sedan',
     seats: '1–3 passengers',
-    from: 57,
+    from: airportFare('sedan'),
     image: '/images/vehicles/byd-han.jpg',
     text: 'Best for couples and solo travellers with light luggage.',
   },
@@ -461,26 +682,40 @@ export const vehicleOptions = tr([
     slug: 'gac-m8-white',
     label: 'MPV',
     seats: '1–6 passengers',
-    from: 77,
+    from: airportFare('mpv'),
     image: '/images/vehicles/gac-m8-white.jpg',
     text: 'The most popular choice for families and small groups.',
+  },
+  {
+    slug: 'mercedes-vclass',
+    label: 'Luxury',
+    seats: '1–6 passengers',
+    from: airportFare('luxury'),
+    image: '/images/vehicles/mercedes-vclass.jpg',
+    text: 'A Mercedes-Benz for VIP guests, client pickups and anyone who wants the quietest car we run.',
+  },
+  {
+    slug: 'ford-transit',
+    label: '9-Seat Van',
+    seats: '1–8 passengers',
+    from: airportFare('van9'),
+    image: '/images/vehicles/ford-transit.jpg',
+    text: 'Nine seats and a deep boot — the one to book when a whole team travels together with samples.',
   },
 ])
 
 /**
  * Intercity fixed routes — one way, same price in both directions, tolls and
- * parking included. These replace the old remote-area surcharge table: a flat
- * per-route price is easier to quote than a range the customer has to guess
- * their way into. Twelve-seat minibuses and larger are not offered.
+ * parking included.
+ *
+ * 2026-10-01: this used to be six hand-written `Guangzhou ↔ City` rows. It is
+ * now the whole `fixedRoutes` table (23 rows, four vehicle tiers), so the
+ * intercity page and the pricing page show exactly the same fares as the
+ * airport page. Duplicating the numbers here is what let the old six drift.
+ *
+ * Twelve-seat minibuses and larger are not offered.
  */
-export const intercityRoutes = tr([
-  { route: 'Guangzhou ↔ Foshan', sedan: 57, mpv: 77 },
-  { route: 'Guangzhou ↔ Dongguan', sedan: 97, mpv: 127 },
-  { route: 'Guangzhou ↔ Zhongshan', sedan: 127, mpv: 167 },
-  { route: 'Guangzhou ↔ Shenzhen', sedan: 137, mpv: 177 },
-  { route: 'Guangzhou ↔ Zhuhai', sedan: 147, mpv: 187 },
-  { route: 'Guangzhou ↔ Huizhou', sedan: 157, mpv: 197 },
-])
+export const intercityRoutes = fixedRoutes
 
 /**
  * SEO keyword set. The first group is the client's original research file; the

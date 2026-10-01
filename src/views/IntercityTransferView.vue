@@ -109,14 +109,18 @@ useBreadcrumbs('intercity-transfer', [
               <th scope="col">{{ t('Route') }}</th>
               <th scope="col">{{ t('Sedan (1–3)') }}</th>
               <th scope="col">{{ t('7-seat MPV (1–6)') }}</th>
+              <th scope="col">{{ t('Luxury (1–6)') }}</th>
+              <th scope="col">{{ t('9-seat (1–8)') }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="r in intercityRoutes" :key="r.route">
-              <td data-label="Route">{{ r.route }}</td>
+            <tr v-for="r in intercityRoutes" :key="r.from + r.to">
+              <td data-label="Route">{{ r.from }} → {{ r.to }}</td>
               <td data-label="Sedan">{{ money(r.sedan) }}</td>
-              <td data-label="7-seat MPV">
-                <span class="price">{{ money(r.mpv) }}</span>
+              <td data-label="7-seat MPV">{{ money(r.mpv) }}</td>
+              <td data-label="Luxury">{{ money(r.luxury) }}</td>
+              <td data-label="9-seat">
+                <span class="price">{{ money(r.van9) }}</span>
               </td>
             </tr>
           </tbody>

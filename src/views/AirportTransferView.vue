@@ -126,19 +126,18 @@ useBreadcrumbs('airport-transfer', [
           </h3>
 
           <div class="mt-24">
-            <template v-if="r.sedan">
-              <p class="price" style="font-size: 1.45rem">
-                From {{ money(r.sedan) }}
-                <small>sedan</small>
-              </p>
-              <p class="card__text" style="margin-top: 4px">
-                {{ money(r.mpv) }} for a 7-seat MPV — per vehicle
-              </p>
-            </template>
-            <p v-else class="price" style="font-size: 1.3rem">{{ t('On request') }}</p>
+            <p class="price" style="font-size: 1.45rem">
+              {{ t('From') }} {{ money(r.sedan) }}
+              <small>{{ t('sedan') }}</small>
+            </p>
+            <!-- 四档价目：小车 / 七座商务车 / 豪华车（奔驰）/ 九座车 -->
+            <p class="card__text" style="margin-top: 4px">
+              {{ money(r.mpv) }} {{ t('7-seat MPV') }} · {{ money(r.luxury) }} {{ t('luxury') }} ·
+              {{ money(r.van9) }} {{ t('9-seat') }} — {{ t('per vehicle') }}
+            </p>
           </div>
 
-          <p v-if="r.note" class="pill pill--accent" style="align-self: flex-start">{{ r.note }}</p>
+          <p v-if="r.hot" class="pill pill--accent" style="align-self: flex-start">{{ t('Most booked') }}</p>
 
           <RouterLink to="/contact" class="btn btn--outline btn--sm">{{ t('Book this route') }}<AppIcon name="arrow" :size="16" :stroke="2.2" class="btn__arrow" />
           </RouterLink>

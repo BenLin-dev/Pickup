@@ -42,10 +42,17 @@ useBreadcrumbs('vehicles-pricing', [
   { name: 'Vehicles & Pricing', path: null },
 ])
 
-/** Two tables — one per vehicle class — so each price column stays readable. */
+/**
+ * Four tables — one per vehicle class — so each price column stays readable.
+ * 2026-10-01: the rate card went from two tiers to four (sedan / 7-seat MPV /
+ * luxury Mercedes / 9-seat van). The grid is `grid--2`, so four cards land in
+ * two tidy rows; going past four would need a wider grid.
+ */
 const tables = [
   { key: 'sedan', ...pricing.sedan, image: '/images/vehicles/byd-han.jpg' },
   { key: 'mpv', ...pricing.mpv, image: '/images/vehicles/gac-m8-white.jpg' },
+  { key: 'luxury', ...pricing.luxury, image: '/images/vehicles/mercedes-vclass.jpg' },
+  { key: 'van9', ...pricing.van9, image: '/images/vehicles/ford-transit.jpg' },
 ]
 
 /** Route rows fall back to "On request" when we have no fixed price yet. */
@@ -93,7 +100,7 @@ function trackCta(label, destination) {
     <div class="container">
       <div class="section-head section-head--center" v-reveal>
         <p class="eyebrow">{{ t('Our fleet') }}</p>
-        <h2>{{ t('Sedans and 7-Seat MPVs') }}</h2>
+        <h2>{{ t('Sedans, MPVs, Luxury and 9-Seat Vans') }}</h2>
         <p class="lead">{{ t('Every vehicle is air-conditioned, cleaned before each trip and comes with an English-speaking driver.') }}</p>
       </div>
 
@@ -174,14 +181,17 @@ function trackCta(label, destination) {
                   <td data-label="Service">{{ r.service }}</td>
                   <td data-label="Included" style="color: var(--c-muted)">{{ r.scope }}</td>
                   <td data-label="Price">
-                    <span class="price">{{ money(r.price) }}</span>
+                    <!-- 半日 / 全日包车对豪华车和九座车这次没给数字：留白比编一个强 -->
+                    <span v-if="r.price != null" class="price">{{ money(r.price) }}</span>
+                    <span v-else style="color: var(--c-muted)">{{ t('On request') }}</span>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <ul class="stack mt-24" style="--gap: 10px">
+          <!-- 豪华车 / 九座车的超时费、超公里费这次没给数字 ⇒ 整块不显示 -->
+          <ul v-if="tier.extras && tier.extras.length" class="stack mt-24" style="--gap: 10px">
             <li v-for="e in tier.extras" :key="e.label" class="review__meta" style="display: flex; gap: 8px">
               <AppIcon name="spark" :size="15" :stroke="2" />
               <span><strong>{{ e.label }}:</strong> {{ e.value }}</span>
@@ -210,6 +220,8 @@ function trackCta(label, destination) {
               <th scope="col">{{ t('Journey time') }}</th>
               <th scope="col">{{ t('Sedan') }}</th>
               <th scope="col">{{ t('MPV') }}</th>
+              <th scope="col">{{ t('Luxury') }}</th>
+              <th scope="col">{{ t('9-seat') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -217,11 +229,11 @@ function trackCta(label, destination) {
               <td data-label="From">{{ r.from }}</td>
               <td data-label="To">{{ r.to }}</td>
               <td data-label="Journey time" style="color: var(--c-muted)">{{ r.duration }}</td>
-              <td data-label="Sedan" style="text-align: right">
-                {{ price(r.sedan) }}
-              </td>
-              <td data-label="MPV">
-                <span class="price">{{ price(r.mpv) }}</span>
+              <td data-label="Sedan">{{ money(r.sedan) }}</td>
+              <td data-label="MPV">{{ money(r.mpv) }}</td>
+              <td data-label="Luxury">{{ money(r.luxury) }}</td>
+              <td data-label="9-seat">
+                <span class="price">{{ money(r.van9) }}</span>
               </td>
             </tr>
           </tbody>
@@ -271,13 +283,17 @@ function trackCta(label, destination) {
                 <th scope="col">{{ t('Route (one way)') }}</th>
                 <th scope="col">{{ t('Sedan') }}</th>
                 <th scope="col">{{ t('MPV') }}</th>
+                <th scope="col">{{ t('Luxury') }}</th>
+                <th scope="col">{{ t('9-seat') }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="r in intercityRoutes" :key="r.route">
-                <td data-label="Route">{{ r.route }}</td>
+              <tr v-for="r in intercityRoutes" :key="r.from + r.to">
+                <td data-label="Route">{{ r.from }} → {{ r.to }}</td>
                 <td data-label="Sedan">{{ money(r.sedan) }}</td>
-                <td data-label="MPV"><span class="price">{{ money(r.mpv) }}</span></td>
+                <td data-label="MPV">{{ money(r.mpv) }}</td>
+                <td data-label="Luxury">{{ money(r.luxury) }}</td>
+                <td data-label="9-seat"><span class="price">{{ money(r.van9) }}</span></td>
               </tr>
             </tbody>
           </table>

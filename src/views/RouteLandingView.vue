@@ -170,6 +170,8 @@ function cell(value) {
                 <th scope="col">{{ t('Duration') }}</th>
                 <th scope="col">{{ t('Sedan (1–3)') }}</th>
                 <th scope="col">{{ t('7-seat MPV (1–6)') }}</th>
+                <th scope="col">{{ t('Luxury (1–6)') }}</th>
+                <th scope="col">{{ t('9-seat (1–8)') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -184,6 +186,14 @@ function cell(value) {
                 </td>
                 <td data-label="7-seat MPV">
                   <span v-if="cell(row.mpv)" class="price">{{ cell(row.mpv) }}</span>
+                  <span v-else class="price-on-request">{{ row.note || 'Quoted on request' }}</span>
+                </td>
+                <td data-label="Luxury">
+                  <span v-if="cell(row.luxury)" class="price">{{ cell(row.luxury) }}</span>
+                  <span v-else class="price-on-request">{{ row.note || 'Quoted on request' }}</span>
+                </td>
+                <td data-label="9-seat">
+                  <span v-if="cell(row.van9)" class="price">{{ cell(row.van9) }}</span>
                   <span v-else class="price-on-request">{{ row.note || 'Quoted on request' }}</span>
                 </td>
               </tr>

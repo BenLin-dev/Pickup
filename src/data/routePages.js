@@ -6,11 +6,15 @@
  * quote, fixed-price table, buyer angle, reverse direction, FAQ), but every
  * sentence here was written for CantonPickup.
  *
- * PRICING RULE — do not invent numbers. `city` carries the fare that already
- * lives in `intercityRoutes` (site.js). `airport` is only filled in where a
- * confirmed figure exists (Foshan, from `popularRoutes`); elsewhere it stays
- * null and the table prints "Quoted on request", which is how the rest of the
- * site already handles an unpriced leg. All fares are USD, per vehicle.
+ * PRICING RULE — do not invent numbers.
+ *
+ * 2026-10-01: every `table` row was re-keyed against the client's new rate
+ * card (`fixedRoutes` in site.js), which prices four vehicle tiers instead of
+ * two — `sedan` / `mpv` / `luxury` (Mercedes-Benz) / `van9` (9-seat). The
+ * airport leg used to be `null` — printed as "Quoted on request" — on five of
+ * the six cities; the new card gives every leg a fixed figure, so those are
+ * filled in. Where a leg genuinely has no number the row keeps `note` and the
+ * table prints it. All fares are USD, per vehicle.
  */
 
 
@@ -40,11 +44,23 @@ export const routePages = tr([
     table: [
       {
         from: 'Baiyun Airport (CAN)',
-        to: 'Chancheng · Nanhai · Shunde',
+        to: 'Foshan city centre — Chancheng · Nanhai (Guicheng)',
         distance: '45–55 km',
         duration: '70–90 min',
         sedan: 87,
         mpv: 117,
+        luxury: 127,
+        van9: 167,
+      },
+      {
+        from: 'Baiyun Airport (CAN)',
+        to: 'Foshan — Shunde · Sanshui · Gaoming · Nanhai (Jiujiang)',
+        distance: '60–90 km',
+        duration: '90–130 min',
+        sedan: 107,
+        mpv: 147,
+        luxury: 167,
+        van9: 207,
       },
       {
         from: 'Guangzhou city / hotel',
@@ -53,6 +69,8 @@ export const routePages = tr([
         duration: '40–60 min',
         sedan: 57,
         mpv: 77,
+        luxury: 87,
+        van9: 127,
       },
     ],
     buyer: {
@@ -106,8 +124,8 @@ export const routePages = tr([
     title: 'Guangzhou to Shenzhen Private Car & Airport Transfer',
     h1: 'Guangzhou to Shenzhen Private Car & Airport Transfer',
     description:
-      'Private car between Guangzhou and Shenzhen. Fixed price from $137 per vehicle with an English-speaking driver, tolls and parking included, both directions.',
-    lede: 'Private car between Guangzhou and Shenzhen. Fixed price from $137 with an English-speaking driver — a comfortable alternative to a crowded high-speed train connection.',
+      'Private car between Guangzhou and Shenzhen. Fixed price from $177 per vehicle with an English-speaking driver, tolls and parking included, both directions.',
+    lede: 'Private car between Guangzhou and Shenzhen. Fixed price from $177 with an English-speaking driver — a comfortable alternative to a crowded high-speed train connection.',
     hero: '/images/hero/guangzhou-night.jpg',
     heroAlt: 'City skyline at night on the Guangzhou to Shenzhen corridor',
     eyebrow: 'Shenzhen',
@@ -124,17 +142,20 @@ export const routePages = tr([
         to: 'Shenzhen city centre',
         distance: '145–165 km',
         duration: '140–170 min',
-        sedan: null,
-        mpv: null,
-        note: 'Quoted on request',
+        sedan: 177,
+        mpv: 237,
+        luxury: 267,
+        van9: 327,
       },
       {
         from: 'Guangzhou city / hotel',
         to: 'Shenzhen city centre',
         distance: '120–140 km',
         duration: '110–140 min',
-        sedan: 137,
-        mpv: 177,
+        sedan: 177,
+        mpv: 237,
+        luxury: 267,
+        van9: 327,
       },
     ],
     buyer: {
@@ -188,8 +209,8 @@ export const routePages = tr([
     title: 'Guangzhou to Dongguan Private Car & Airport Transfer',
     h1: 'Guangzhou to Dongguan Private Car & Airport Transfer',
     description:
-      'Private car between Guangzhou and Dongguan. Fixed price from $97 per vehicle with an English-speaking driver, tolls and parking included, both directions.',
-    lede: 'Private car between Guangzhou and Dongguan. Fixed price from $97 with an English-speaking driver — the straightforward way to reach factories in Houjie, Chang\u2019an and Songshan Lake.',
+      'Private car between Guangzhou and Dongguan. Fixed price from $147 per vehicle with an English-speaking driver, tolls and parking included, both directions.',
+    lede: 'Private car between Guangzhou and Dongguan. Fixed price from $147 with an English-speaking driver — the straightforward way to reach factories in Houjie, Chang\u2019an and Songshan Lake.',
     hero: '/images/services/business-travel.jpg',
     heroAlt: 'Business travellers arriving by car at a manufacturing district',
     eyebrow: 'Dongguan',
@@ -205,17 +226,20 @@ export const routePages = tr([
         to: 'Dongguan city centre',
         distance: '75–90 km',
         duration: '90–110 min',
-        sedan: null,
-        mpv: null,
-        note: 'Quoted on request',
+        sedan: 177,
+        mpv: 237,
+        luxury: 267,
+        van9: 327,
       },
       {
         from: 'Guangzhou city / hotel',
         to: 'Dongguan city centre',
         distance: '60–75 km',
         duration: '60–80 min',
-        sedan: 97,
-        mpv: 127,
+        sedan: 147,
+        mpv: 187,
+        luxury: 207,
+        van9: 247,
       },
     ],
     buyer: {
@@ -269,8 +293,8 @@ export const routePages = tr([
     title: 'Guangzhou to Zhongshan Private Car & Airport Transfer',
     h1: 'Guangzhou to Zhongshan Private Car & Airport Transfer',
     description:
-      'Private car between Guangzhou and Zhongshan from $127 per vehicle with an English-speaking driver, tolls and parking included, both directions.',
-    lede: 'Private car between Guangzhou and Zhongshan. Fixed price from $127 with an English-speaking driver — the practical way to reach the lighting markets at Guzhen.',
+      'Private car between Guangzhou and Zhongshan from $147 per vehicle with an English-speaking driver, tolls and parking included, both directions.',
+    lede: 'Private car between Guangzhou and Zhongshan. Fixed price from $147 with an English-speaking driver — the practical way to reach the lighting markets at Guzhen.',
     hero: '/images/hero/business-district.jpg',
     heroAlt: 'Commercial district on the Guangzhou to Zhongshan route',
     eyebrow: 'Zhongshan',
@@ -286,17 +310,20 @@ export const routePages = tr([
         to: 'Zhongshan city centre',
         distance: '100–115 km',
         duration: '110–130 min',
-        sedan: null,
-        mpv: null,
-        note: 'Quoted on request',
+        sedan: 177,
+        mpv: 237,
+        luxury: 267,
+        van9: 327,
       },
       {
         from: 'Guangzhou city / hotel',
         to: 'Zhongshan city centre',
         distance: '85–100 km',
         duration: '80–100 min',
-        sedan: 127,
-        mpv: 167,
+        sedan: 147,
+        mpv: 187,
+        luxury: 207,
+        van9: 247,
       },
     ],
     buyer: {
@@ -367,9 +394,10 @@ export const routePages = tr([
         to: 'Zhuhai city centre',
         distance: '155–175 km',
         duration: '150–180 min',
-        sedan: null,
-        mpv: null,
-        note: 'Quoted on request',
+        sedan: 177,
+        mpv: 237,
+        luxury: 267,
+        van9: 327,
       },
       {
         from: 'Guangzhou city / hotel',
@@ -378,6 +406,8 @@ export const routePages = tr([
         duration: '120–150 min',
         sedan: 147,
         mpv: 187,
+        luxury: 207,
+        van9: 247,
       },
     ],
     buyer: {
@@ -431,8 +461,8 @@ export const routePages = tr([
     title: 'Guangzhou to Huizhou Private Car & Airport Transfer',
     h1: 'Guangzhou to Huizhou Private Car & Airport Transfer',
     description:
-      'Private car between Guangzhou and Huizhou. Fixed price from $157 per vehicle with an English-speaking driver, tolls and parking included, both directions.',
-    lede: 'Private car between Guangzhou and Huizhou. Fixed price from $157 with an English-speaking driver — door to door to Daya Bay, Huicheng or the electronics plants inland.',
+      'Private car between Guangzhou and Huizhou. Fixed price from $177 per vehicle with an English-speaking driver, tolls and parking included, both directions.',
+    lede: 'Private car between Guangzhou and Huizhou. Fixed price from $177 with an English-speaking driver — door to door to Daya Bay, Huicheng or the electronics plants inland.',
     hero: '/images/hero/guangzhou-aerial.jpg',
     heroAlt: 'Aerial view of the Guangdong coastline on the Guangzhou to Huizhou route',
     eyebrow: 'Huizhou',
@@ -448,17 +478,20 @@ export const routePages = tr([
         to: 'Huizhou city centre',
         distance: '155–180 km',
         duration: '150–180 min',
-        sedan: null,
-        mpv: null,
-        note: 'Quoted on request',
+        sedan: 177,
+        mpv: 237,
+        luxury: 267,
+        van9: 327,
       },
       {
         from: 'Guangzhou city / hotel',
         to: 'Huizhou city centre',
         distance: '130–150 km',
         duration: '120–150 min',
-        sedan: 157,
-        mpv: 197,
+        sedan: 177,
+        mpv: 237,
+        luxury: 267,
+        van9: 327,
       },
     ],
     buyer: {

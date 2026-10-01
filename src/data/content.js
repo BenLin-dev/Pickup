@@ -1052,7 +1052,7 @@ export const faqGroups = tr([
       },
       {
         q: 'How much luggage can you carry?',
-        a: 'A sedan takes 2–3 suitcases and a seven-seat MPV takes 4–6 suitcases. If you are travelling with oversized items or more luggage than usual, tell us in advance and we will recommend the right vehicle.',
+        a: 'A sedan takes 2–3 suitcases, a seven-seat MPV takes 4–6 and the nine-seat van takes 8. If you are travelling with oversized items or more luggage than usual, tell us in advance and we will recommend the right vehicle.',
       },
       {
         q: 'Do you travel outside Guangzhou and Foshan?',
