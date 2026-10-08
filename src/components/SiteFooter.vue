@@ -39,6 +39,9 @@ const serviceLinks = nav[1].children
             <a :href="site.waLink($route.path)" target="_blank" rel="noopener" :aria-label="t('WhatsApp')">
               <AppIcon name="whatsapp" :size="19" :stroke="1.8" />
             </a>
+            <a :href="site.instagram" target="_blank" rel="noopener" :aria-label="t('Instagram')">
+              <AppIcon name="instagram" :size="19" :stroke="1.8" />
+            </a>
             <a :href="site.mailto" :aria-label="t('Email')">
               <AppIcon name="mail" :size="19" :stroke="1.9" />
             </a>
@@ -82,6 +85,9 @@ const serviceLinks = nav[1].children
               WhatsApp &amp; WeChat: {{ site.whatsapp }}
             </a>
             <a :href="site.mailto">{{ site.email }}</a>
+            <a :href="site.instagram" target="_blank" rel="noopener">
+              {{ t('Instagram') }}: {{ site.instagramHandle }}
+            </a>
             <a class="footer__address" :href="site.mapsLink" target="_blank" rel="noopener">
               <AppIcon name="pin" :size="15" :stroke="1.9" />
               {{ site.addressLine }}

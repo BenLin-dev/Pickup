@@ -135,6 +135,15 @@ const siteBase = {
   wechat: '+86 13202442074',
   email: 'jack@cantonpickup.com',
   mailto: 'mailto:jack@cantonpickup.com',
+  /**
+   * Instagram (added 2026-10-08). `instagram` is the bare profile URL — the one
+   * the footer icon links to; `instagramHandle` is what we print, because a
+   * visitor arriving on a desktop cannot scan a QR code out of a screenshot.
+   * The trailing slash is left off so the link is byte-identical to what the
+   * Instagram app's own profile-QR resolves to.
+   */
+  instagram: 'https://www.instagram.com/cantonpickup4',
+  instagramHandle: '@cantonpickup4',
 
   // ---- address / area ---------------------------------------------------
   // The base of operations. Baiyun District (广州白云区) sits between
@@ -156,6 +165,7 @@ const siteBase = {
   social: {
     // Bare profile URL — this object feeds `sameAs` style listings, not buttons.
     whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
+    instagram: 'https://www.instagram.com/cantonpickup4',
     wechat: '',
     email: 'mailto:jack@cantonpickup.com',
   },
