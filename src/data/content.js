@@ -20,13 +20,18 @@ export const pages = tr({
 
   airportTransfer: {
     path: '/airport-transfer',
-    title: 'Guangzhou Baiyun Airport Transfer & Pickup | CantonPickup',
+    // "CAN" is the IATA code for Guangzhou Baiyun and it is how a lot of
+    // travellers actually search ("CAN airport transfer"). It used to appear
+    // only in the meta keywords — which no search engine has read in a decade
+    // — so the phrase was invisible exactly where it counts: title and H1.
+    title: 'CAN Airport Transfer Guangzhou (Baiyun) | CantonPickup',
     description:
-      'Guangzhou Baiyun Airport (CAN) pickup by English-speaking driver. Flight monitoring, meet & greet with a name sign, 90 minutes free waiting.',
+      'CAN airport transfer from Guangzhou Baiyun (CAN) by English-speaking driver. Flight monitoring, meet & greet with a name sign, 90 minutes free waiting.',
     keywords:
-      'guangzhou airport transfer, guangzhou airport pickup, guangzhou baiyun airport transfer, baiyun airport transfer, CAN airport transfer, guangzhou arrival transfer, guangzhou south station pickup, china visa free transit guangzhou, 240-hour visa free transit guangzhou, guangzhou airport to canton fair',
-    h1: 'Guangzhou Baiyun Airport Pickup (CAN) — Meet & Greet',
-    lead: 'On-time pickups, flight monitoring, and a friendly driver waiting for you.',
+      'CAN airport transfer, guangzhou airport transfer, guangzhou airport pickup, guangzhou baiyun airport transfer, baiyun airport transfer, guangzhou arrival transfer, guangzhou south station pickup, china visa free transit guangzhou, 240-hour visa free transit guangzhou, guangzhou airport to canton fair',
+    h1: 'CAN Airport Transfer Guangzhou — Baiyun Pickup & Meet & Greet',
+    lead:
+      'On-time pickups from Guangzhou Baiyun (CAN), flight monitoring, and a friendly driver waiting for you.',
   },
 
   privateDriver: {

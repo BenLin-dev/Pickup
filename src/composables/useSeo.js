@@ -32,6 +32,12 @@ function setLink(rel, href) {
 export function useSeo(page) {
   const url = site.domain + (page.path === '/' ? '/' : page.path)
 
+  // Per-page share image when there is one (guides use their own cover),
+  // otherwise the single 1200x630 brand card. Without this every shared link
+  // rendered as a grey box: the prerender step replaces the whole head block,
+  // so the `og:image` sitting in index.html never reached the built pages.
+  const image = page.image ? site.domain + page.image : site.domain + site.ogImage
+
   if (typeof document !== 'undefined') {
     document.title = page.title
     // The active locale, not a literal 'en'. This runs on every route, so a
@@ -48,9 +54,16 @@ export function useSeo(page) {
   setMeta('property', 'og:title', page.title)
   setMeta('property', 'og:description', page.description)
   setMeta('property', 'og:url', url)
+  setMeta('property', 'og:type', page.type || 'website')
+  setMeta('property', 'og:image', image)
+  setMeta('property', 'og:image:width', '1200')
+  setMeta('property', 'og:image:height', '630')
+  setMeta('property', 'og:site_name', site.name)
   setMeta('property', 'og:locale', currentLocale.ogLocale)
+  setMeta('name', 'twitter:card', 'summary_large_image')
   setMeta('name', 'twitter:title', page.title)
   setMeta('name', 'twitter:description', page.description)
+  setMeta('name', 'twitter:image', image)
 
   // Deliberately no "restore the previous document.title on unmount" hook.
   //

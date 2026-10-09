@@ -116,6 +116,15 @@ const siteBase = {
   name: 'CantonPickup',
   legalName: 'CantonPickup',
   domain: 'https://cantonpickup.com',
+  /**
+   * Social share card (1200x630, built by `scripts/make-og-image.py`).
+   *
+   * This file existed and `index.html` referenced it, but the prerender step
+   * replaces the whole head block — so all 31 built pages shipped with NO
+   * `og:image` at all and shared links rendered as a grey box. It is now
+   * emitted from the same place as every other meta tag.
+   */
+  ogImage: '/images/og-image.jpg',
 
   // ---- contact ----------------------------------------------------------
   phone: '+86 13202442074',

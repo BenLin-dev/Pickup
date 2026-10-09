@@ -32,6 +32,11 @@ useSeo({
     'guangzhou private driver',
     'china sourcing trip',
   ].join(', '),
+  // Guides share their own cover art; everything else falls back to the brand
+  // card. `type` has to be 'article' here or the post is announced as a
+  // website with no author and no publish date.
+  image: article?.image,
+  type: 'article',
 })
 
 useJsonLd(

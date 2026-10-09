@@ -66,6 +66,13 @@ export async function render(url) {
         }
       : null)
 
+  // Blog posts are the only `article` pages. Everything else — service pages,
+  // route landings, legal pages — was being stamped `og:type=article` because
+  // of a `url === '/'` check, which told Facebook/LinkedIn our airport page
+  // was a news article with no author and no publish date.
+  const ogType = article ? 'article' : 'website'
+  const ogImageUrl = article ? `${site.domain}${article.image}` : `${site.domain}${site.ogImage}`
+
   const meta = seoSource
     ? [
         `<title>${escapeHtml(seoSource.title)}</title>`,
@@ -75,7 +82,16 @@ export async function render(url) {
         `<meta property="og:title" content="${escapeHtml(seoSource.title)}" />`,
         `<meta property="og:description" content="${escapeHtml(seoSource.description)}" />`,
         `<meta property="og:url" content="${site.domain}${seoSource.path}" />`,
-        `<meta property="og:type" content="${url === '/' ? 'website' : 'article'}" />`,
+        `<meta property="og:type" content="${ogType}" />`,
+        `<meta property="og:image" content="${ogImageUrl}" />`,
+        `<meta property="og:image:width" content="1200" />`,
+        `<meta property="og:image:height" content="630" />`,
+        `<meta property="og:image:alt" content="${escapeHtml(seoSource.title)}" />`,
+        `<meta property="og:site_name" content="${site.name}" />`,
+        `<meta name="twitter:card" content="summary_large_image" />`,
+        `<meta name="twitter:title" content="${escapeHtml(seoSource.title)}" />`,
+        `<meta name="twitter:description" content="${escapeHtml(seoSource.description)}" />`,
+        `<meta name="twitter:image" content="${ogImageUrl}" />`,
       ].filter(Boolean)
     : []
 
