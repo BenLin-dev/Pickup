@@ -27,7 +27,7 @@ import { pathToFileURL } from 'node:url'
 const ROOT = process.cwd()
 const LOCALES_DIR = join(ROOT, 'src', 'i18n', 'locales')
 const SRC = join(ROOT, 'src')
-const CODES = ['en', 'fr', 'es', 'it', 'de']
+const CODES = ['en', 'fr', 'es', 'it', 'de', 'ja', 'ko']
 
 /* ---------------------------------------------------------------- filters */
 

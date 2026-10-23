@@ -1,4 +1,4 @@
-# Locales — how the site speaks five languages
+# Locales — how the site speaks seven languages
 
 One file per language. Nothing else on the site holds copy that isn't routed
 through here.
@@ -12,7 +12,14 @@ src/i18n/
     es.json       Spanish (European)
     it.json       Italian
     de.json       German
+    ja.json       Japanese
+    ko.json       Korean
 ```
+
+Two of the seven use scripts with no glyphs in Inter or Poppins. Both font
+stacks in `src/assets/styles/main.css` end in the platform CJK faces — keep
+those at the end of the fallback chain, or Japanese and Korean silently render
+in a browser default that reads a size smaller than the Latin copy beside it.
 
 ## The English sentence is the key
 
@@ -53,7 +60,8 @@ npm run i18n      # regenerate en.json + report translation coverage
    `tr()` deep-walks the structure and translates every string leaf it finds in
    the catalogue; the technical strings it doesn't recognise come back
    untouched, so no allow-list is needed.
-4. Run `npm run i18n`, then add the new key to `fr/es/it/de.json`.
+4. Run `npm run i18n`, then add the new key to `fr/es/it/de/ja/ko.json`. A key
+   you leave out is not an error — that message simply renders in English.
 
 A **prop default** is the one place the scanner is blind. `<script setup>` hoists
 `default:` to module scope, so `default: t('Videos')` throws `ReferenceError`

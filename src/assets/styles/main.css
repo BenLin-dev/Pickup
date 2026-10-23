@@ -66,10 +66,18 @@
   --header-h: 76px;
 
   /* type */
+  /* Japanese and Korean have no glyphs in Inter or Poppins, so both stacks end
+     in the platform CJK faces — otherwise ja/ko fall back to the browser
+     default, which on Windows is a narrower Meiryo / Malgun Gothic that reads
+     a size smaller than the Latin copy around it. */
   --font: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial,
+    'Hiragino Sans', 'Noto Sans CJK JP', 'Yu Gothic', Meiryo,
+    'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans CJK KR',
     'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-display: 'Poppins', 'Inter', 'Segoe UI', system-ui, -apple-system,
-    'Helvetica Neue', Arial, sans-serif;
+    'Helvetica Neue', Arial, 'Hiragino Sans', 'Noto Sans CJK JP', 'Yu Gothic',
+    Meiryo, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans CJK KR',
+    sans-serif;
 
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

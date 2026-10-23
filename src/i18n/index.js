@@ -10,7 +10,7 @@
  * English and the key silently rots.
  *
  * Instead the English sentence *is* the key. `locales/en.json` is generated
- * from the source by `scripts/extract-i18n.mjs`, and the other four files map
+ * from the source by `scripts/extract-i18n.mjs`, and the other six files map
  * that English text to their own. A message with no entry in the active
  * language falls back to the English source string, so a half-finished
  * translation degrades to English rather than to blanks or to `undefined`.
@@ -47,6 +47,8 @@ import fr from './locales/fr.json' with { type: 'json' }
 import es from './locales/es.json' with { type: 'json' }
 import it from './locales/it.json' with { type: 'json' }
 import de from './locales/de.json' with { type: 'json' }
+import ja from './locales/ja.json' with { type: 'json' }
+import ko from './locales/ko.json' with { type: 'json' }
 
 /** Every language the site ships, in switcher order. `label` is endonymic. */
 export const LOCALES = [
@@ -55,12 +57,14 @@ export const LOCALES = [
   { code: 'es', label: 'Español', short: 'ES', ogLocale: 'es_ES' },
   { code: 'it', label: 'Italiano', short: 'IT', ogLocale: 'it_IT' },
   { code: 'de', label: 'Deutsch', short: 'DE', ogLocale: 'de_DE' },
+  { code: 'ja', label: '日本語', short: 'JA', ogLocale: 'ja_JP' },
+  { code: 'ko', label: '한국어', short: 'KO', ogLocale: 'ko_KR' },
 ]
 
 export const DEFAULT_LOCALE = 'en'
 export const STORAGE_KEY = 'cantonpickup.locale'
 
-const BUNDLES = { en, fr, es, it, de }
+const BUNDLES = { en, fr, es, it, de, ja, ko }
 const SUPPORTED = LOCALES.map((l) => l.code)
 
 /**
