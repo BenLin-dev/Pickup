@@ -43,12 +43,6 @@
  * `scripts/prerender.mjs`; Vite and Rollup both accept the same syntax.
  */
 import en from './locales/en.json' with { type: 'json' }
-import fr from './locales/fr.json' with { type: 'json' }
-import es from './locales/es.json' with { type: 'json' }
-import it from './locales/it.json' with { type: 'json' }
-import de from './locales/de.json' with { type: 'json' }
-import ja from './locales/ja.json' with { type: 'json' }
-import ko from './locales/ko.json' with { type: 'json' }
 
 /** Every language the site ships, in switcher order. `label` is endonymic. */
 export const LOCALES = [
@@ -64,8 +58,49 @@ export const LOCALES = [
 export const DEFAULT_LOCALE = 'en'
 export const STORAGE_KEY = 'cantonpickup.locale'
 
-const BUNDLES = { en, fr, es, it, de, ja, ko }
+/**
+ * Only English is bundled with the entry. Every other catalogue is a separate
+ * chunk, fetched **once, on demand** — a French visitor downloads `fr.json`
+ * and nothing else; an English visitor downloads no catalogue at all beyond
+ * `en.json`, which doubles as the extraction template.
+ *
+ * Rollup turns each of these into its own file, so adding a language costs the
+ * default visitor nothing.
+ */
+const LOADERS = {
+  fr: () => import('./locales/fr.json'),
+  es: () => import('./locales/es.json'),
+  it: () => import('./locales/it.json'),
+  de: () => import('./locales/de.json'),
+  ja: () => import('./locales/ja.json'),
+  ko: () => import('./locales/ko.json'),
+}
+
+const BUNDLES = { en }
 const SUPPORTED = LOCALES.map((l) => l.code)
+
+/**
+ * Fetch the active catalogue before the app's data modules evaluate.
+ *
+ * Order matters: `src/data/*.js` call `tr()` at module scope, so the bundle has
+ * to be in `BUNDLES` by the time they are imported. `main.js` therefore awaits
+ * this (for non-English visitors) *before* pulling in `App.vue` and `router`.
+ * English skips the round-trip entirely.
+ */
+export async function preloadLocale(code) {
+  if (!SUPPORTED.includes(code) || code === DEFAULT_LOCALE) return
+  if (BUNDLES[code]) return
+
+  try {
+    const mod = await LOADERS[code]()
+    BUNDLES[code] = mod.default || mod
+    // `t()` caches lookups; a miss recorded before the bundle landed would
+    // otherwise pin that string to English for the rest of the session.
+    cache.clear()
+  } catch {
+    /* network hiccup — the site keeps rendering in English */
+  }
+}
 
 /**
  * Which language to render in. Order of precedence:

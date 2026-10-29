@@ -58,6 +58,16 @@ function key(item) {
   return item.id || item.src || item.url
 }
 
+/**
+ * 600px WebP thumbnail sitting next to every poster JPEG.
+ *
+ * The cards render at ~232 CSS px, so the 1080×1920 masters were 4.6x
+ * oversized — four of them were 1.2 MB of the home page's first load, and the
+ * poster is a CSS `background-image`, so `loading="lazy"` never applied to it.
+ * `_tmp_work` regenerates these alongside the site images.
+ */
+const posterSrc = (src) => (src || '').replace(/\.(jpe?g|png)$/i, '-600.webp')
+
 onMounted(async () => {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL || '/'}data/videos.json`.replace('//data', '/data'), {
@@ -127,7 +137,7 @@ function play(item) {
               <video
                 v-if="v.src"
                 :src="v.src"
-                :poster="v.poster || undefined"
+                :poster="v.poster ? posterSrc(v.poster) : undefined"
                 controls
                 autoplay
                 playsinline
@@ -146,7 +156,7 @@ function play(item) {
               v-else
               type="button"
               class="reel-card__poster"
-              :style="v.poster ? { backgroundImage: `url('${v.poster}')` } : {}"
+              :style="v.poster ? { backgroundImage: `url('${posterSrc(v.poster)}')` } : {}"
               :aria-label="`Play video: ${v.title}`"
               @click="play(v)"
             >

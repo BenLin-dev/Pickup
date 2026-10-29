@@ -107,7 +107,21 @@ export async function render(url) {
 
   const dataLayerInit = buildDataLayerInit(url, page, routePage)
 
-  const head = [dataLayerInit, ...meta, ...jsonLdBlocks]
+  /**
+   * First-paint hint for the home hero.
+   *
+   * The hero sits behind `HeroSection` → `<picture>` → `<source type=webp>`,
+   * so the browser cannot start the download until the CSS and the app module
+   * have both parsed. On a cold cache that costs a full round-trip before LCP
+   * even begins. Preloading the exact file `<picture>` will pick avoids both
+   * the delay and a duplicate download.
+   */
+  const heroPreload =
+    url === '/'
+      ? '<link rel="preload" as="image" href="/images/hero/guangzhou-bluehour.webp" type="image/webp" fetchpriority="high" />'
+      : ''
+
+  const head = [heroPreload, dataLayerInit, ...meta, ...jsonLdBlocks]
     .filter(Boolean)
     .join('\n    ')
 

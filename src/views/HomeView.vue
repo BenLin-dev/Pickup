@@ -16,6 +16,26 @@ const page = pages.home
 useSeo(page)
 
 /**
+ * Service-card imagery.
+ *
+ * The cards render ~380 CSS px wide, so the 1600×900 master is 4x oversized
+ * there. `_tmp_work/make-card-sizes.py` writes an 800px WebP twin beside each
+ * service JPEG; the `srcset` below lets the browser pick it and keeps the
+ * full-size file for the route pages that reuse the same picture as a hero.
+ * Only `/images/services/` files have a `-800.webp` twin, so anything else
+ * falls back to `<img>` untouched.
+ */
+const webpOf = (src) => src.replace(/\.(jpe?g|png)$/i, '.webp')
+const webpSrcset = (src) =>
+  src.includes('/images/services/')
+    ? `${src.replace(/\.(jpe?g|png)$/i, '-800.webp')} 800w, ${webpOf(src)} 1600w`
+    : undefined
+
+/** Half-column photo in the "why us" block. */
+const SIDE_IMAGE = '/images/hero/business-district.jpg'
+const SIDE_IMAGE_WEBP = '/images/hero/business-district.webp'
+
+/**
  * Three services are shown up front; the rest sit behind "More services".
  * The featured set is the three highest-demand products, in the order they
  * should be read — airport pickups first, because that is how most guests
@@ -142,7 +162,15 @@ useJsonLd('home-business', {
           v-reveal="{ delay: (i % 3) * 80 }"
         >
           <div class="service-card__media">
-            <img :src="s.image" :alt="s.imageAlt" loading="lazy" decoding="async" />
+            <picture style="display: contents">
+              <source
+                v-if="webpSrcset(s.image)"
+                type="image/webp"
+                :srcset="webpSrcset(s.image)"
+                sizes="(min-width: 1100px) 380px, (min-width: 720px) 45vw, 92vw"
+              />
+              <img :src="s.image" :alt="s.imageAlt" loading="lazy" decoding="async" />
+            </picture>
             <span v-if="s.badge" class="service-card__badge">{{ s.badge }}</span>
             <span class="service-card__label">
               <AppIcon :name="s.icon" :size="15" :stroke="2.1" />
@@ -223,13 +251,16 @@ useJsonLd('home-business', {
         </div>
 
         <div v-reveal="{ delay: 120 }">
-          <img
-            src="/images/hero/business-district.jpg"
-            :alt="t('Business district in Guangzhou, China')"
-            loading="lazy"
-            decoding="async"
-            style="border-radius: var(--r-xl); box-shadow: var(--sh-lg); width: 100%"
-          />
+          <picture style="display: contents">
+            <source :srcset="SIDE_IMAGE_WEBP" type="image/webp" />
+            <img
+              :src="SIDE_IMAGE"
+              :alt="t('Business district in Guangzhou, China')"
+              loading="lazy"
+              decoding="async"
+              style="border-radius: var(--r-xl); box-shadow: var(--sh-lg); width: 100%"
+            />
+          </picture>
         </div>
       </div>
     </div>

@@ -1,14 +1,40 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { locale, preloadLocale } from './i18n'
 import { revealDirective } from './composables/useReveal'
+import './assets/styles/fonts.css'
 import './assets/styles/main.css'
 
-const app = createApp(App)
+/**
+ * Bootstrap is async so that a non-English catalogue is in place *before*
+ * `src/data/*.js` runs.
+ *
+ * Those modules translate at module scope (`export const fleet = tr(fleetEn)`),
+ * so the catalogue has to be loaded before they are evaluated — which means
+ * `App.vue` and `router` cannot be static imports: ESM hoists those ahead of
+ * any code in this file. Pulling them in after the await is what makes the
+ * split work.
+ *
+ * Cost is one extra round-trip, paid only because the bundle is now ~400 KB
+ * instead of 926 KB (the six non-English catalogues used to be inlined).
+ * English visitors still fetch `en.json` — it is the extraction template and
+ * keeps the fallback path identical to what prerendering produced.
+ */
+async function boot() {
+  if (locale !== 'en') await preloadLocale(locale)
 
-app.use(router)
-app.directive('reveal', revealDirective)
-app.mount('#app')
+  const [{ createApp }, { default: App }, { default: router }] = await Promise.all([
+    import('vue'),
+    import('./App.vue'),
+    import('./router'),
+  ])
+
+  const app = createApp(App)
+
+  app.use(router)
+  app.directive('reveal', revealDirective)
+  app.mount('#app')
+}
+
+boot()
 
 /**
  * Site-wide WhatsApp click delegate.

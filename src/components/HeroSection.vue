@@ -44,6 +44,14 @@ const props = defineProps({
 const pillList = computed(() =>
   props.badges.map((b) => (typeof b === 'string' ? { text: b, icon: 'check' } : b))
 )
+
+/**
+ * The WebP twin that `_tmp_work/optimize-images.py` writes beside every JPEG.
+ * `<picture>` swaps it in for browsers that take it and leaves the JPEG as the
+ * fallback, so a missing twin degrades to the original rather than to a broken
+ * image.
+ */
+const webpSrc = computed(() => (props.image || '').replace(/\.(jpe?g|png)$/i, '.webp'))
 </script>
 
 <template>
@@ -53,13 +61,16 @@ const pillList = computed(() =>
   >
     <template v-if="variant === 'media'">
       <div v-if="image" class="hero__bg">
-        <img
-          :src="image"
-          :alt="imageAlt"
-          :loading="priority ? 'eager' : 'lazy'"
-          :fetchpriority="priority ? 'high' : 'auto'"
-          decoding="async"
-        />
+        <picture style="display: contents">
+          <source :srcset="webpSrc" type="image/webp" />
+          <img
+            :src="image"
+            :alt="imageAlt"
+            :loading="priority ? 'eager' : 'lazy'"
+            :fetchpriority="priority ? 'high' : 'auto'"
+            decoding="async"
+          />
+        </picture>
       </div>
       <div class="hero__scrim" />
     </template>
@@ -103,13 +114,16 @@ const pillList = computed(() =>
           class="hero__media"
           :class="{ 'hero__media--desktop-only': !mediaOnMobile }"
         >
-          <img
-            :src="image"
-            :alt="imageAlt"
-            :loading="priority ? 'eager' : 'lazy'"
-            :fetchpriority="priority ? 'high' : 'auto'"
-            decoding="async"
-          />
+          <picture style="display: contents">
+            <source :srcset="webpSrc" type="image/webp" />
+            <img
+              :src="image"
+              :alt="imageAlt"
+              :loading="priority ? 'eager' : 'lazy'"
+              :fetchpriority="priority ? 'high' : 'auto'"
+              decoding="async"
+            />
+          </picture>
         </div>
       </div>
     </div>

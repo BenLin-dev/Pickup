@@ -39,6 +39,9 @@ const resolvedAlt = computed(
   () => props.imageAlt || altByImage[props.image] || 'Private car service in Guangzhou, China'
 )
 
+/** WebP twin written beside every JPEG; `<picture>` picks it up when supported. */
+const webpSrc = computed(() => (props.image || '').replace(/\.(jpe?g|png)$/i, '.webp'))
+
 /**
  * Push a `cta_click` event to the GTM dataLayer when either CTA in this band
  * is clicked. The point-in-time event picks up page-level context (page_type,
@@ -62,7 +65,10 @@ function trackCta(label, destination) {
 <template>
   <div class="cta-band">
     <div v-if="image" class="cta-band__bg" aria-hidden="true">
-      <img :src="image" :alt="resolvedAlt" loading="lazy" decoding="async" />
+      <picture style="display: contents">
+        <source :srcset="webpSrc" type="image/webp" />
+        <img :src="image" :alt="resolvedAlt" loading="lazy" decoding="async" />
+      </picture>
     </div>
 
     <div class="cta-band__body">
