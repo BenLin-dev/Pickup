@@ -10,7 +10,7 @@ CantonPickup is a private car service (car + driver, never self-drive) in Guangz
 - Base of operations: Baiyun District, Guangzhou, Guangdong, China.
 - Airport served: Guangzhou Baiyun International Airport (IATA: CAN), about 28 km north of downtown Guangzhou, terminals T2 and T3.
 - Railway station served: Guangzhou South Railway Station.
-- Contact: WhatsApp / phone +86 132 0244 2074, email cantonpickup@gmail.com.
+- Contact: WhatsApp / phone +86 132 0244 2074, email jack@cantonpickup.com.
 - Opening hours: 24/7, including public holidays.
 - Currency: USD. Prices are fixed per vehicle, not per person, and include fuel, tolls and parking inside the city area.
 - Payment: 20% deposit to confirm a booking, remaining 80% after the ride. Free cancellation up to 48 hours before pickup.
