@@ -142,8 +142,8 @@ const siteBase = {
    */
   waLink: (path) => `https://wa.me/${WHATSAPP_NUMBER}?text=${enc(waMessageFor(path))}`,
   wechat: '+86 13202442074',
-  email: 'jack@cantonpickup.com',
-  mailto: 'mailto:jack@cantonpickup.com',
+  email: 'cantonpickup@gmail.com',
+  mailto: 'mailto:cantonpickup@gmail.com',
   /**
    * Instagram (added 2026-10-08). `instagram` is the bare profile URL — the one
    * the footer icon links to; `instagramHandle` is what we print, because a
@@ -176,7 +176,7 @@ const siteBase = {
     whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
     instagram: 'https://www.instagram.com/cantonpickup4',
     wechat: '',
-    email: 'mailto:jack@cantonpickup.com',
+    email: 'mailto:cantonpickup@gmail.com',
   },
 }
 

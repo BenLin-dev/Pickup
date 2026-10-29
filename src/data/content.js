@@ -238,7 +238,7 @@ export const privacySections = [
     title: 'Your rights',
     body: [
       'You can ask us for a copy of the personal information we hold about you, ask us to correct or delete it, object to certain processing, or withdraw consent you previously gave. Email ' +
-        'jack@cantonpickup.com and we will respond within 30 days.',
+        'cantonpickup@gmail.com and we will respond within 30 days.',
       'If you are in the EU or the UK and believe we have not handled your request properly, you also have the right to complain to your local data protection authority.',
     ],
   },
@@ -258,7 +258,7 @@ export const privacySections = [
     title: 'Changes and contact',
     body: [
       'If we make a material change to this policy we will update the date at the top of the page.',
-      'Questions about privacy? Email jack@cantonpickup.com or message us on WhatsApp at +86 13202442074.',
+      'Questions about privacy? Email cantonpickup@gmail.com or message us on WhatsApp at +86 13202442074.',
     ],
   },
 ]
@@ -1199,9 +1199,9 @@ export const contactChannels = tr([
   {
     icon: 'mail',
     label: 'Email',
-    value: 'jack@cantonpickup.com',
+    value: 'cantonpickup@gmail.com',
     hint: 'Best for detailed itineraries and invoices',
-    href: 'mailto:jack@cantonpickup.com',
+    href: 'mailto:cantonpickup@gmail.com',
   },
   {
     icon: 'phone',
