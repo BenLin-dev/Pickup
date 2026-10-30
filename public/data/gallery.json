@@ -1,59 +1,40 @@
 {
-  "generated": "2026-10-29T08:11:15.373Z",
+  "generated": "2026-10-29T10:04:06.087Z",
   "items": [
     {
-      "image": "/images/gallery/trunk-loading.jpg",
+      "image": "/images/gallery/trunk-loading.webp",
       "width": 1024,
       "height": 1280
     },
     {
-      "image": "/images/gallery/trunk-loading.webp"
-    },
-    {
-      "image": "/images/gallery/terminal-walk.jpg",
+      "image": "/images/gallery/terminal-walk.webp",
       "width": 1024,
       "height": 512
     },
     {
-      "image": "/images/gallery/terminal-walk.webp"
-    },
-    {
-      "image": "/images/gallery/name-sign.jpg",
+      "image": "/images/gallery/name-sign.webp",
       "width": 1024,
       "height": 512
     },
     {
-      "image": "/images/gallery/name-sign.webp"
-    },
-    {
-      "image": "/images/gallery/luggage-cart.jpg",
+      "image": "/images/gallery/luggage-cart.webp",
       "width": 1024,
       "height": 1280
     },
     {
-      "image": "/images/gallery/luggage-cart.webp"
+      "image": "/images/gallery/gabriella-name-sign.webp",
+      "width": 1080,
+      "height": 1440
     },
     {
-      "image": "/images/gallery/gabriella-name-sign.webp"
-    },
-    {
-      "image": "/images/gallery/curbside-wait.jpg",
+      "image": "/images/gallery/curbside-wait.webp",
       "width": 1024,
       "height": 640
     },
     {
-      "image": "/images/gallery/curbside-wait.webp"
-    },
-    {
-      "image": "/images/gallery/cabin-mpv.jpg",
+      "image": "/images/gallery/cabin-mpv.webp",
       "width": 1024,
       "height": 640
-    },
-    {
-      "image": "/images/gallery/cabin-mpv.webp"
-    },
-    {
-      "image": "/images/gallery/gabriella-name-sign.jpg"
     }
   ]
 }

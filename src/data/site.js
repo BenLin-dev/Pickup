@@ -347,6 +347,23 @@ export const fleet = tr([
       'Nine seats and the deepest boot in the fleet — built for a whole buying team, or a factory run where the samples come back with you.',
     features: ['9 seats', 'Large luggage space', 'Air conditioning', 'Child seat on request'],
   },
+  // ------------------------------------------------------------ 香港车辆
+  // 客户 2026-10-29：「添加香港车辆，价格为 260 人民币一小时，只按小时计费」。
+  // 照片里是挂「粤 Z·…港」两地牌照的白色埃尔法 —— 车牌按要求**不打码**。
+  // 它不属于大陆那四档（没有机场固定价、没有半日/全日包车价），所以卡片价格走
+  // `hourlyFromBySlug` 而不是 `priceFromBySlug`，见下方注释。
+  {
+    slug: 'alphard-hk',
+    name: 'Toyota Alphard — Hong Kong',
+    models: 'Toyota Alphard or similar',
+    image: '/images/vehicles/alphard-hk.jpg',
+    passengers: '1–6 passengers',
+    luggage: '4–6 suitcases',
+    tag: 'Hong Kong',
+    description:
+      'A Hong Kong, China–registered Alphard with a Guangdong dual plate — the car you would book in Central or Kowloon, hired by the hour for city runs or a cross-border trip between Hong Kong, China and Guangdong. Our most comfortable option for the Hong Kong leg of a China buying trip.',
+    features: ['Guangdong dual plate', 'Captain chairs', 'Large luggage space', 'Phone charging'],
+  },
 ])
 
 /**
@@ -475,6 +492,21 @@ export const priceFromBySlug = {
   'gac-m8-white': airportFare('mpv'),
   'mercedes-vclass': airportFare('luxury'),
   'ford-transit': airportFare('van9'),
+}
+
+/**
+ * ★ 按小时计费的车 —— 目前只有香港那辆埃尔法。
+ *
+ * 客户 2026-10-29 的原话：「价格为 260 人民币一小时，只按小时计费」。所以它
+ * **不进上面那四档**：没有机场固定价，也没有半日 / 全日包车价，任何一处把它换算成
+ * 机场价（比如拿 260×5 当半日价）都是编数字。卡片和价格表都直接显示这一行。
+ *
+ * 币种就是人民币，**不做汇率换算**：折算出来的美元客户没确认过，而本项目「看到的
+ * 数字就是收的数字」这条不能被破坏（`src/utils/price.js` 里的说明）。金额单位靠
+ * `moneyCny()` 输出 `CN¥`，不用裸 `¥` —— 本站有日语版，裸 ¥ 会被读成日元。
+ */
+export const hourlyFromBySlug = {
+  'alphard-hk': 260,
 }
 
 /**

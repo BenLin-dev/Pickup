@@ -18,8 +18,8 @@ import {
   cancellationPolicy,
   heroBadges,
 } from '@/data/content'
-import { site, pricing, priceHighlights, intercityRoutes, popularRoutes, featuredVehicles } from '@/data/site'
-import { money, moneyOr } from '@/utils/price'
+import { site, pricing, priceHighlights, intercityRoutes, popularRoutes, featuredVehicles, hourlyFromBySlug } from '@/data/site'
+import { money, moneyOr, moneyCny } from '@/utils/price'
 import { t } from '@/i18n'
 
 const page = pages.vehiclesPricing
@@ -57,6 +57,19 @@ const tables = [
 
 /** Route rows fall back to "On request" when we have no fixed price yet. */
 const price = moneyOr
+
+/**
+ * The Hong Kong table — one row, because there is only one way to buy that car:
+ * by the hour. The rate comes from `hourlyFromBySlug` (site.js) rather than
+ * from a `pricing` tier, so it cannot drift away from the card above.
+ */
+const hkRows = [
+  {
+    service: t('Toyota Alphard — Hong Kong car'),
+    scope: t('Charged per hour, no daily rate · Hong Kong, China and cross-border to Guangdong'),
+    price: hourlyFromBySlug['alphard-hk'],
+  },
+]
 
 /**
  * Push `cta_click` for the pricing hero / booking widget CTAs. The shared
@@ -197,6 +210,48 @@ function trackCta(label, destination) {
               <span><strong>{{ e.label }}:</strong> {{ e.value }}</span>
             </li>
           </ul>
+        </div>
+      </div>
+
+      <!-- ---------------------------------------------- 香港车辆（按小时） -->
+      <!-- 香港那辆埃尔法**故意不进上面四档**：客户 2026-10-29 的原话是「价格为
+           260 人民币一小时，只按小时计费」，所以它没有机场固定价、也没有半日 /
+           全日包车价，任何一行按档位填数字都是编的。币种也是人民币，不换算 ——
+           这张表自己说明币种，上面那句「All prices in US dollars」就不用改
+           （改英文句子 = 六种语言的译文全部掉回英文）。 -->
+      <div class="mt-56">
+        <div class="section-head section-head--center" v-reveal>
+          <p class="eyebrow">{{ t('Hong Kong') }}</p>
+          <h3>{{ t('Hong Kong car — hired by the hour') }}</h3>
+          <p class="lead">
+            {{
+              t(
+                'Our Hong Kong car is charged by the hour and nothing else — no airport fare, no half-day or full-day package. Prices in this table are in renminbi.',
+              )
+            }}
+          </p>
+        </div>
+
+        <div class="price-table-wrap">
+          <table class="price-table">
+            <thead>
+              <tr>
+                <th scope="col">{{ t('Service') }}</th>
+                <th scope="col">{{ t('Included') }}</th>
+                <th scope="col">{{ t('Price') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="r in hkRows" :key="r.service">
+                <td data-label="Service">{{ r.service }}</td>
+                <td data-label="Included" style="color: var(--c-muted)">{{ r.scope }}</td>
+                <td data-label="Price">
+                  <span class="price">{{ moneyCny(r.price) }}</span>
+                  <span style="color: var(--c-muted)"> / {{ t('hour') }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

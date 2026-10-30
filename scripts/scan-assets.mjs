@@ -68,6 +68,13 @@
  *   top. Files starting with `_` are skipped, which is the agreed way to park
  *   a reference or work-in-progress image in a content folder.
  *
+ *   A photo that exists in two formats (`luggage-cart.jpg` + the
+ *   `luggage-cart.webp` our image pipeline derives from it) is ONE photo here:
+ *   files sharing a basename are collapsed and the WebP is the one served. The
+ *   same rule applies to the vehicle folder and the review wall — without it,
+ *   every photo appeared twice on the wall and every vehicle card carried two
+ *   identical thumbnails.
+ *
  * VIDEOS — `public/videos/`
  *   Everything about a clip lives here — the file *or* the link, its poster
  *   and its caption — so there is one folder to open and one naming rule to
@@ -118,6 +125,26 @@ const IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif'])
 const VIDEO_EXT = new Set(['.mp4', '.webm', '.mov', '.m4v', '.ogv'])
 const SIDECAR_EXT = new Set(['.json', '.txt'])
 
+/**
+ * Which file wins when the *same* photo exists in several formats.
+ *
+ * The image pipeline keeps the original next to the WebP it derives from it
+ * (`luggage-cart.jpg` + `luggage-cart.webp`), so every content folder now
+ * holds two files per photo. Scanning by extension alone therefore lists each
+ * photo twice — the photo wall showed it twice, and vehicle cards carried two
+ * identical thumbnails — so every folder group below collapses files that
+ * share a basename and picks one by this ranking: WebP first (it is what the
+ * pipeline emits and 40–90% lighter than the JPEG), then the original, so a
+ * stray un-converted photo still appears instead of vanishing.
+ */
+const IMAGE_PREF = ['.avif', '.webp', '.jpg', '.jpeg', '.png']
+
+/** Lower is better. Unknown extensions rank last rather than disappearing. */
+function extRank(file) {
+  const i = IMAGE_PREF.indexOf(extname(file).toLowerCase())
+  return i === -1 ? IMAGE_PREF.length : i
+}
+
 const note = (msg) => console.log(`  ${msg}`)
 
 /** Directory listing that never throws on a missing folder. */
@@ -152,7 +179,7 @@ function titleize(slug) {
 }
 
 /**
- * Pixel size of a JPEG, read straight out of its header.
+ * Pixel size of a JPEG or WebP, read straight out of its header.
  *
  * The photo wall is a CSS multi-column layout, and a multi-column layout has
  * to know how tall each item is *before* it can decide which column the item
@@ -164,14 +191,23 @@ function titleize(slug) {
  * the aspect ratio, reserves the space, and the columns are stable from the
  * first paint. It costs one header scan here, and saves the CLS.
  *
- * Only JPEG is parsed (that is what our image pipeline emits, so it is every
- * file in the folder in practice). Anything else returns `null` and simply
- * ships without dimensions — still displayed, just not pre-sized.
+ * Both formats are parsed because de-duplication (see `extRank`) means the
+ * manifest now points at the *WebP* rather than the JPEG. Parsing only JPEG
+ * would have quietly cost us the pre-sizing on every photo. Anything else
+ * returns `null` and simply ships without dimensions — still displayed, just
+ * not pre-sized.
  */
-async function jpegSize(file) {
+async function imageSize(file) {
   const buf = await readFile(file).catch(() => null)
-  if (!buf || buf[0] !== 0xff || buf[1] !== 0xd8) return null
+  if (!buf || buf.length < 30) return null
+  if (buf[0] === 0xff && buf[1] === 0xd8) return jpegSize(buf)
+  if (buf.toString('ascii', 0, 4) === 'RIFF' && buf.toString('ascii', 8, 12) === 'WEBP') {
+    return webpSize(buf)
+  }
+  return null
+}
 
+function jpegSize(buf) {
   let i = 2
   while (i < buf.length - 9) {
     if (buf[i] !== 0xff) {
@@ -187,6 +223,38 @@ async function jpegSize(file) {
     if (len < 2) return null
     i += 2 + len
   }
+  return null
+}
+
+/**
+ * WebP has three payloads and each stores the size differently:
+ *   VP8  (lossy)     start code 0x9d 0x01 0x2a, then 2-byte LE width/height
+ *   VP8L (lossless)  signature 0x2f, then 14 bits width-1 + 14 bits height-1
+ *   VP8X (extended)  4 flag/reserved bytes, then 3-byte LE width-1 / height-1
+ * All offsets are relative to the RIFF container: 12 = chunk fourcc,
+ * 20 = chunk payload, so VP8X's canvas size starts at 24.
+ */
+function webpSize(buf) {
+  const fourcc = buf.toString('ascii', 12, 16)
+
+  if (fourcc === 'VP8 ') {
+    if (buf[23] !== 0x9d || buf[24] !== 0x01 || buf[25] !== 0x2a) return null
+    return {
+      width: buf.readUInt16LE(26) & 0x3fff,
+      height: buf.readUInt16LE(28) & 0x3fff,
+    }
+  }
+
+  if (fourcc === 'VP8L') {
+    if (buf[20] !== 0x2f) return null
+    const bits = buf.readUInt32LE(21)
+    return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 }
+  }
+
+  if (fourcc === 'VP8X') {
+    return { width: buf.readUIntLE(24, 3) + 1, height: buf.readUIntLE(27, 3) + 1 }
+  }
+
   return null
 }
 
@@ -217,7 +285,7 @@ async function scanVehicles() {
   const files = await listDir(VEHICLE_DIR)
   const meta = await loadFleetMeta()
 
-  /** slug -> { photos: [{file, order}], sidecar } */
+  /** slug -> { photos: Map<stem, {file, order}>, sidecar } */
   const groups = new Map()
 
   for (const file of files) {
@@ -229,8 +297,16 @@ async function scanVehicles() {
     if (base.startsWith('_')) continue // scratch/reference files
 
     const { slug, order } = parseVehicleName(file)
-    if (!groups.has(slug)) groups.set(slug, { photos: [], sidecar: null })
-    groups.get(slug).photos.push({ file: `/images/vehicles/${file}`, order })
+    if (!groups.has(slug)) groups.set(slug, { photos: new Map(), sidecar: null })
+    // Keyed by basename, not filename: `byd-han.jpg` and `byd-han.webp` are one
+    // photo in two formats, and a card that lists both shows the same picture
+    // twice in its thumbnail strip. Same stem ⇒ same photo, keep the best one
+    // (`byd-han__2` stays separate — that is a genuinely different angle).
+    const photos = groups.get(slug).photos
+    const prev = photos.get(base)
+    if (!prev || extRank(file) < extRank(prev.file)) {
+      photos.set(base, { file, order })
+    }
   }
 
   // attach sidecar metadata
@@ -244,8 +320,8 @@ async function scanVehicles() {
 
   const items = []
   for (const [slug, group] of [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
-    group.photos.sort((a, b) => a.order - b.order)
-    const images = group.photos.map((p) => p.file)
+    const photos = [...group.photos.values()].sort((a, b) => a.order - b.order)
+    const images = photos.map((p) => `/images/vehicles/${p.file}`)
 
     const curated = meta.get(slug) || {}
     const extra = group.sidecar || {}
@@ -301,11 +377,13 @@ async function scanReviews() {
 
     if (IMAGE_EXT.has(ext) || VIDEO_EXT.has(ext)) {
       if (!byBase.has(base)) byBase.set(base, {})
-      if (IMAGE_EXT.has(ext)) byBase.get(base).image = file
-      else byBase.get(base).video = file
+      const entry = byBase.get(base)
+      // Same photo in two formats: keep the better-ranked one (WebP), rather
+      // than whichever name the directory listing happened to end with.
+      if (VIDEO_EXT.has(ext)) entry.video = file
+      else if (!entry.image || extRank(file) < extRank(entry.image)) entry.image = file
       // newest file wins, so re-saving a photo re-posts the review at the top
       const s = await stat(join(REVIEW_DIR, file)).catch(() => null)
-      const entry = byBase.get(base)
       entry.mtime = Math.max(entry.mtime || 0, s ? s.mtimeMs : 0)
       continue
     }
@@ -391,21 +469,35 @@ async function scanGallery() {
       IMAGE_EXT.has(extname(file).toLowerCase()) && !basename(file).startsWith('_'),
   )
 
-  const withMtime = []
+  // One entry per photo, not per file: `.jpg` + `.webp` share a basename and
+  // are the same picture. Without this the wall renders every photo twice —
+  // once as the original, once as the WebP right below it. The mtime of the
+  // group is the newest of its files, so re-saving either format still
+  // re-posts the photo at the top.
+  const byBase = new Map()
   for (const file of candidates) {
+    const base = basename(file, extname(file))
     const s = await stat(join(GALLERY_DIR, file)).catch(() => null)
-    withMtime.push({ file, mtime: s ? s.mtimeMs : 0 })
+    const mtime = s ? s.mtimeMs : 0
+    const entry = byBase.get(base)
+    if (!entry) {
+      byBase.set(base, { base, file, mtime })
+      continue
+    }
+    entry.mtime = Math.max(entry.mtime, mtime)
+    if (extRank(file) < extRank(entry.file)) entry.file = file
   }
-  withMtime.sort(
-    (a, b) => b.mtime - a.mtime || a.file.localeCompare(b.file, 'en', { numeric: true, sensitivity: 'base' }),
+
+  const withMtime = [...byBase.values()].sort(
+    (a, b) => b.mtime - a.mtime || a.base.localeCompare(b.base, 'en', { numeric: true, sensitivity: 'base' }),
   )
 
   const items = []
   for (const { file } of withMtime.slice(0, GALLERY_LIMIT)) {
-    const size = await jpegSize(join(GALLERY_DIR, file))
+    const size = await imageSize(join(GALLERY_DIR, file))
     items.push({
       image: `/images/gallery/${file}`,
-      // pre-sizing only — see the note on `jpegSize`. Not a description.
+      // pre-sizing only — see the note on `imageSize`. Not a description.
       ...(size ? { width: size.width, height: size.height } : {}),
     })
   }
