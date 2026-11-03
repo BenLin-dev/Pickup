@@ -347,22 +347,37 @@ export const fleet = tr([
       'Nine seats and the deepest boot in the fleet — built for a whole buying team, or a factory run where the samples come back with you.',
     features: ['9 seats', 'Large luggage space', 'Air conditioning', 'Child seat on request'],
   },
-  // ------------------------------------------------------------ 香港车辆
-  // 客户 2026-10-29：「添加香港车辆，价格为 260 人民币一小时，只按小时计费」。
-  // 照片里是挂「粤 Z·…港」两地牌照的白色埃尔法 —— 车牌按要求**不打码**。
-  // 它不属于大陆那四档（没有机场固定价、没有半日/全日包车价），所以卡片价格走
-  // `hourlyFromBySlug` 而不是 `priceFromBySlug`，见下方注释。
+  // ---------------------------------------------------------- 中巴 / 大巴
+  // 客户 2026-11-03：给两张照片，15–23 座中巴 $147 起、35–55 座大巴 $237 起，
+  // 并明确「把香港那个替换掉」—— 香港埃尔法（原 `alphard-hk`，260 人民币/小时）
+  // 已从车队下线，照片挪到 `_tmp_work/backup-images/removed-hk/`。
+  //
+  // ⚠️ 这两种车**不进四档**：23 条固定路线只有小车 / 七座 / 豪华 / 九座四列，
+  // 中巴和大巴一列都没有，按比例推一个路线价就是编数字。它们只有「起价」，
+  // 金额在下面 `coachFromBySlug`。
   {
-    slug: 'alphard-hk',
-    name: 'Toyota Alphard — Hong Kong',
-    models: 'Toyota Alphard or similar',
-    image: '/images/vehicles/alphard-hk.jpg',
-    passengers: '1–6 passengers',
-    luggage: '4–6 suitcases',
-    tag: 'Hong Kong',
+    slug: 'toyota-coaster',
+    name: 'Toyota Coaster 15–23 Seats',
+    models: 'Toyota Coaster or similar',
+    image: '/images/vehicles/toyota-coaster.jpg',
+    passengers: '15–23 passengers',
+    luggage: '12–18 suitcases',
+    tag: 'Large group',
     description:
-      'A Hong Kong, China–registered Alphard with a Guangdong dual plate — the car you would book in Central or Kowloon, hired by the hour for city runs or a cross-border trip between Hong Kong, China and Guangdong. Our most comfortable option for the Hong Kong leg of a China buying trip.',
-    features: ['Guangdong dual plate', 'Captain chairs', 'Large luggage space', 'Phone charging'],
+      'A 15–23 seat Toyota Coaster with a high roof and a deep rear hold — the step up from the nine-seat van when the whole team, the samples and the luggage travel together. A common choice for factory visits around Foshan and Dongguan.',
+    features: ['15–23 seats', 'High-roof cabin', 'Large rear luggage hold', 'Air conditioning'],
+  },
+  {
+    slug: 'yutong-coach',
+    name: 'Yutong Coach 35–55 Seats',
+    models: 'Yutong coach or similar',
+    image: '/images/vehicles/yutong-coach.jpg',
+    passengers: '35–55 passengers',
+    luggage: '30–45 suitcases',
+    tag: 'Coach',
+    description:
+      'A 35–55 seat Yutong coach with an underfloor luggage hold — for delegations, incentive groups and trade-fair teams that need to move everyone in one vehicle. Quoted per coach, with the driver and fuel included.',
+    features: ['35–55 seats', 'Underfloor luggage hold', 'Air conditioning', 'PA system'],
   },
 ])
 
@@ -468,6 +483,29 @@ const airportFare = (tier) =>
   pricingEn[tier].rows.find((r) => r.service.startsWith('Baiyun Airport')).price
 
 /**
+ * ★ 中巴 / 大巴的「起价」—— 客户 2026-11-03 给的两个数字，原话是
+ * 「这个 15–23 座…价格 147 美金起」「这个 35–55 座，价格 237 美金起」。
+ *
+ * 它们**不进四档，也没有任何路线价**：23 条固定路线只有小车 / 七座 / 豪华 /
+ * 九座四列，中巴和大巴一列都没有。拿 147 按比例乘一个系数当「机场到佛山」的价
+ * 就是编数字 —— 客户只说了「起」。所以卡片和价格页都只写 `From $147`，具体一单
+ * 一议（`/contact` 报价）。
+ *
+ * 这也是为什么卡片上这行小字是 `starting price · per vehicle`，而不是其他车的
+ * `airport pickup · per vehicle`：我们没被授权说这个数字就是机场接送价。
+ *
+ * ⚠️ 必须定义在 `priceFromBySlug` 之前 —— 那个对象用 `...coachFromBySlug` 展开它，
+ * 放在后面会踩 `const` 的 TDZ，站点会白屏。
+ */
+export const coachFromBySlug = {
+  'toyota-coaster': 147,
+  'yutong-coach': 237,
+}
+
+/** 中巴 / 大巴的 slug —— 卡片靠这个换小字口径。 */
+export const coachSlugs = Object.keys(coachFromBySlug)
+
+/**
  * Lowest published fare per vehicle, printed on the fleet cards as
  * `From $57` — the reference site puts a price on the card and ours did not,
  * so a visitor had to scroll to the rate table to find out what a car costs.
@@ -476,9 +514,9 @@ const airportFare = (tier) =>
  * live list is served from the generated `public/data/vehicles.json` manifest,
  * which knows about photos and seats but nothing about money. The figures are
  * read from `pricing` above rather than typed in: a card can then never quote a
- * price the tables below it contradict. Every vehicle we list is one of the four
- * published tiers (sedan / 7-seat MPV / luxury / 9-seat), so there are only four
- * numbers.
+ * price the tables below it contradict. Four of these are the published tiers
+ * (sedan / 7-seat MPV / luxury / 9-seat); the minibus and coach prices join from
+ * `coachFromBySlug` because no route table carries a column for them.
  *
  * ★ 「奔驰就是豪华车」：Mercedes-Benz V-Class 走 `luxury` 档，不是 `mpv`。
  * 它本来被归在 MPV 里，于是车队的顶配车和一辆普通 7 座同价 —— 客户这次明确
@@ -492,21 +530,7 @@ export const priceFromBySlug = {
   'gac-m8-white': airportFare('mpv'),
   'mercedes-vclass': airportFare('luxury'),
   'ford-transit': airportFare('van9'),
-}
-
-/**
- * ★ 按小时计费的车 —— 目前只有香港那辆埃尔法。
- *
- * 客户 2026-10-29 的原话：「价格为 260 人民币一小时，只按小时计费」。所以它
- * **不进上面那四档**：没有机场固定价，也没有半日 / 全日包车价，任何一处把它换算成
- * 机场价（比如拿 260×5 当半日价）都是编数字。卡片和价格表都直接显示这一行。
- *
- * 币种就是人民币，**不做汇率换算**：折算出来的美元客户没确认过，而本项目「看到的
- * 数字就是收的数字」这条不能被破坏（`src/utils/price.js` 里的说明）。金额单位靠
- * `moneyCny()` 输出 `CN¥`，不用裸 `¥` —— 本站有日语版，裸 ¥ 会被读成日元。
- */
-export const hourlyFromBySlug = {
-  'alphard-hk': 260,
+  ...coachFromBySlug,
 }
 
 /**
@@ -712,13 +736,15 @@ export const popularRoutes = tr(fixedRoutesEn.filter((r) => r.group === 'airport
 /**
  * Vehicle tiers used by the "Vehicle Options" cards.
  *
- * `from` is derived from `pricing` with `airportFare()`, never typed in —
- * these four cards sit next to route tables that carry the same numbers, and a
- * hand-written figure is how a page ends up quoting two different prices.
+ * `from` for the four rate-card tiers is derived from `pricing` with
+ * `airportFare()`, never typed in — those cards sit next to route tables that
+ * carry the same numbers, and a hand-written figure is how a page ends up
+ * quoting two different prices.
  *
- * Four tiers after the 2026-10-01 rate card: sedan / 7-seat MPV / luxury
- * (Mercedes-Benz) / 9-seat van. Larger vehicles (12-seat and above, buses)
- * are not offered, so they are not shown.
+ * 2026-11-03: the minibus and the coach are in the fleet now, so they are shown
+ * too — their `from` comes from `coachFromBySlug` (the only figures the customer
+ * gave; there is no route-table column for either, so no route price exists to
+ * point at).
  */
 export const vehicleOptions = tr([
   {
@@ -753,6 +779,22 @@ export const vehicleOptions = tr([
     image: '/images/vehicles/ford-transit.jpg',
     text: 'Nine seats and a deep boot — the one to book when a whole team travels together with samples.',
   },
+  {
+    slug: 'toyota-coaster',
+    label: 'Minibus',
+    seats: '15–23 passengers',
+    from: coachFromBySlug['toyota-coaster'],
+    image: '/images/vehicles/toyota-coaster.jpg',
+    text: 'A 15–23 seat Coaster for a full buying team — luggage goes in the rear hold, not on laps.',
+  },
+  {
+    slug: 'yutong-coach',
+    label: 'Coach',
+    seats: '35–55 passengers',
+    from: coachFromBySlug['yutong-coach'],
+    image: '/images/vehicles/yutong-coach.jpg',
+    text: 'One coach for the whole delegation, with an underfloor hold for everyone’s cases and samples.',
+  },
 ])
 
 /**
@@ -764,7 +806,9 @@ export const vehicleOptions = tr([
  * intercity page and the pricing page show exactly the same fares as the
  * airport page. Duplicating the numbers here is what let the old six drift.
  *
- * Twelve-seat minibuses and larger are not offered.
+ * 2026-11-03: the minibus and the coach have no column here (the customer gave a
+ * starting price, not a route card), so an intercity run in one of them is
+ * quoted by hand — the table must never grow a made-up figure for them.
  */
 export const intercityRoutes = fixedRoutes
 

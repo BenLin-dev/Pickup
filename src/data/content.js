@@ -94,7 +94,7 @@ export const pages = tr({
     path: '/vehicles-pricing',
     title: 'Vehicles & Pricing — Guangzhou Airport Transfer',
     description:
-      'Our fleet and transparent Guangzhou car hire prices. Sedan airport pickup from $57, seven-seat MPV from $77, half-day from $97 per vehicle, all in USD.',
+      'Guangzhou car hire with driver: sedan from $57, 7-seat MPV from $77, 15–23 seat minibus from $147, 35–55 seat coach from $237 per vehicle, all in USD.',
     keywords:
       'guangzhou airport transfer price, foshan airport transfer price, guangzhou car hire with driver, guangzhou mpv hire, guangzhou to foshan private transfer, private driver guangzhou, paypal private driver china',
     h1: 'The Right Vehicle for Your Trip',
@@ -1277,10 +1277,10 @@ export const heroBadges = tr({
     { icon: 'user', text: 'English-speaking driver' },
   ],
   vehiclesPricing: [
-    { icon: 'car', text: 'Sedans & 7-seat MPVs' },
+    { icon: 'car', text: 'Sedans, MPVs & coaches' },
     { icon: 'wallet', text: 'Airport pickup from $57' },
-    { icon: 'users', text: '1–6 passengers' },
-    { icon: 'luggage', text: 'Up to 7 suitcases' },
+    { icon: 'users', text: 'Up to 55 passengers' },
+    { icon: 'luggage', text: 'Up to 45 suitcases' },
     { icon: 'shield', text: 'Fuel, tolls & parking included' },
     { icon: 'check', text: '20% deposit, balance after' },
   ],

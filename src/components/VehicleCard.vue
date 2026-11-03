@@ -1,8 +1,8 @@
 <script setup>
 import { computed, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
-import { priceFromBySlug, hourlyFromBySlug } from '@/data/site'
-import { money, moneyCny } from '@/utils/price'
+import { priceFromBySlug, coachSlugs } from '@/data/site'
+import { money } from '@/utils/price'
 import { t } from '@/i18n'
 
 const props = defineProps({
@@ -20,13 +20,12 @@ const props = defineProps({
 const from = computed(() => priceFromBySlug[props.vehicle.slug] || 0)
 
 /**
- * Hourly rate, for vehicles that are only ever sold by the hour — today just
- * the Hong Kong Alphard (CN¥260/hour). Those cars have no airport fare and no
- * half/full-day price, so `from` stays 0 and the card prints the hourly figure
- * instead. Same reasoning as `from`: the manifest has no money in it, so the
- * number is looked up here by slug and never typed into the card.
+ * Minibus and coach cards read `starting price · per vehicle` instead of
+ * `airport pickup · per vehicle`. The customer gave one "from" figure for each
+ * and no airport fare, and the route tables have no column for either — so the
+ * card must not imply a fare that nobody quoted.
  */
-const hourly = computed(() => hourlyFromBySlug[props.vehicle.slug] || 0)
+const isCoach = computed(() => coachSlugs.includes(props.vehicle.slug))
 
 /**
  * Photos may arrive either as a full path (`/images/vehicles/byd-han.jpg`, what
@@ -101,14 +100,10 @@ function trackSelectVehicle() {
         </span>
       </div>
 
-      <p v-if="hourly" class="vehicle__price">
-        <strong>{{ moneyCny(hourly) }}</strong>
-        <small>{{ t('per hour · hired by the hour only') }}</small>
-      </p>
-
-      <p v-else-if="from" class="vehicle__price">
+      <p v-if="from" class="vehicle__price">
         <strong>From {{ money(from) }}</strong>
-        <small>{{ t('airport pickup · per vehicle') }}</small>
+        <small v-if="isCoach">{{ t('starting price · per vehicle') }}</small>
+        <small v-else>{{ t('airport pickup · per vehicle') }}</small>
       </p>
 
       <p v-if="vehicle.description" class="vehicle__desc">{{ vehicle.description }}</p>

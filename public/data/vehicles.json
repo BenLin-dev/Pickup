@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-29T10:04:06.062Z",
+  "generated": "2026-11-03T01:04:28.457Z",
   "items": [
     {
       "slug": "hongqi",
@@ -135,22 +135,41 @@
       ]
     },
     {
-      "slug": "alphard-hk",
-      "name": "Toyota Alphard — Hong Kong",
-      "models": "Toyota Alphard or similar",
-      "image": "/images/vehicles/alphard-hk.webp",
+      "slug": "toyota-coaster",
+      "name": "Toyota Coaster 15–23 Seats",
+      "models": "Toyota Coaster or similar",
+      "image": "/images/vehicles/toyota-coaster.webp",
       "images": [
-        "/images/vehicles/alphard-hk.webp"
+        "/images/vehicles/toyota-coaster.webp"
       ],
-      "passengers": "1–6 passengers",
-      "luggage": "4–6 suitcases",
-      "tag": "Hong Kong",
-      "description": "A Hong Kong, China–registered Alphard with a Guangdong dual plate — the car you would book in Central or Kowloon, hired by the hour for city runs or a cross-border trip between Hong Kong, China and Guangdong. Our most comfortable option for the Hong Kong leg of a China buying trip.",
+      "passengers": "15–23 passengers",
+      "luggage": "12–18 suitcases",
+      "tag": "Large group",
+      "description": "A 15–23 seat Toyota Coaster with a high roof and a deep rear hold — the step up from the nine-seat van when the whole team, the samples and the luggage travel together. A common choice for factory visits around Foshan and Dongguan.",
       "features": [
-        "Guangdong dual plate",
-        "Captain chairs",
-        "Large luggage space",
-        "Phone charging"
+        "15–23 seats",
+        "High-roof cabin",
+        "Large rear luggage hold",
+        "Air conditioning"
+      ]
+    },
+    {
+      "slug": "yutong-coach",
+      "name": "Yutong Coach 35–55 Seats",
+      "models": "Yutong coach or similar",
+      "image": "/images/vehicles/yutong-coach.webp",
+      "images": [
+        "/images/vehicles/yutong-coach.webp"
+      ],
+      "passengers": "35–55 passengers",
+      "luggage": "30–45 suitcases",
+      "tag": "Coach",
+      "description": "A 35–55 seat Yutong coach with an underfloor luggage hold — for delegations, incentive groups and trade-fair teams that need to move everyone in one vehicle. Quoted per coach, with the driver and fuel included.",
+      "features": [
+        "35–55 seats",
+        "Underfloor luggage hold",
+        "Air conditioning",
+        "PA system"
       ]
     }
   ]

@@ -18,8 +18,8 @@ import {
   cancellationPolicy,
   heroBadges,
 } from '@/data/content'
-import { site, pricing, priceHighlights, intercityRoutes, popularRoutes, featuredVehicles, hourlyFromBySlug } from '@/data/site'
-import { money, moneyOr, moneyCny } from '@/utils/price'
+import { site, pricing, priceHighlights, intercityRoutes, popularRoutes, featuredVehicles, coachFromBySlug } from '@/data/site'
+import { money, moneyOr } from '@/utils/price'
 import { t } from '@/i18n'
 
 const page = pages.vehiclesPricing
@@ -59,15 +59,26 @@ const tables = [
 const price = moneyOr
 
 /**
- * The Hong Kong table — one row, because there is only one way to buy that car:
- * by the hour. The rate comes from `hourlyFromBySlug` (site.js) rather than
- * from a `pricing` tier, so it cannot drift away from the card above.
+ * The minibus / coach table — two rows, both "from" prices.
+ *
+ * They are not part of the four rate tables above: the 23 fixed routes have no
+ * minibus or coach column, and the customer only gave a starting figure
+ * (2026-11-03: 15–23 seats from $147, 35–55 seats from $237). Printing a route
+ * price for them would be inventing one, so the table says "From" and the note
+ * underneath sends the visitor to a written quote.
  */
-const hkRows = [
+const coachRows = [
   {
-    service: t('Toyota Alphard — Hong Kong car'),
-    scope: t('Charged per hour, no daily rate · Hong Kong, China and cross-border to Guangdong'),
-    price: hourlyFromBySlug['alphard-hk'],
+    slug: 'toyota-coaster',
+    name: t('Toyota Coaster 15–23 Seats'),
+    seats: t('15–23 passengers'),
+    from: coachFromBySlug['toyota-coaster'],
+  },
+  {
+    slug: 'yutong-coach',
+    name: t('Yutong Coach 35–55 Seats'),
+    seats: t('35–55 passengers'),
+    from: coachFromBySlug['yutong-coach'],
   },
 ]
 
@@ -213,20 +224,18 @@ function trackCta(label, destination) {
         </div>
       </div>
 
-      <!-- ---------------------------------------------- 香港车辆（按小时） -->
-      <!-- 香港那辆埃尔法**故意不进上面四档**：客户 2026-10-29 的原话是「价格为
-           260 人民币一小时，只按小时计费」，所以它没有机场固定价、也没有半日 /
-           全日包车价，任何一行按档位填数字都是编的。币种也是人民币，不换算 ——
-           这张表自己说明币种，上面那句「All prices in US dollars」就不用改
-           （改英文句子 = 六种语言的译文全部掉回英文）。 -->
+      <!-- --------------------------------------- 中巴 / 大巴（起价） -->
+      <!-- 客户 2026-11-03 只给了「起价」（15–23 座 $147、35–55 座 $237），
+           23 条固定路线里没有这两种车的列，所以这一块**只写 From**，绝不按
+           档位比例推一个路线价。具体一单报价走 /contact。 -->
       <div class="mt-56">
         <div class="section-head section-head--center" v-reveal>
-          <p class="eyebrow">{{ t('Hong Kong') }}</p>
-          <h3>{{ t('Hong Kong car — hired by the hour') }}</h3>
+          <p class="eyebrow">{{ t('Large groups') }}</p>
+          <h3>{{ t('Minibus and coach — starting prices') }}</h3>
           <p class="lead">
             {{
               t(
-                'Our Hong Kong car is charged by the hour and nothing else — no airport fare, no half-day or full-day package. Prices in this table are in renminbi.',
+                'For a full buying team or a whole delegation: a 15–23 seat minibus and a 35–55 seat coach. Both are quoted per vehicle, with the driver and fuel included.',
               )
             }}
           </p>
@@ -236,23 +245,30 @@ function trackCta(label, destination) {
           <table class="price-table">
             <thead>
               <tr>
-                <th scope="col">{{ t('Service') }}</th>
-                <th scope="col">{{ t('Included') }}</th>
+                <th scope="col">{{ t('Vehicle') }}</th>
+                <th scope="col">{{ t('Seats') }}</th>
                 <th scope="col">{{ t('Price') }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="r in hkRows" :key="r.service">
-                <td data-label="Service">{{ r.service }}</td>
-                <td data-label="Included" style="color: var(--c-muted)">{{ r.scope }}</td>
+              <tr v-for="r in coachRows" :key="r.slug">
+                <td data-label="Vehicle">{{ r.name }}</td>
+                <td data-label="Seats" style="color: var(--c-muted)">{{ r.seats }}</td>
                 <td data-label="Price">
-                  <span class="price">{{ moneyCny(r.price) }}</span>
-                  <span style="color: var(--c-muted)"> / {{ t('hour') }}</span>
+                  <span class="price">From {{ money(r.from) }}</span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+
+        <p class="table-note">
+          {{
+            t(
+              'These are starting prices per vehicle. Send us the route, the group size and the luggage and we confirm one fixed total in writing before you book.',
+            )
+          }}
+        </p>
       </div>
     </div>
   </section>
