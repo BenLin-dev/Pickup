@@ -7,6 +7,13 @@ const props = defineProps({
   name: { type: String, required: true },
   size: { type: [Number, String], default: 22 },
   stroke: { type: [Number, String], default: 1.8 },
+  /**
+   * Paint for the shape itself. Most icons here are strokes and rely on
+   * `fill="none"`, but the star and the quote mark are closed silhouettes that
+   * are meant to be solid — passing `stroke="0"` without a fill drew nothing at
+   * all, which is why every review card was missing its row of five stars.
+   */
+  fill: { type: String, default: 'none' },
 })
 
 const paths = {
@@ -72,7 +79,7 @@ const paths = {
     :width="size"
     :height="size"
     viewBox="0 0 24 24"
-    fill="none"
+    :fill="fill"
     stroke="currentColor"
     :stroke-width="stroke"
     stroke-linecap="round"

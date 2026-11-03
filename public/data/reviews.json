@@ -1,6 +1,19 @@
 {
-  "generated": "2026-11-03T01:04:28.475Z",
+  "generated": "2026-11-03T06:51:45.321Z",
   "items": [
+    {
+      "id": "verified-guest-10-out-of-10",
+      "type": "image",
+      "image": "/images/reviews/verified-guest-10-out-of-10.jpg",
+      "video": "",
+      "poster": "/images/reviews/verified-guest-10-out-of-10.jpg",
+      "name": "Verified guest",
+      "text": "Hi! All perfect!! 👌 The driver was polite and kind. 10/10",
+      "rating": 5,
+      "service": "Private car service",
+      "date": "November 2026",
+      "alt": "WeChat conversation screenshot — a guest rates the CantonPickup driver 10/10"
+    },
     {
       "id": "martin-airport-drop-off",
       "type": "image",

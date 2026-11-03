@@ -221,7 +221,14 @@ onBeforeUnmount(() => {
 
           <figcaption class="review__body">
             <div v-if="r.rating" class="review__stars" :aria-label="`${r.rating} out of 5 stars`">
-              <AppIcon v-for="n in Math.round(r.rating)" :key="n" name="star" :size="15" :stroke="0" />
+              <AppIcon
+                v-for="n in Math.round(r.rating)"
+                :key="n"
+                name="star"
+                :size="15"
+                :stroke="0"
+                fill="currentColor"
+              />
             </div>
 
             <blockquote v-if="r.text" class="review__text">“{{ r.text }}”</blockquote>
@@ -286,7 +293,7 @@ onBeforeUnmount(() => {
       <div v-for="n in 3" :key="n" class="review review--text">
         <div class="review__body">
           <span class="review__stars" style="color: var(--c-300)">
-            <AppIcon name="quote" :size="26" :stroke="0" />
+            <AppIcon name="quote" :size="26" :stroke="0" fill="currentColor" />
           </span>
           <p class="review__text">
             {{
