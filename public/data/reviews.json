@@ -1,6 +1,19 @@
 {
-  "generated": "2026-11-03T06:51:45.321Z",
+  "generated": "2026-11-10T00:35:13.283Z",
   "items": [
+    {
+      "id": "verified-client-team-trip",
+      "type": "image",
+      "image": "/images/reviews/verified-client-team-trip.jpg",
+      "video": "",
+      "poster": "/images/reviews/verified-client-team-trip.jpg",
+      "name": "Verified client",
+      "text": "Hi Jack, we're back home and happy with the services. I will be in touch next time when we're going through the area. Thank you for everything.",
+      "rating": 5,
+      "service": "Business travel",
+      "date": "November 2026",
+      "alt": "WeChat conversation screenshot — a business team thanks CantonPickup after a multi-day trip"
+    },
     {
       "id": "verified-guest-10-out-of-10",
       "type": "image",
